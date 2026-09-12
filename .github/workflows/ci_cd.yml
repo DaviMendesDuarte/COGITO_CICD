@@ -1,0 +1,97 @@
+name: COGITO CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ==========================================
+  # JOB DE CI: Validação, Análise e Testes
+  # ==========================================
+  ci:
+    name: 🧪 Continuous Integration (Lint, Analyze & Unit Tests)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout do Repositório
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup do Java JDK (17)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: 🐦 Setup do Flutter SDK (Stable)
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
+
+      - name: 📦 Instalar Dependências do Projeto
+        run: flutter pub get
+
+      - name: 🔍 Análise Estática de Código (flutter analyze)
+        run: flutter analyze
+
+      - name: ⚡ Executar Suíte de Testes Unitários
+        run: flutter test --coverage
+
+      - name: 📊 Arquivar Relatório de Cobertura de Testes (Coverage)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: code-coverage-report
+          path: coverage/lcov.info
+          retention-days: 7
+
+  # ==========================================
+  # JOB DE CD: Build e Entrega Contínua (Android APK)
+  # ==========================================
+  cd_android:
+    name: 🚀 Continuous Delivery (Android Release APK)
+    needs: ci
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+
+    steps:
+      - name: 📥 Checkout do Repositório
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup do Java JDK (17)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: 🐦 Setup do Flutter SDK (Stable)
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: 📦 Obter Dependências
+        run: flutter pub get
+
+      - name: 🛠️ Gerar Build APK de Produção (Release)
+        run: flutter build apk --release
+
+      - name: 📤 Publicar APK Gerado como Artefato do GitHub
+        uses: actions/upload-artifact@v4
+        with:
+          name: cogito-android-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 14
