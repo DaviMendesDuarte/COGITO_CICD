@@ -88,7 +88,25 @@ jobs:
       - name: 📦 Instalar Dependências
         run: flutter pub get
 
-      - name: 🧪 Executar Testes com Cobertura
+      - name: 🧪 Executar Teste 1 - CONRADO: Salvaguarda Ética
+        run: flutter test test/test_1_conrado_etica_test.dart
+
+      - name: 🧪 Executar Teste 2 - CONRADO: Consultoria Trabalhista (13º Salário)
+        run: flutter test test/test_2_conrado_trabalhista_test.dart
+
+      - name: 🧪 Executar Teste 3 - CONRADO: Restrição Temática Exclusiva
+        run: flutter test test/test_3_conrado_restricao_test.dart
+
+      - name: 🧪 Executar Teste 4 - Segurança de Perfil: Criptografia e Salt do Avatar
+        run: flutter test test/test_4_profile_security_test.dart
+
+      - name: 🧪 Executar Teste 5 - Acessibilidade & Tema: Controle Reativo
+        run: flutter test test/test_5_accessibility_theme_test.dart
+
+      - name: 🧪 Executar Teste 6 - Acessibilidade Visual: Matrizes de Daltonismo
+        run: flutter test test/test_6_daltonismo_matrix_test.dart
+
+      - name: 🧪 Executar Bateria Completa com Cobertura
         run: flutter test --coverage
 
       - name: 📊 Publicar Relatório de Cobertura (LCOV)
