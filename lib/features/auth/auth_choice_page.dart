@@ -17,9 +17,7 @@ class AuthChoicePage extends StatelessWidget {
       child: Scaffold(
         // Fundo com gradiente do azul primário ao escuro
         body: Container(
-          decoration: const BoxDecoration(
-            color: AppColors.primaryBlue,
-          ),
+          decoration: const BoxDecoration(color: AppColors.primaryBlue),
           child: SafeArea(
             child: Column(
               children: [
@@ -49,11 +47,12 @@ class AuthChoicePage extends StatelessWidget {
                           child: Image.asset(
                             'assets/images/conrado/conrado_hi.png',
                             fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) => const Icon(
-                              Icons.psychology,
-                              color: Colors.white,
-                              size: 60,
-                            ),
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Icon(
+                                  Icons.psychology,
+                                  color: Colors.white,
+                                  size: 60,
+                                ),
                           ),
                         ),
                       ),
@@ -75,7 +74,10 @@ class AuthChoicePage extends StatelessWidget {
 
                       // Subtítulo descritivo
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 6,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.12),
                           borderRadius: BorderRadius.circular(20),
@@ -102,7 +104,9 @@ class AuthChoicePage extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(28, 36, 28, 28),
                     decoration: const BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(36)),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(36),
+                      ),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -149,14 +153,18 @@ class AuthChoicePage extends StatelessWidget {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const LoginPage()),
+                                MaterialPageRoute(
+                                  builder: (context) => const LoginPage(),
+                                ),
                               );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primaryBlue,
                               foregroundColor: Colors.white,
                               elevation: 4,
-                              shadowColor: AppColors.primaryBlue.withValues(alpha: 0.4),
+                              shadowColor: AppColors.primaryBlue.withValues(
+                                alpha: 0.4,
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
@@ -188,12 +196,17 @@ class AuthChoicePage extends StatelessWidget {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const CadastroPage()),
+                                MaterialPageRoute(
+                                  builder: (context) => const CadastroPage(),
+                                ),
                               );
                             },
                             style: OutlinedButton.styleFrom(
                               foregroundColor: AppColors.primaryBlue,
-                              side: const BorderSide(color: AppColors.primaryBlue, width: 2),
+                              side: const BorderSide(
+                                color: AppColors.primaryBlue,
+                                width: 2,
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
@@ -231,7 +244,10 @@ class AuthChoicePage extends StatelessWidget {
                               const SizedBox(height: 4),
                               Text(
                                 '3°DS 2026 • COGITO',
-                                style: TextStyle(color: Colors.grey.shade400, fontSize: 11),
+                                style: TextStyle(
+                                  color: Colors.grey.shade400,
+                                  fontSize: 11,
+                                ),
                               ),
                             ],
                           ),

@@ -37,20 +37,25 @@ class _SplashPageState extends State<SplashPage> {
     if (!mounted) return;
 
     // Verifica se já existe uma sessão ativa
-    final bool temSessao = await _firebaseAuthService.verificarECarregarSessaoLogada();
-    final bool usuarioLogado = temSessao || FirebaseFirestoreService.usuarioLogado != null;
+    final bool temSessao = await _firebaseAuthService
+        .verificarECarregarSessaoLogada();
+    final bool usuarioLogado =
+        temSessao || FirebaseFirestoreService.usuarioLogado != null;
 
     if (usuarioLogado) {
       // Carrega a preferência de Biometria no Splash
       final prefs = await SharedPreferences.getInstance();
-      final bool biometriaSplashAtiva = prefs.getBool('biometria_splash_enabled') ?? false;
-      final bool eDispositivoFisico = await _biometricService.isDispositivoFisico();
+      final bool biometriaSplashAtiva =
+          prefs.getBool('biometria_splash_enabled') ?? false;
+      final bool eDispositivoFisico = await _biometricService
+          .isDispositivoFisico();
 
       // Se a biometria no splash estiver ativada e for um dispositivo físico real
       if (biometriaSplashAtiva && eDispositivoFisico) {
-        final bool autenticado = await _biometricService.autenticarComImpressaoDigital(
-          motivo: 'Autentique com sua biometria para abrir o COGITO',
-        );
+        final bool autenticado = await _biometricService
+            .autenticarComImpressaoDigital(
+              motivo: 'Autentique com sua biometria para abrir o COGITO',
+            );
 
         if (!mounted) return;
 
@@ -98,7 +103,10 @@ class _SplashPageState extends State<SplashPage> {
           children: [
             Icon(Icons.security, color: AppColors.primaryBlue),
             SizedBox(width: 8),
-            Text('Acesso Seguro', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            Text(
+              'Acesso Seguro',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
           ],
         ),
         content: const Text(
@@ -111,7 +119,13 @@ class _SplashPageState extends State<SplashPage> {
               Navigator.pop(dialogContext);
               _exibirDialogoSenhaObrigatoria();
             },
-            child: const Text('Entrar com Senha', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryBlue)),
+            child: const Text(
+              'Entrar com Senha',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryBlue,
+              ),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -120,9 +134,17 @@ class _SplashPageState extends State<SplashPage> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryBlue,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
-            child: const Text('Tentar Biometria', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            child: const Text(
+              'Tentar Biometria',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
@@ -142,7 +164,9 @@ class _SplashPageState extends State<SplashPage> {
         return StatefulBuilder(
           builder: (context, setDialogState) {
             return AlertDialog(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
               title: const Row(
                 children: [
                   Icon(Icons.lock_outline, color: AppColors.primaryBlue),
@@ -164,8 +188,13 @@ class _SplashPageState extends State<SplashPage> {
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Senha',
-                      prefixIcon: const Icon(Icons.password, color: AppColors.primaryBlue),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                      prefixIcon: const Icon(
+                        Icons.password,
+                        color: AppColors.primaryBlue,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                       errorText: erroMensagem,
                     ),
                   ),
@@ -182,7 +211,10 @@ class _SplashPageState extends State<SplashPage> {
                           await _firebaseAuthService.signOut();
                           if (mounted) _navegarParaOnboarding();
                         },
-                  child: const Text('Sair da Conta', style: TextStyle(color: Colors.grey)),
+                  child: const Text(
+                    'Sair da Conta',
+                    style: TextStyle(color: Colors.grey),
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: carregando
@@ -202,7 +234,8 @@ class _SplashPageState extends State<SplashPage> {
                           });
 
                           final dialogNav = Navigator.of(senhaDialogContext);
-                          final bool senhaValida = await _firebaseAuthService.verificarSenha(senha);
+                          final bool senhaValida = await _firebaseAuthService
+                              .verificarSenha(senha);
 
                           if (!mounted) return;
 
@@ -212,21 +245,33 @@ class _SplashPageState extends State<SplashPage> {
                           } else {
                             setDialogState(() {
                               carregando = false;
-                              erroMensagem = 'Senha incorreta. Tente novamente.';
+                              erroMensagem =
+                                  'Senha incorreta. Tente novamente.';
                             });
                           }
                         },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryBlue,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   child: carregando
                       ? const SizedBox(
                           width: 18,
                           height: 18,
-                          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
                         )
-                      : const Text('Desbloquear', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      : const Text(
+                          'Desbloquear',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
               ],
             );
@@ -247,10 +292,7 @@ class _SplashPageState extends State<SplashPage> {
             children: [
               const Spacer(),
               Center(
-                child: Image.asset(
-                  'assets/images/logo/logo.png',
-                  width: 230,
-                ),
+                child: Image.asset('assets/images/logo/logo.png', width: 230),
               ),
               const Spacer(),
               const SizedBox(

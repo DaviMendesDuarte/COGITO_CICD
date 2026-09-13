@@ -10,9 +10,7 @@ class FirebaseAuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   /// Instancia do GoogleSignIn configurada com os escopos basicos de perfil e e-mail.
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: ['email', 'profile'],
-  );
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email', 'profile']);
 
   /// Usuario atualmente autenticado no Firebase (null se nao logado).
   User? get usuarioAtual => _firebaseAuth.currentUser;
@@ -28,7 +26,8 @@ class FirebaseAuthService {
     final User? user = usuarioAtual;
     if (user != null) {
       // Define nome de exibição padrão caso o displayName não esteja preenchido.
-      final String nomeExibicao = user.displayName ??
+      final String nomeExibicao =
+          user.displayName ??
           (user.email != null && user.email!.contains('@')
               ? user.email!.split('@').first
               : 'Usuário COGITO');
@@ -48,7 +47,9 @@ class FirebaseAuthService {
       // Tenta buscar o cadastro completo do usuário armazenado no Cloud Firestore.
       await FirebaseFirestoreService().buscarUsuario(user.uid);
       // Sincroniza e vincula dados locais/guest pendentes ao UID do Firebase
-      await FirebaseFirestoreService().vincularDadosAnonimosOuPendentes(user.uid);
+      await FirebaseFirestoreService().vincularDadosAnonimosOuPendentes(
+        user.uid,
+      );
       return true;
     }
     return false;
@@ -75,10 +76,8 @@ class FirebaseAuthService {
     required double rendaMensal,
   }) async {
     try {
-      final UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: senha,
-      );
+      final UserCredential userCredential = await _firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: senha);
       final User? user = userCredential.user;
 
       if (user != null) {
@@ -123,10 +122,8 @@ class FirebaseAuthService {
     required String senha,
   }) async {
     try {
-      final UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: senha,
-      );
+      final UserCredential userCredential = await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: senha);
       final User? user = userCredential.user;
 
       if (user != null) {
@@ -138,8 +135,11 @@ class FirebaseAuthService {
 
       // Fallback gracioso para verificação no Firestore se a autenticação via Auth Provider estiver offline
       final String fallbackUid = email.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_');
-      final usuarioEncontrado = await FirebaseFirestoreService().buscarUsuario(fallbackUid);
-      if (usuarioEncontrado != null && usuarioEncontrado['status_conta'] != 'Inativa') {
+      final usuarioEncontrado = await FirebaseFirestoreService().buscarUsuario(
+        fallbackUid,
+      );
+      if (usuarioEncontrado != null &&
+          usuarioEncontrado['status_conta'] != 'Inativa') {
         return usuarioAtual;
       }
       rethrow;
@@ -153,15 +153,16 @@ class FirebaseAuthService {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) return null;
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential =
-          await _firebaseAuth.signInWithCredential(credential);
+      final UserCredential userCredential = await _firebaseAuth
+          .signInWithCredential(credential);
 
       return userCredential.user;
     } catch (e) {
@@ -229,23 +230,30 @@ class FirebaseAuthService {
         try {
           final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
           if (googleUser != null) {
-            final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+            final GoogleSignInAuthentication googleAuth =
+                await googleUser.authentication;
             final AuthCredential credential = GoogleAuthProvider.credential(
               accessToken: googleAuth.accessToken,
               idToken: googleAuth.idToken,
             );
             await user.reauthenticateWithCredential(credential);
           } else {
-            throw Exception('Autenticação Google cancelada. A conta não foi excluída.');
+            throw Exception(
+              'Autenticação Google cancelada. A conta não foi excluída.',
+            );
           }
         } catch (e) {
           debugPrint('Erro ao reautenticar conta Google antes da exclusão: $e');
-          throw Exception('Falha ao autenticar com a conta Google. A conta não foi excluída.');
+          throw Exception(
+            'Falha ao autenticar com a conta Google. A conta não foi excluída.',
+          );
         }
       } else {
         // Para contas de e-mail e senha, a senha não pode ser vazia e deve ser estritamente validada
         if (senha.trim().isEmpty) {
-          throw Exception('A senha é obrigatória para confirmar a exclusão definitiva da conta.');
+          throw Exception(
+            'A senha é obrigatória para confirmar a exclusão definitiva da conta.',
+          );
         }
 
         try {
@@ -256,7 +264,9 @@ class FirebaseAuthService {
           await user.reauthenticateWithCredential(credential);
         } catch (e) {
           debugPrint('Erro ao validar senha para exclusão de conta: $e');
-          throw Exception('Senha incorreta. Não foi possível confirmar a exclusão da sua conta.');
+          throw Exception(
+            'Senha incorreta. Não foi possível confirmar a exclusão da sua conta.',
+          );
         }
       }
 
@@ -267,12 +277,15 @@ class FirebaseAuthService {
       try {
         await user.delete();
       } catch (e) {
-        debugPrint('Aviso/Erro ao excluir usuário no Firebase Authentication: $e');
+        debugPrint(
+          'Aviso/Erro ao excluir usuário no Firebase Authentication: $e',
+        );
         if (e.toString().contains('requires-recent-login') && viaGoogle) {
           await _googleSignIn.signOut();
           final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
           if (googleUser != null) {
-            final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+            final GoogleSignInAuthentication googleAuth =
+                await googleUser.authentication;
             final AuthCredential credential = GoogleAuthProvider.credential(
               accessToken: googleAuth.accessToken,
               idToken: googleAuth.idToken,
@@ -316,7 +329,9 @@ class FirebaseAuthService {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
     } catch (e) {
-      debugPrint('Aviso ao enviar e-mail de redefinição de senha Firebase Auth: $e');
+      debugPrint(
+        'Aviso ao enviar e-mail de redefinição de senha Firebase Auth: $e',
+      );
     }
   }
 
@@ -332,4 +347,3 @@ class FirebaseAuthService {
     }
   }
 }
-

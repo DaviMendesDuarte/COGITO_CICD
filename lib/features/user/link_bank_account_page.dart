@@ -13,7 +13,8 @@ class VincularContaBancariaPage extends StatefulWidget {
   const VincularContaBancariaPage({super.key, this.contaExistente});
 
   @override
-  State<VincularContaBancariaPage> createState() => _VincularContaBancariaPageState();
+  State<VincularContaBancariaPage> createState() =>
+      _VincularContaBancariaPageState();
 }
 
 class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
@@ -39,16 +40,44 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
 
   /// Definição visual e de cores de marca das instituições financeiras suportadas.
   static const List<Map<String, dynamic>> _bancosDetalhados = [
-    {'nome': 'Nubank', 'cor': Color(0xFF820AD1), 'icon': Icons.account_balance_outlined},
-    {'nome': 'Banco do Brasil', 'cor': Color(0xFF0038A8), 'icon': Icons.account_balance},
+    {
+      'nome': 'Nubank',
+      'cor': Color(0xFF820AD1),
+      'icon': Icons.account_balance_outlined,
+    },
+    {
+      'nome': 'Banco do Brasil',
+      'cor': Color(0xFF0038A8),
+      'icon': Icons.account_balance,
+    },
     {'nome': 'Bradesco', 'cor': Color(0xFFCC092F), 'icon': Icons.business},
-    {'nome': 'Itaú', 'cor': Color(0xFFEC7000), 'icon': Icons.account_balance_wallet},
+    {
+      'nome': 'Itaú',
+      'cor': Color(0xFFEC7000),
+      'icon': Icons.account_balance_wallet,
+    },
     {'nome': 'Caixa', 'cor': Color(0xFF005CA9), 'icon': Icons.account_balance},
     {'nome': 'Inter', 'cor': Color(0xFFFF7A00), 'icon': Icons.credit_card},
-    {'nome': 'C6 Bank', 'cor': Color(0xFF242424), 'icon': Icons.credit_card_sharp},
-    {'nome': 'Santander', 'cor': Color(0xFFE30613), 'icon': Icons.account_balance_outlined},
-    {'nome': 'PicPay', 'cor': Color(0xFF11C76F), 'icon': Icons.account_balance_wallet_outlined},
-    {'nome': 'Outro', 'cor': AppColors.primaryBlue, 'icon': Icons.account_balance_sharp},
+    {
+      'nome': 'C6 Bank',
+      'cor': Color(0xFF242424),
+      'icon': Icons.credit_card_sharp,
+    },
+    {
+      'nome': 'Santander',
+      'cor': Color(0xFFE30613),
+      'icon': Icons.account_balance_outlined,
+    },
+    {
+      'nome': 'PicPay',
+      'cor': Color(0xFF11C76F),
+      'icon': Icons.account_balance_wallet_outlined,
+    },
+    {
+      'nome': 'Outro',
+      'cor': AppColors.primaryBlue,
+      'icon': Icons.account_balance_sharp,
+    },
   ];
 
   @override
@@ -58,7 +87,9 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
     if (widget.contaExistente != null) {
       final conta = widget.contaExistente!;
       final String nomeBanco = conta['nome_banco'] ?? 'Nubank';
-      _bancoSelecionado = _bancosDetalhados.any((b) => b['nome'] == nomeBanco) ? nomeBanco : 'Outro';
+      _bancoSelecionado = _bancosDetalhados.any((b) => b['nome'] == nomeBanco)
+          ? nomeBanco
+          : 'Outro';
       _agenciaController.text = conta['agencia'] ?? '';
       _numeroContaController.text = conta['numero_conta'] ?? '';
       _titularController.text = conta['nome_titular'] ?? '';
@@ -97,7 +128,8 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
 
     try {
       final usuario = FirebaseFirestoreService.usuarioLogado;
-      final String idCliente = (usuario?['uid'] ?? usuario?['id_cliente'] ?? 'guest').toString();
+      final String idCliente =
+          (usuario?['uid'] ?? usuario?['id_cliente'] ?? 'guest').toString();
 
       await _firestoreService.vincularContaBancaria(
         idCliente: idCliente,
@@ -170,7 +202,11 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
                 // 2. Seção de Seleção do Banco em Grade/Carrossel de Botões Visuais
                 const Text(
                   'Escolha o Seu Banco',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: AppColors.primaryBlue),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: AppColors.primaryBlue,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 _buildGradeSelecaoBancos(),
@@ -180,7 +216,11 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
                 // 3. Campos de Entrada (Agência e Conta)
                 const Text(
                   'Dados da Conta',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: AppColors.primaryBlue),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: AppColors.primaryBlue,
+                  ),
                 ),
                 const SizedBox(height: 12),
 
@@ -191,9 +231,17 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
                       child: TextFormField(
                         controller: _agenciaController,
                         keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        decoration: _inputDecoration('Agência', Icons.location_city_outlined, 'Ex: 0001'),
-                        validator: (val) => val == null || val.trim().isEmpty ? 'Informe a agência' : null,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        decoration: _inputDecoration(
+                          'Agência',
+                          Icons.location_city_outlined,
+                          'Ex: 0001',
+                        ),
+                        validator: (val) => val == null || val.trim().isEmpty
+                            ? 'Informe a agência'
+                            : null,
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -202,9 +250,17 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
                       child: TextFormField(
                         controller: _numeroContaController,
                         keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9\-]'))],
-                        decoration: _inputDecoration('Número da Conta', Icons.credit_card_outlined, 'Ex: 12345-6'),
-                        validator: (val) => val == null || val.trim().isEmpty ? 'Informe a conta' : null,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9\-]')),
+                        ],
+                        decoration: _inputDecoration(
+                          'Número da Conta',
+                          Icons.credit_card_outlined,
+                          'Ex: 12345-6',
+                        ),
+                        validator: (val) => val == null || val.trim().isEmpty
+                            ? 'Informe a conta'
+                            : null,
                       ),
                     ),
                   ],
@@ -221,8 +277,14 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
                 TextFormField(
                   controller: _titularController,
                   textCapitalization: TextCapitalization.words,
-                  decoration: _inputDecoration('Nome do Titular', Icons.person_outline, 'Nome completo do titular'),
-                  validator: (val) => val == null || val.trim().isEmpty ? 'Informe o nome do titular' : null,
+                  decoration: _inputDecoration(
+                    'Nome do Titular',
+                    Icons.person_outline,
+                    'Nome completo do titular',
+                  ),
+                  validator: (val) => val == null || val.trim().isEmpty
+                      ? 'Informe o nome do titular'
+                      : null,
                 ),
 
                 const SizedBox(height: 32),
@@ -235,7 +297,9 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
                     onPressed: _isLoading ? null : _vincularConta,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: corBanco,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                       elevation: 4,
                     ),
                     child: _isLoading
@@ -243,11 +307,20 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(Icons.link_rounded, color: Colors.white),
+                              const Icon(
+                                Icons.link_rounded,
+                                color: Colors.white,
+                              ),
                               const SizedBox(width: 8),
                               Text(
-                                isEdicao ? 'SALVAR ALTERAÇÕES' : 'VINCULAR BANCO',
-                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+                                isEdicao
+                                    ? 'SALVAR ALTERAÇÕES'
+                                    : 'VINCULAR BANCO',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
                               ),
                             ],
                           ),
@@ -263,9 +336,15 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
 
   /// Constrói o cartão de pré-visualização ao vivo do banco selecionado.
   Widget _buildCardPreview(Map<String, dynamic> banco, Color cor) {
-    final String agencia = _agenciaController.text.isEmpty ? '0001' : _agenciaController.text;
-    final String conta = _numeroContaController.text.isEmpty ? '12345-6' : _numeroContaController.text;
-    final String titular = _titularController.text.isEmpty ? 'NOME DO TITULAR' : _titularController.text.toUpperCase();
+    final String agencia = _agenciaController.text.isEmpty
+        ? '0001'
+        : _agenciaController.text;
+    final String conta = _numeroContaController.text.isEmpty
+        ? '12345-6'
+        : _numeroContaController.text;
+    final String titular = _titularController.text.isEmpty
+        ? 'NOME DO TITULAR'
+        : _titularController.text.toUpperCase();
 
     return Container(
       width: double.infinity,
@@ -291,23 +370,38 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
             children: [
               Row(
                 children: [
-                  Icon(banco['icon'] as IconData, color: Colors.white, size: 28),
+                  Icon(
+                    banco['icon'] as IconData,
+                    color: Colors.white,
+                    size: 28,
+                  ),
                   const SizedBox(width: 10),
                   Text(
                     banco['nome'] as String,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   ),
                 ],
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white24,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   _tipoContaSelecionado.toUpperCase(),
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 11),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11,
+                  ),
                 ),
               ),
             ],
@@ -315,11 +409,23 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('CONTA CONECTADA', style: TextStyle(color: Colors.white70, fontSize: 10, letterSpacing: 1)),
+              const Text(
+                'CONTA CONECTADA',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 10,
+                  letterSpacing: 1,
+                ),
+              ),
               const SizedBox(height: 4),
               Text(
                 'Ag. $agencia  •  C/C $conta',
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17, letterSpacing: 1.2),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                  letterSpacing: 1.2,
+                ),
               ),
             ],
           ),
@@ -328,9 +434,17 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
             children: [
               Text(
                 titular,
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 13),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13,
+                ),
               ),
-              const Icon(Icons.contactless_rounded, color: Colors.white70, size: 24),
+              const Icon(
+                Icons.contactless_rounded,
+                color: Colors.white70,
+                size: 24,
+              ),
             ],
           ),
         ],
@@ -369,7 +483,13 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
                   width: isSelected ? 2.5 : 1,
                 ),
                 boxShadow: isSelected
-                    ? [BoxShadow(color: cor.withValues(alpha: 0.3), blurRadius: 10, offset: const Offset(0, 4))]
+                    ? [
+                        BoxShadow(
+                          color: cor.withValues(alpha: 0.3),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ]
                     : [],
               ),
               child: Column(
@@ -388,7 +508,9 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
-                      color: isSelected ? Colors.white : AppColors.getTextColor(context),
+                      color: isSelected
+                          ? Colors.white
+                          : AppColors.getTextColor(context),
                     ),
                   ),
                 ],
@@ -415,13 +537,17 @@ class _VincularContaBancariaPageState extends State<VincularContaBancariaPage> {
               decoration: BoxDecoration(
                 color: selected ? corAtiva : AppColors.getCardColor(context),
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: selected ? corAtiva : Colors.grey.shade300),
+                border: Border.all(
+                  color: selected ? corAtiva : Colors.grey.shade300,
+                ),
               ),
               child: Center(
                 child: Text(
                   'Conta $tipo',
                   style: TextStyle(
-                    color: selected ? Colors.white : AppColors.getTextColor(context),
+                    color: selected
+                        ? Colors.white
+                        : AppColors.getTextColor(context),
                     fontWeight: FontWeight.bold,
                     fontSize: 13,
                   ),

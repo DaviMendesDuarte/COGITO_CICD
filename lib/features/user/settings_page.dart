@@ -35,7 +35,9 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
             Text('Sair da Conta'),
           ],
         ),
-        content: const Text('Deseja realmente encerrar sua sessão no aplicativo COGITO?'),
+        content: const Text(
+          'Deseja realmente encerrar sua sessão no aplicativo COGITO?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
@@ -57,7 +59,9 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryBlue,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             child: const Text('Sair', style: TextStyle(color: Colors.white)),
           ),
@@ -80,7 +84,9 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
         return StatefulBuilder(
           builder: (context, setDialogState) {
             return AlertDialog(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
               title: const Row(
                 children: [
                   Icon(Icons.warning_amber_rounded, color: Colors.red),
@@ -107,11 +113,19 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                         obscureText: true,
                         decoration: InputDecoration(
                           labelText: 'Sua Senha',
-                          prefixIcon: const Icon(Icons.lock_outline, color: AppColors.primaryBlue),
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                          prefixIcon: const Icon(
+                            Icons.lock_outline,
+                            color: AppColors.primaryBlue,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2),
+                            borderSide: const BorderSide(
+                              color: AppColors.primaryBlue,
+                              width: 2,
+                            ),
                           ),
                         ),
                         validator: (value) {
@@ -127,22 +141,31 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
               ),
               actions: [
                 TextButton(
-                  onPressed: isProcessing ? null : () => Navigator.pop(dialogContext),
+                  onPressed: isProcessing
+                      ? null
+                      : () => Navigator.pop(dialogContext),
                   child: const Text('Cancelar'),
                 ),
                 ElevatedButton(
                   onPressed: isProcessing
                       ? null
                       : () async {
-                          if (!isGoogleUser && !formKey.currentState!.validate()) return;
+                          if (!isGoogleUser &&
+                              !formKey.currentState!.validate())
+                            return;
 
                           setDialogState(() {
                             isProcessing = true;
                           });
 
                           final dialogNav = Navigator.of(dialogContext);
-                          final scaffoldMessenger = ScaffoldMessenger.of(this.context);
-                          final rootNavigator = Navigator.of(this.context, rootNavigator: true);
+                          final scaffoldMessenger = ScaffoldMessenger.of(
+                            this.context,
+                          );
+                          final rootNavigator = Navigator.of(
+                            this.context,
+                            rootNavigator: true,
+                          );
 
                           try {
                             final String senha = passwordController.text.trim();
@@ -155,13 +178,17 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
 
                             scaffoldMessenger.showSnackBar(
                               const SnackBar(
-                                content: Text('Sua conta e todos os seus dados foram excluídos com sucesso.'),
+                                content: Text(
+                                  'Sua conta e todos os seus dados foram excluídos com sucesso.',
+                                ),
                                 backgroundColor: Colors.orange,
                               ),
                             );
 
                             rootNavigator.pushAndRemoveUntil(
-                              MaterialPageRoute(builder: (_) => const WelcomePage()),
+                              MaterialPageRoute(
+                                builder: (_) => const WelcomePage(),
+                              ),
                               (route) => false,
                             );
                           } catch (e) {
@@ -172,7 +199,9 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
 
                             scaffoldMessenger.showSnackBar(
                               SnackBar(
-                                content: Text('Erro ao excluir conta: ${e.toString().replaceAll('Exception: ', '')}'),
+                                content: Text(
+                                  'Erro ao excluir conta: ${e.toString().replaceAll('Exception: ', '')}',
+                                ),
                                 backgroundColor: Colors.redAccent,
                               ),
                             );
@@ -180,15 +209,23 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                         },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   child: isProcessing
                       ? const SizedBox(
                           width: 20,
                           height: 20,
-                          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
                         )
-                      : const Text('Excluir Conta', style: TextStyle(color: Colors.white)),
+                      : const Text(
+                          'Excluir Conta',
+                          style: TextStyle(color: Colors.white),
+                        ),
                 ),
               ],
             );
@@ -218,7 +255,10 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
               ),
               title: const Text(
                 'Configurações',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             body: SingleChildScrollView(
@@ -234,12 +274,24 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                       SwitchListTile(
                         contentPadding: EdgeInsets.zero,
                         secondary: Icon(
-                          settings.isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                          color: settings.isDarkMode ? Colors.amber : AppColors.primaryBlue,
+                          settings.isDarkMode
+                              ? Icons.dark_mode
+                              : Icons.light_mode,
+                          color: settings.isDarkMode
+                              ? Colors.amber
+                              : AppColors.primaryBlue,
                         ),
-                        title: const Text('Modo Escuro', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                        title: const Text(
+                          'Modo Escuro',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                        ),
                         subtitle: Text(
-                          settings.isDarkMode ? 'Ativado (Afeta todas as caixas e superfícies)' : 'Desativado',
+                          settings.isDarkMode
+                              ? 'Ativado (Afeta todas as caixas e superfícies)'
+                              : 'Desativado',
                           style: const TextStyle(fontSize: 12),
                         ),
                         value: settings.isDarkMode,
@@ -260,14 +312,30 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                       // Tamanho da Letra
                       Row(
                         children: [
-                          const Icon(Icons.format_size, color: AppColors.primaryBlue, size: 22),
+                          const Icon(
+                            Icons.format_size,
+                            color: AppColors.primaryBlue,
+                            size: 22,
+                          ),
                           const SizedBox(width: 12),
                           const Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Tamanho da Letra', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                                Text('Ajuste o tamanho dos textos', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                                Text(
+                                  'Tamanho da Letra',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Text(
+                                  'Ajuste o tamanho dos textos',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -275,10 +343,34 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                             value: settings.fontScale,
                             underline: const SizedBox(),
                             items: const [
-                              DropdownMenuItem(value: 0.85, child: Text('Pequeno (85%)', style: TextStyle(fontSize: 13))),
-                              DropdownMenuItem(value: 1.0, child: Text('Normal (100%)', style: TextStyle(fontSize: 13))),
-                              DropdownMenuItem(value: 1.15, child: Text('Grande (115%)', style: TextStyle(fontSize: 13))),
-                              DropdownMenuItem(value: 1.30, child: Text('Extra Grande (130%)', style: TextStyle(fontSize: 13))),
+                              DropdownMenuItem(
+                                value: 0.85,
+                                child: Text(
+                                  'Pequeno (85%)',
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: 1.0,
+                                child: Text(
+                                  'Normal (100%)',
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: 1.15,
+                                child: Text(
+                                  'Grande (115%)',
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: 1.30,
+                                child: Text(
+                                  'Extra Grande (130%)',
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                              ),
                             ],
                             onChanged: (val) {
                               if (val != null) {
@@ -294,14 +386,30 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                       // Filtro de Daltonismo
                       Row(
                         children: [
-                          const Icon(Icons.remove_red_eye_outlined, color: AppColors.primaryBlue, size: 22),
+                          const Icon(
+                            Icons.remove_red_eye_outlined,
+                            color: AppColors.primaryBlue,
+                            size: 22,
+                          ),
                           const SizedBox(width: 12),
                           const Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Filtro de Daltonismo', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                                Text('Ajuste de matriz de cores', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                                Text(
+                                  'Filtro de Daltonismo',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Text(
+                                  'Ajuste de matriz de cores',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -309,10 +417,34 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                             value: settings.daltonismoMode,
                             underline: const SizedBox(),
                             items: const [
-                              DropdownMenuItem(value: 'Desativado', child: Text('Desativado', style: TextStyle(fontSize: 13))),
-                              DropdownMenuItem(value: 'Protanopia', child: Text('Protanopia', style: TextStyle(fontSize: 13))),
-                              DropdownMenuItem(value: 'Deuteranopia', child: Text('Deuteranopia', style: TextStyle(fontSize: 13))),
-                              DropdownMenuItem(value: 'Tritanopia', child: Text('Tritanopia', style: TextStyle(fontSize: 13))),
+                              DropdownMenuItem(
+                                value: 'Desativado',
+                                child: Text(
+                                  'Desativado',
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: 'Protanopia',
+                                child: Text(
+                                  'Protanopia',
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: 'Deuteranopia',
+                                child: Text(
+                                  'Deuteranopia',
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: 'Tritanopia',
+                                child: Text(
+                                  'Tritanopia',
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                              ),
                             ],
                             onChanged: (val) {
                               if (val != null) {
@@ -334,10 +466,21 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                     children: [
                       SwitchListTile(
                         contentPadding: EdgeInsets.zero,
-                        secondary: const Icon(Icons.notifications_active_outlined, color: AppColors.primaryBlue),
-                        title: const Text('Notificações Push', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                        secondary: const Icon(
+                          Icons.notifications_active_outlined,
+                          color: AppColors.primaryBlue,
+                        ),
+                        title: const Text(
+                          'Notificações Push',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                        ),
                         subtitle: Text(
-                          settings.pushNotifications ? 'Alertas de contas e dicas ativos' : 'Alertas pausados',
+                          settings.pushNotifications
+                              ? 'Alertas de contas e dicas ativos'
+                              : 'Alertas pausados',
                           style: const TextStyle(fontSize: 12),
                         ),
                         value: settings.pushNotifications,
@@ -353,10 +496,15 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                   // Card 4: Conexão do Aparelho
                   Builder(
                     builder: (context) {
-                      final User? currentUser = FirebaseAuth.instance.currentUser;
+                      final User? currentUser =
+                          FirebaseAuth.instance.currentUser;
                       final usuario = FirebaseFirestoreService.usuarioLogado;
-                      final bool estaConectado = (currentUser != null || usuario != null);
-                      final String email = currentUser?.email ?? usuario?['email'] ?? 'Nenhum e-mail vinculado';
+                      final bool estaConectado =
+                          (currentUser != null || usuario != null);
+                      final String email =
+                          currentUser?.email ??
+                          usuario?['email'] ??
+                          'Nenhum e-mail vinculado';
 
                       return _buildSectionCard(
                         titulo: 'Conexão do Dispositivo',
@@ -365,18 +513,29 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                           ListTile(
                             contentPadding: EdgeInsets.zero,
                             leading: Icon(
-                              estaConectado ? Icons.check_circle_outline : Icons.phonelink_erase,
-                              color: estaConectado ? Colors.green : Colors.orange,
+                              estaConectado
+                                  ? Icons.check_circle_outline
+                                  : Icons.phonelink_erase,
+                              color: estaConectado
+                                  ? Colors.green
+                                  : Colors.orange,
                             ),
                             title: Text(
-                              estaConectado ? 'Aparelho Conectado' : 'Dispositivo Desconectado',
+                              estaConectado
+                                  ? 'Aparelho Conectado'
+                                  : 'Dispositivo Desconectado',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
-                                color: estaConectado ? Colors.green.shade800 : Colors.orange.shade800,
+                                color: estaConectado
+                                    ? Colors.green.shade800
+                                    : Colors.orange.shade800,
                               ),
                             ),
-                            subtitle: Text('Sessão: $email\nStatus: ${estaConectado ? "Conta Conectada na Nuvem" : "Modo Visitante"}', style: const TextStyle(fontSize: 12)),
+                            subtitle: Text(
+                              'Sessão: $email\nStatus: ${estaConectado ? "Conta Conectada na Nuvem" : "Modo Visitante"}',
+                              style: const TextStyle(fontSize: 12),
+                            ),
                           ),
                         ],
                       );
@@ -392,25 +551,46 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                     children: [
                       ListTile(
                         contentPadding: EdgeInsets.zero,
-                        leading: const Icon(Icons.logout, color: AppColors.primaryBlue),
+                        leading: const Icon(
+                          Icons.logout,
+                          color: AppColors.primaryBlue,
+                        ),
                         title: const Text(
                           'Sair da Conta',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
                         ),
-                        subtitle: const Text('Encerrar sessão atual neste dispositivo'),
+                        subtitle: const Text(
+                          'Encerrar sessão atual neste dispositivo',
+                        ),
                         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                         onTap: _confirmarLogout,
                       ),
                       const Divider(height: 16),
                       ListTile(
                         contentPadding: EdgeInsets.zero,
-                        leading: const Icon(Icons.delete_forever_outlined, color: Colors.red),
+                        leading: const Icon(
+                          Icons.delete_forever_outlined,
+                          color: Colors.red,
+                        ),
                         title: const Text(
                           'Deletar Conta',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red, fontSize: 14),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                            fontSize: 14,
+                          ),
                         ),
-                        subtitle: const Text('Desativar permanentemente (Exige senha)'),
-                        trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.red),
+                        subtitle: const Text(
+                          'Desativar permanentemente (Exige senha)',
+                        ),
+                        trailing: const Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: Colors.red,
+                        ),
                         onTap: _exibirDialogoExcluirConta,
                       ),
                     ],
@@ -425,7 +605,11 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                     children: [
                       const Text(
                         'Disparar Notificações Pré-preparadas para o Firebase:',
-                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey),
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
                       ),
                       const SizedBox(height: 10),
                       Wrap(
@@ -433,77 +617,133 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                         runSpacing: 8,
                         children: [
                           ActionChip(
-                            avatar: const Icon(Icons.lightbulb_outline, size: 18, color: AppColors.primaryOrange),
+                            avatar: const Icon(
+                              Icons.lightbulb_outline,
+                              size: 18,
+                              color: AppColors.primaryOrange,
+                            ),
                             label: const Text('💡 Dica CONRADO'),
                             onPressed: () async {
-                              final usuario = FirebaseFirestoreService.usuarioLogado;
-                              final uid = (usuario?['uid'] ?? usuario?['id_cliente'] ?? 'guest').toString();
+                              final usuario =
+                                  FirebaseFirestoreService.usuarioLogado;
+                              final uid =
+                                  (usuario?['uid'] ??
+                                          usuario?['id_cliente'] ??
+                                          'guest')
+                                      .toString();
                               await FirebaseFirestoreService().criarNotificacao(
                                 idCliente: uid,
                                 titulo: 'Dica do CONRADO 💡',
-                                mensagem: 'Você economizou R\$ 150,00 na categoria Alimentação este mês!',
+                                mensagem:
+                                    'Você economizou R\$ 150,00 na categoria Alimentação este mês!',
                                 categoria: 'IA Financeira',
                               );
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Notificação "Dica CONRADO" enviada ao Firebase!')),
+                                  const SnackBar(
+                                    content: Text(
+                                      'Notificação "Dica CONRADO" enviada ao Firebase!',
+                                    ),
+                                  ),
                                 );
                               }
                             },
                           ),
                           ActionChip(
-                            avatar: const Icon(Icons.warning_amber_rounded, size: 18, color: Colors.amber),
+                            avatar: const Icon(
+                              Icons.warning_amber_rounded,
+                              size: 18,
+                              color: Colors.amber,
+                            ),
                             label: const Text('⚠️ Alerta Orçamento'),
                             onPressed: () async {
-                              final usuario = FirebaseFirestoreService.usuarioLogado;
-                              final uid = (usuario?['uid'] ?? usuario?['id_cliente'] ?? 'guest').toString();
+                              final usuario =
+                                  FirebaseFirestoreService.usuarioLogado;
+                              final uid =
+                                  (usuario?['uid'] ??
+                                          usuario?['id_cliente'] ??
+                                          'guest')
+                                      .toString();
                               await FirebaseFirestoreService().criarNotificacao(
                                 idCliente: uid,
                                 titulo: 'Alerta de Orçamento ⚠️',
-                                mensagem: 'Atenção: Seu envelope de Lazer atingiu 85% do limite estipulado.',
+                                mensagem:
+                                    'Atenção: Seu envelope de Lazer atingiu 85% do limite estipulado.',
                                 categoria: 'Sistema',
                               );
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Notificação "Alerta Orçamento" enviada ao Firebase!')),
+                                  const SnackBar(
+                                    content: Text(
+                                      'Notificação "Alerta Orçamento" enviada ao Firebase!',
+                                    ),
+                                  ),
                                 );
                               }
                             },
                           ),
                           ActionChip(
-                            avatar: const Icon(Icons.emoji_events_outlined, size: 18, color: Colors.green),
+                            avatar: const Icon(
+                              Icons.emoji_events_outlined,
+                              size: 18,
+                              color: Colors.green,
+                            ),
                             label: const Text('🎉 Meta Concluída'),
                             onPressed: () async {
-                              final usuario = FirebaseFirestoreService.usuarioLogado;
-                              final uid = (usuario?['uid'] ?? usuario?['id_cliente'] ?? 'guest').toString();
+                              final usuario =
+                                  FirebaseFirestoreService.usuarioLogado;
+                              final uid =
+                                  (usuario?['uid'] ??
+                                          usuario?['id_cliente'] ??
+                                          'guest')
+                                      .toString();
                               await FirebaseFirestoreService().criarNotificacao(
                                 idCliente: uid,
                                 titulo: 'Meta Alcançada! 🎉',
-                                mensagem: 'Parabéns! Sua caixinha "Viagem Europa" atingiu 100% da meta calculada.',
+                                mensagem:
+                                    'Parabéns! Sua caixinha "Viagem Europa" atingiu 100% da meta calculada.',
                                 categoria: 'Metas',
                               );
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Notificação "Meta Concluída" enviada ao Firebase!')),
+                                  const SnackBar(
+                                    content: Text(
+                                      'Notificação "Meta Concluída" enviada ao Firebase!',
+                                    ),
+                                  ),
                                 );
                               }
                             },
                           ),
                           ActionChip(
-                            avatar: const Icon(Icons.shield_outlined, size: 18, color: AppColors.primaryBlue),
+                            avatar: const Icon(
+                              Icons.shield_outlined,
+                              size: 18,
+                              color: AppColors.primaryBlue,
+                            ),
                             label: const Text('🔒 Aviso Segurança'),
                             onPressed: () async {
-                              final usuario = FirebaseFirestoreService.usuarioLogado;
-                              final uid = (usuario?['uid'] ?? usuario?['id_cliente'] ?? 'guest').toString();
+                              final usuario =
+                                  FirebaseFirestoreService.usuarioLogado;
+                              final uid =
+                                  (usuario?['uid'] ??
+                                          usuario?['id_cliente'] ??
+                                          'guest')
+                                      .toString();
                               await FirebaseFirestoreService().criarNotificacao(
                                 idCliente: uid,
                                 titulo: 'Aviso de Segurança 🔒',
-                                mensagem: 'Sua sessão foi sincronizada com segurança no novo dispositivo.',
+                                mensagem:
+                                    'Sua sessão foi sincronizada com segurança no novo dispositivo.',
                                 categoria: 'Segurança',
                               );
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Notificação "Aviso Segurança" enviada ao Firebase!')),
+                                  const SnackBar(
+                                    content: Text(
+                                      'Notificação "Aviso Segurança" enviada ao Firebase!',
+                                    ),
+                                  ),
                                 );
                               }
                             },

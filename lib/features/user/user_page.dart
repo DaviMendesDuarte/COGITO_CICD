@@ -69,9 +69,16 @@ class _UserPageState extends State<UserPage> {
 
   /// Alterna dinamicamente entre 'Salario_Fixo' e 'Freelancer', atualizando o Firestore e liberando as ferramentas.
   Future<void> _alternarTipoRenda() async {
-    final String tipoAtual = _dadosUsuario?['tipo_renda'] ?? FirebaseFirestoreService.usuarioLogado?['tipo_renda'] ?? 'Salario_Fixo';
-    final bool isAtualmenteFreelancer = tipoAtual.toLowerCase().contains('free');
-    final String novoTipo = isAtualmenteFreelancer ? 'Salario_Fixo' : 'Freelancer';
+    final String tipoAtual =
+        _dadosUsuario?['tipo_renda'] ??
+        FirebaseFirestoreService.usuarioLogado?['tipo_renda'] ??
+        'Salario_Fixo';
+    final bool isAtualmenteFreelancer = tipoAtual.toLowerCase().contains(
+      'free',
+    );
+    final String novoTipo = isAtualmenteFreelancer
+        ? 'Salario_Fixo'
+        : 'Freelancer';
     final String idCliente = FirebaseFirestoreService.idClienteAtual;
 
     await _firestoreService.atualizarTipoRenda(idCliente, novoTipo);
@@ -95,7 +102,9 @@ class _UserPageState extends State<UserPage> {
           ),
           backgroundColor: AppColors.primaryBlue,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
       );
     }
@@ -106,7 +115,8 @@ class _UserPageState extends State<UserPage> {
     final prefs = await SharedPreferences.getInstance();
     if (mounted) {
       setState(() {
-        _isBiometriaSplashEnabled = prefs.getBool('biometria_splash_enabled') ?? false;
+        _isBiometriaSplashEnabled =
+            prefs.getBool('biometria_splash_enabled') ?? false;
       });
     }
   }
@@ -121,9 +131,11 @@ class _UserPageState extends State<UserPage> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(valor
-              ? 'Biometria na tela de Splash ativada com sucesso!'
-              : 'Biometria na tela de Splash desativada.'),
+          content: Text(
+            valor
+                ? 'Biometria na tela de Splash ativada com sucesso!'
+                : 'Biometria na tela de Splash desativada.',
+          ),
           backgroundColor: valor ? Colors.green : Colors.orange,
         ),
       );
@@ -141,7 +153,9 @@ class _UserPageState extends State<UserPage> {
       return;
     }
 
-    final conta = await _firestoreService.buscarContaBancaria(idCliente.toString());
+    final conta = await _firestoreService.buscarContaBancaria(
+      idCliente.toString(),
+    );
     if (mounted) {
       setState(() {
         _contaBancaria = conta;
@@ -162,7 +176,9 @@ class _UserPageState extends State<UserPage> {
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: const Text('Sair da Conta'),
-        content: const Text('Deseja realmente encerrar sua sessão no aplicativo COGITO?'),
+        content: const Text(
+          'Deseja realmente encerrar sua sessão no aplicativo COGITO?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
@@ -206,7 +222,9 @@ class _UserPageState extends State<UserPage> {
         return StatefulBuilder(
           builder: (context, setDialogState) {
             return AlertDialog(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
               title: const Row(
                 children: [
                   Icon(Icons.warning_amber_rounded, color: Colors.red),
@@ -233,11 +251,19 @@ class _UserPageState extends State<UserPage> {
                         obscureText: true,
                         decoration: InputDecoration(
                           labelText: 'Sua Senha',
-                          prefixIcon: const Icon(Icons.lock_outline, color: AppColors.primaryBlue),
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                          prefixIcon: const Icon(
+                            Icons.lock_outline,
+                            color: AppColors.primaryBlue,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2),
+                            borderSide: const BorderSide(
+                              color: AppColors.primaryBlue,
+                              width: 2,
+                            ),
                           ),
                         ),
                         validator: (value) {
@@ -253,22 +279,31 @@ class _UserPageState extends State<UserPage> {
               ),
               actions: [
                 TextButton(
-                  onPressed: isProcessing ? null : () => Navigator.pop(dialogContext),
+                  onPressed: isProcessing
+                      ? null
+                      : () => Navigator.pop(dialogContext),
                   child: const Text('Cancelar'),
                 ),
                 ElevatedButton(
                   onPressed: isProcessing
                       ? null
                       : () async {
-                          if (!isGoogleUser && !formKey.currentState!.validate()) return;
+                          if (!isGoogleUser &&
+                              !formKey.currentState!.validate())
+                            return;
 
                           setDialogState(() {
                             isProcessing = true;
                           });
 
                           final dialogNav = Navigator.of(dialogContext);
-                          final scaffoldMessenger = ScaffoldMessenger.of(this.context);
-                          final rootNavigator = Navigator.of(this.context, rootNavigator: true);
+                          final scaffoldMessenger = ScaffoldMessenger.of(
+                            this.context,
+                          );
+                          final rootNavigator = Navigator.of(
+                            this.context,
+                            rootNavigator: true,
+                          );
 
                           try {
                             final String senha = passwordController.text.trim();
@@ -281,13 +316,17 @@ class _UserPageState extends State<UserPage> {
 
                             scaffoldMessenger.showSnackBar(
                               const SnackBar(
-                                content: Text('Sua conta e todos os seus dados foram excluídos com sucesso.'),
+                                content: Text(
+                                  'Sua conta e todos os seus dados foram excluídos com sucesso.',
+                                ),
                                 backgroundColor: Colors.orange,
                               ),
                             );
 
                             rootNavigator.pushAndRemoveUntil(
-                              MaterialPageRoute(builder: (_) => const WelcomePage()),
+                              MaterialPageRoute(
+                                builder: (_) => const WelcomePage(),
+                              ),
                               (route) => false,
                             );
                           } catch (e) {
@@ -298,7 +337,9 @@ class _UserPageState extends State<UserPage> {
 
                             scaffoldMessenger.showSnackBar(
                               SnackBar(
-                                content: Text('Erro ao excluir conta: ${e.toString().replaceAll('Exception: ', '')}'),
+                                content: Text(
+                                  'Erro ao excluir conta: ${e.toString().replaceAll('Exception: ', '')}',
+                                ),
                                 backgroundColor: Colors.redAccent,
                               ),
                             );
@@ -306,15 +347,23 @@ class _UserPageState extends State<UserPage> {
                         },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   child: isProcessing
                       ? const SizedBox(
                           width: 20,
                           height: 20,
-                          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
                         )
-                      : const Text('Excluir Conta', style: TextStyle(color: Colors.white)),
+                      : const Text(
+                          'Excluir Conta',
+                          style: TextStyle(color: Colors.white),
+                        ),
                 ),
               ],
             );
@@ -342,23 +391,38 @@ class _UserPageState extends State<UserPage> {
     final authUser = FirebaseAuth.instance.currentUser;
     final usuario = _dadosUsuario ?? FirebaseFirestoreService.usuarioLogado;
 
-    final String nomeUsuario = (usuario?['nome'] != null && usuario!['nome'].toString().isNotEmpty)
+    final String nomeUsuario =
+        (usuario?['nome'] != null && usuario!['nome'].toString().isNotEmpty)
         ? usuario['nome'].toString()
-        : (authUser?.displayName?.isNotEmpty == true ? authUser!.displayName! : 'Usuário COGITO');
+        : (authUser?.displayName?.isNotEmpty == true
+              ? authUser!.displayName!
+              : 'Usuário COGITO');
 
-    final String emailUsuario = (usuario?['email'] != null && usuario!['email'].toString().isNotEmpty)
+    final String emailUsuario =
+        (usuario?['email'] != null && usuario!['email'].toString().isNotEmpty)
         ? usuario['email'].toString()
-        : (authUser?.email?.isNotEmpty == true ? authUser!.email! : 'usuario@cogito.com');
+        : (authUser?.email?.isNotEmpty == true
+              ? authUser!.email!
+              : 'usuario@cogito.com');
 
-    final String telefoneUsuario = (usuario?['telefone'] != null && usuario!['telefone'].toString().isNotEmpty)
+    final String telefoneUsuario =
+        (usuario?['telefone'] != null &&
+            usuario!['telefone'].toString().isNotEmpty)
         ? usuario['telefone'].toString()
-        : (authUser?.phoneNumber?.isNotEmpty == true ? authUser!.phoneNumber! : '(Não informado)');
+        : (authUser?.phoneNumber?.isNotEmpty == true
+              ? authUser!.phoneNumber!
+              : '(Não informado)');
 
-    final String tipoRenda = usuario?['tipo_renda']?.toString() ?? 'Salario_Fixo';
-    final String planoAtual = usuario?['plano']?.toString() ?? (tipoRenda.toLowerCase().contains('free') ? 'Freelancer' : 'Grátis');
+    final String tipoRenda =
+        usuario?['tipo_renda']?.toString() ?? 'Salario_Fixo';
+    final String planoAtual =
+        usuario?['plano']?.toString() ??
+        (tipoRenda.toLowerCase().contains('free') ? 'Freelancer' : 'Grátis');
 
-    final double rendaMensal = (usuario?['renda_mensal'] as num?)?.toDouble() ?? 0.0;
-    final String fotoEncriptada = usuario?['foto_perfil_encriptada']?.toString() ?? '';
+    final double rendaMensal =
+        (usuario?['renda_mensal'] as num?)?.toDouble() ?? 0.0;
+    final String fotoEncriptada =
+        usuario?['foto_perfil_encriptada']?.toString() ?? '';
     final String uidUsuario = FirebaseFirestoreService.idClienteAtual;
 
     // Configuração do estilo da barra de status e estrutura geral da tela de perfil
@@ -405,7 +469,9 @@ class _UserPageState extends State<UserPage> {
                     const SizedBox(height: 16),
                     // Card de Informações Cadastrais
                     Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -426,15 +492,24 @@ class _UserPageState extends State<UserPage> {
                                 GestureDetector(
                                   onTap: _abrirEditarPerfil,
                                   child: Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 4,
+                                    ),
                                     decoration: BoxDecoration(
-                                      color: AppColors.primaryBlue.withValues(alpha: 0.1),
+                                      color: AppColors.primaryBlue.withValues(
+                                        alpha: 0.1,
+                                      ),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: const Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Icon(Icons.edit_outlined, size: 14, color: AppColors.primaryBlue),
+                                        Icon(
+                                          Icons.edit_outlined,
+                                          size: 14,
+                                          color: AppColors.primaryBlue,
+                                        ),
                                         SizedBox(width: 4),
                                         Text(
                                           'Editar',
@@ -451,21 +526,38 @@ class _UserPageState extends State<UserPage> {
                               ],
                             ),
                             const Divider(height: 24),
-                            _buildInfoItem(Icons.email_outlined, 'E-mail', emailUsuario),
+                            _buildInfoItem(
+                              Icons.email_outlined,
+                              'E-mail',
+                              emailUsuario,
+                            ),
                             const SizedBox(height: 12),
-                            _buildInfoItem(Icons.phone_outlined, 'Telefone', telefoneUsuario),
+                            _buildInfoItem(
+                              Icons.phone_outlined,
+                              'Telefone',
+                              telefoneUsuario,
+                            ),
                             const SizedBox(height: 12),
                             _buildInfoItem(
                               Icons.work_outline,
                               'Tipo de Renda',
-                              tipoRenda.contains('Salario') || tipoRenda.contains('Fixa')
+                              tipoRenda.contains('Salario') ||
+                                      tipoRenda.contains('Fixa')
                                   ? 'Renda Fixa (CLT / Funcionário)'
                                   : 'Renda Variável (Freelancer / Autônomo)',
                             ),
                             const SizedBox(height: 12),
-                            _buildInfoItem(Icons.attach_money_outlined, 'Renda Mensal', 'R\$${rendaMensal.toStringAsFixed(2)}'),
+                            _buildInfoItem(
+                              Icons.attach_money_outlined,
+                              'Renda Mensal',
+                              'R\$${rendaMensal.toStringAsFixed(2)}',
+                            ),
                             const SizedBox(height: 12),
-                            _buildInfoItem(Icons.card_membership_outlined, 'Plano de Assinatura', planoAtual),
+                            _buildInfoItem(
+                              Icons.card_membership_outlined,
+                              'Plano de Assinatura',
+                              planoAtual,
+                            ),
                           ],
                         ),
                       ),
@@ -485,21 +577,34 @@ class _UserPageState extends State<UserPage> {
 
                     // Card de Opções de Ajuda, Suporte e Configurações
                     Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                       child: Column(
                         children: [
                           ListTile(
-                            leading: const Icon(Icons.settings_outlined, color: AppColors.primaryBlue),
+                            leading: const Icon(
+                              Icons.settings_outlined,
+                              color: AppColors.primaryBlue,
+                            ),
                             title: const Text(
                               'Configurações do Aplicativo',
                               style: TextStyle(fontWeight: FontWeight.w600),
                             ),
-                            subtitle: const Text('Tema escuro, notificações, gestão de conta e preferências'),
-                            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                            subtitle: const Text(
+                              'Tema escuro, notificações, gestão de conta e preferências',
+                            ),
+                            trailing: const Icon(
+                              Icons.arrow_forward_ios,
+                              size: 16,
+                            ),
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const ConfiguracoesPage()),
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ConfiguracoesPage(),
+                                ),
                               ).then((_) {
                                 if (mounted) setState(() {});
                               });
@@ -507,40 +612,71 @@ class _UserPageState extends State<UserPage> {
                           ),
                           const Divider(height: 1),
                           ListTile(
-                            leading: const Icon(Icons.help_outline, color: AppColors.primaryBlue),
+                            leading: const Icon(
+                              Icons.help_outline,
+                              color: AppColors.primaryBlue,
+                            ),
                             title: const Text(
                               'Ajuda e Suporte',
                               style: TextStyle(fontWeight: FontWeight.w600),
                             ),
-                            subtitle: const Text('FAQ e e-mail para cogito.tcc@gmail.com'),
-                            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                            subtitle: const Text(
+                              'FAQ e e-mail para cogito.tcc@gmail.com',
+                            ),
+                            trailing: const Icon(
+                              Icons.arrow_forward_ios,
+                              size: 16,
+                            ),
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const AjudaSuportePage()),
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AjudaSuportePage(),
+                                ),
                               );
                             },
                           ),
                           const Divider(height: 1),
                           ListTile(
-                            leading: const Icon(Icons.logout, color: AppColors.primaryBlue),
+                            leading: const Icon(
+                              Icons.logout,
+                              color: AppColors.primaryBlue,
+                            ),
                             title: const Text(
                               'Sair da Conta',
                               style: TextStyle(fontWeight: FontWeight.w600),
                             ),
-                            subtitle: const Text('Encerrar sessão ativa neste dispositivo'),
-                            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                            subtitle: const Text(
+                              'Encerrar sessão ativa neste dispositivo',
+                            ),
+                            trailing: const Icon(
+                              Icons.arrow_forward_ios,
+                              size: 16,
+                            ),
                             onTap: _confirmarLogout,
                           ),
                           const Divider(height: 1),
                           ListTile(
-                            leading: const Icon(Icons.delete_forever_outlined, color: Colors.red),
+                            leading: const Icon(
+                              Icons.delete_forever_outlined,
+                              color: Colors.red,
+                            ),
                             title: const Text(
                               'Excluir Conta',
-                              style: TextStyle(fontWeight: FontWeight.w600, color: Colors.red),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.red,
+                              ),
                             ),
-                            subtitle: const Text('Apagar permanentemente a conta e todos os dados'),
-                            trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.red),
+                            subtitle: const Text(
+                              'Apagar permanentemente a conta e todos os dados',
+                            ),
+                            trailing: const Icon(
+                              Icons.arrow_forward_ios,
+                              size: 16,
+                              color: Colors.red,
+                            ),
                             onTap: _exibirDialogoExcluirConta,
                           ),
                         ],
@@ -580,7 +716,8 @@ class _UserPageState extends State<UserPage> {
       padding: EdgeInsets.fromLTRB(20, topPadding + 16, 20, 20),
       decoration: const BoxDecoration(
         color: AppColors.primaryBlue,
-        borderRadius: BorderRadius.zero, // Sem bordas arredondadas entre a parte azul e a branca
+        borderRadius: BorderRadius
+            .zero, // Sem bordas arredondadas entre a parte azul e a branca
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -640,7 +777,9 @@ class _UserPageState extends State<UserPage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const NotificacoesPage()),
+                    MaterialPageRoute(
+                      builder: (context) => const NotificacoesPage(),
+                    ),
                   );
                 },
                 child: Container(
@@ -668,7 +807,11 @@ class _UserPageState extends State<UserPage> {
           Row(
             children: [
               Expanded(
-                child: _buildHeaderAccountChip(Icons.phone_outlined, 'Telefone', telefone),
+                child: _buildHeaderAccountChip(
+                  Icons.phone_outlined,
+                  'Telefone',
+                  telefone,
+                ),
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -695,7 +838,9 @@ class _UserPageState extends State<UserPage> {
                 child: _buildHeaderAccountChip(
                   Icons.work_outline,
                   'Tipo de Renda',
-                  tipoRenda.contains('Salario') || tipoRenda.contains('Fixa') ? 'Renda Fixa' : 'Freelance',
+                  tipoRenda.contains('Salario') || tipoRenda.contains('Fixa')
+                      ? 'Renda Fixa'
+                      : 'Freelance',
                 ),
               ),
             ],
@@ -721,12 +866,19 @@ class _UserPageState extends State<UserPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: const TextStyle(color: Colors.white70, fontSize: 10)),
+                Text(
+                  label,
+                  style: const TextStyle(color: Colors.white70, fontSize: 10),
+                ),
                 Text(
                   valor,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
                 ),
               ],
             ),
@@ -793,7 +945,10 @@ class _UserPageState extends State<UserPage> {
                       }
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.primaryBlue.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
@@ -861,7 +1016,8 @@ class _UserPageState extends State<UserPage> {
                         final resultado = await Navigator.push<bool>(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const VincularContaBancariaPage(),
+                            builder: (context) =>
+                                const VincularContaBancariaPage(),
                           ),
                         );
                         if (resultado == true) {
@@ -877,7 +1033,10 @@ class _UserPageState extends State<UserPage> {
                         style: TextStyle(color: AppColors.primaryBlue),
                       ),
                       style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: AppColors.primaryBlue, width: 1.5),
+                        side: const BorderSide(
+                          color: AppColors.primaryBlue,
+                          width: 1.5,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -938,7 +1097,10 @@ class _UserPageState extends State<UserPage> {
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.primaryBlue.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
@@ -957,7 +1119,11 @@ class _UserPageState extends State<UserPage> {
                 const SizedBox(height: 16),
                 const Divider(),
                 const SizedBox(height: 12),
-                _buildInfoItem(Icons.credit_card, 'Número do Cartão', cartao['numero'].toString()),
+                _buildInfoItem(
+                  Icons.credit_card,
+                  'Número do Cartão',
+                  cartao['numero'].toString(),
+                ),
                 const SizedBox(height: 12),
                 _buildInfoItem(Icons.person_outline, 'Titular', nomeTitular),
                 const SizedBox(height: 12),
@@ -980,7 +1146,9 @@ class _UserPageState extends State<UserPage> {
                 _buildInfoItem(
                   Icons.calendar_today_outlined,
                   'Vencimento',
-                  cartao['vencimento']?.toString() ?? cartao['validade']?.toString() ?? 'Dia 10',
+                  cartao['vencimento']?.toString() ??
+                      cartao['validade']?.toString() ??
+                      'Dia 10',
                 ),
                 const SizedBox(height: 24),
                 SizedBox(
@@ -989,10 +1157,18 @@ class _UserPageState extends State<UserPage> {
                     onPressed: () => Navigator.pop(context),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryBlue,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
-                    child: const Text('Fechar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    child: const Text(
+                      'Fechar',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -1024,26 +1200,45 @@ class _UserPageState extends State<UserPage> {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: (isFreelancer ? AppColors.primaryOrange : AppColors.primaryBlue).withValues(alpha: 0.1),
+                        color:
+                            (isFreelancer
+                                    ? AppColors.primaryOrange
+                                    : AppColors.primaryBlue)
+                                .withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        isFreelancer ? Icons.work_outline : Icons.badge_outlined,
-                        color: isFreelancer ? AppColors.primaryOrange : AppColors.primaryBlue,
+                        isFreelancer
+                            ? Icons.work_outline
+                            : Icons.badge_outlined,
+                        color: isFreelancer
+                            ? AppColors.primaryOrange
+                            : AppColors.primaryBlue,
                         size: 20,
                       ),
                     ),
                     const SizedBox(width: 10),
                     const Text(
                       'Modo de Atuação',
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primaryBlue,
+                      ),
                     ),
                   ],
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
-                    color: (isFreelancer ? AppColors.primaryOrange : AppColors.primaryBlue).withValues(alpha: 0.12),
+                    color:
+                        (isFreelancer
+                                ? AppColors.primaryOrange
+                                : AppColors.primaryBlue)
+                            .withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -1051,7 +1246,9 @@ class _UserPageState extends State<UserPage> {
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
-                      color: isFreelancer ? AppColors.primaryOrange : AppColors.primaryBlue,
+                      color: isFreelancer
+                          ? AppColors.primaryOrange
+                          : AppColors.primaryBlue,
                     ),
                   ),
                 ),
@@ -1072,16 +1269,27 @@ class _UserPageState extends State<UserPage> {
                 onPressed: _alternarTipoRenda,
                 icon: const Icon(Icons.swap_horiz, size: 18),
                 label: Text(
-                  isFreelancer ? 'Alternar para Renda Fixa (CLT)' : 'Ativar Modo Freelancer',
-                  style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                  isFreelancer
+                      ? 'Alternar para Renda Fixa (CLT)'
+                      : 'Ativar Modo Freelancer',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: isFreelancer ? AppColors.primaryBlue : AppColors.primaryOrange,
+                  foregroundColor: isFreelancer
+                      ? AppColors.primaryBlue
+                      : AppColors.primaryOrange,
                   side: BorderSide(
-                    color: isFreelancer ? AppColors.primaryBlue : AppColors.primaryOrange,
+                    color: isFreelancer
+                        ? AppColors.primaryBlue
+                        : AppColors.primaryOrange,
                     width: 1.5,
                   ),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                 ),
               ),
             ),
@@ -1132,22 +1340,35 @@ class _UserPageState extends State<UserPage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const CartoesPage()),
+                        MaterialPageRoute(
+                          builder: (context) => const CartoesPage(),
+                        ),
                       );
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.primaryBlue.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Row(
                         children: [
-                          Icon(Icons.credit_card, size: 14, color: AppColors.primaryBlue),
+                          Icon(
+                            Icons.credit_card,
+                            size: 14,
+                            color: AppColors.primaryBlue,
+                          ),
                           SizedBox(width: 4),
                           Text(
                             'Gerenciar ➔',
-                            style: TextStyle(fontSize: 12, color: AppColors.primaryBlue, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppColors.primaryBlue,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
@@ -1164,9 +1385,13 @@ class _UserPageState extends State<UserPage> {
                 itemCount: cartoes.length,
                 itemBuilder: (context, index) {
                   final c = cartoes[index];
-                  final Color cor = _obterCorCartaoUser(c['cor'] ?? c['corInicial'], AppColors.primaryBlue);
+                  final Color cor = _obterCorCartaoUser(
+                    c['cor'] ?? c['corInicial'],
+                    AppColors.primaryBlue,
+                  );
 
-                  final double? ld = (c['limite_disponivel'] as num?)?.toDouble();
+                  final double? ld = (c['limite_disponivel'] as num?)
+                      ?.toDouble();
                   final String strDisp = ld != null
                       ? 'R\$ ${ld.toStringAsFixed(2)}'
                       : (c['limite']?.toString() ?? 'R\$ 0,00');
@@ -1197,31 +1422,55 @@ class _UserPageState extends State<UserPage> {
                             children: [
                               Text(
                                 c['banco'].toString(),
-                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
                               ),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.white24,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
                                   c['bandeira'].toString(),
-                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 11),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                           const Row(
                             children: [
-                              Icon(Icons.nfc_outlined, color: Colors.white70, size: 24),
+                              Icon(
+                                Icons.nfc_outlined,
+                                color: Colors.white70,
+                                size: 24,
+                              ),
                               SizedBox(width: 10),
-                              Icon(Icons.credit_card, color: Colors.amberAccent, size: 28),
+                              Icon(
+                                Icons.credit_card,
+                                color: Colors.amberAccent,
+                                size: 28,
+                              ),
                             ],
                           ),
                           Text(
                             c['numero'].toString(),
-                            style: const TextStyle(color: Colors.white, fontSize: 16, letterSpacing: 2, fontWeight: FontWeight.w600),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              letterSpacing: 2,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1229,15 +1478,43 @@ class _UserPageState extends State<UserPage> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('TITULAR', style: TextStyle(color: Colors.white60, fontSize: 9, fontWeight: FontWeight.bold)),
-                                  Text(nomeTitular, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                                  const Text(
+                                    'TITULAR',
+                                    style: TextStyle(
+                                      color: Colors.white60,
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    nomeTitular,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ],
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  const Text('DISPONÍVEL', style: TextStyle(color: Colors.white60, fontSize: 9, fontWeight: FontWeight.bold)),
-                                  Text(strDisp, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                                  const Text(
+                                    'DISPONÍVEL',
+                                    style: TextStyle(
+                                      color: Colors.white60,
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    strDisp,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ],
@@ -1262,9 +1539,15 @@ class _UserPageState extends State<UserPage> {
     final usuario = FirebaseFirestoreService.usuarioLogado;
     final bool isConectado = (firebaseUser != null || usuario != null);
 
-    final String nomeExibicao = firebaseUser?.displayName ?? usuario?['nome'] ?? 'Visitante';
-    final String emailExibicao = firebaseUser?.email ?? usuario?['email'] ?? 'Nenhuma conta vinculada';
-    final String idConexao = firebaseUser?.uid ?? usuario?['uid'] ?? usuario?['id_cliente'] ?? 'Sem ID';
+    final String nomeExibicao =
+        firebaseUser?.displayName ?? usuario?['nome'] ?? 'Visitante';
+    final String emailExibicao =
+        firebaseUser?.email ?? usuario?['email'] ?? 'Nenhuma conta vinculada';
+    final String idConexao =
+        firebaseUser?.uid ??
+        usuario?['uid'] ??
+        usuario?['id_cliente'] ??
+        'Sem ID';
 
     return Card(
       elevation: 2,
@@ -1289,8 +1572,12 @@ class _UserPageState extends State<UserPage> {
                 shape: BoxShape.circle,
               ),
               child: Icon(
-                isConectado ? Icons.phonelink_ring_rounded : Icons.phonelink_off_rounded,
-                color: isConectado ? Colors.green.shade700 : Colors.orange.shade700,
+                isConectado
+                    ? Icons.phonelink_ring_rounded
+                    : Icons.phonelink_off_rounded,
+                color: isConectado
+                    ? Colors.green.shade700
+                    : Colors.orange.shade700,
                 size: 26,
               ),
             ),
@@ -1313,11 +1600,15 @@ class _UserPageState extends State<UserPage> {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        isConectado ? 'Dispositivo Conectado' : 'Modo Visitante',
+                        isConectado
+                            ? 'Dispositivo Conectado'
+                            : 'Modo Visitante',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: isConectado ? Colors.green.shade800 : Colors.orange.shade800,
+                          color: isConectado
+                              ? Colors.green.shade800
+                              : Colors.orange.shade800,
                         ),
                       ),
                     ],
@@ -1355,7 +1646,9 @@ class _UserPageState extends State<UserPage> {
       showDialog(
         context: context,
         builder: (dialogContext) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: const Row(
             children: [
               Icon(Icons.shield_outlined, color: AppColors.primaryBlue),
@@ -1385,7 +1678,10 @@ class _UserPageState extends State<UserPage> {
                 );
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: const Text('Desativar', style: TextStyle(color: Colors.white)),
+              child: const Text(
+                'Desativar',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         ),
@@ -1393,12 +1689,15 @@ class _UserPageState extends State<UserPage> {
       return;
     }
 
-    final String codigoGerado = (100000 + (DateTime.now().microsecondsSinceEpoch % 900000)).toString();
+    final String codigoGerado =
+        (100000 + (DateTime.now().microsecondsSinceEpoch % 900000)).toString();
     final TextEditingController codigoController = TextEditingController();
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('⚡ Código de 6 dígitos enviado para $emailUsuario: [$codigoGerado]'),
+        content: Text(
+          '⚡ Código de 6 dígitos enviado para $emailUsuario: [$codigoGerado]',
+        ),
         backgroundColor: AppColors.primaryBlue,
         duration: const Duration(seconds: 8),
       ),
@@ -1408,10 +1707,15 @@ class _UserPageState extends State<UserPage> {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: const Row(
             children: [
-              Icon(Icons.mark_email_read_outlined, color: AppColors.primaryBlue),
+              Icon(
+                Icons.mark_email_read_outlined,
+                color: AppColors.primaryBlue,
+              ),
               SizedBox(width: 8),
               Text('Código por E-mail'),
             ],
@@ -1430,14 +1734,23 @@ class _UserPageState extends State<UserPage> {
                 keyboardType: TextInputType.number,
                 maxLength: 6,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, letterSpacing: 6),
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 6,
+                ),
                 decoration: InputDecoration(
                   hintText: '000000',
                   counterText: '',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2),
+                    borderSide: const BorderSide(
+                      color: AppColors.primaryBlue,
+                      width: 2,
+                    ),
                   ),
                 ),
               ),
@@ -1458,7 +1771,9 @@ class _UserPageState extends State<UserPage> {
                   });
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Verificação de duas etapas ativada com sucesso!'),
+                      content: Text(
+                        'Verificação de duas etapas ativada com sucesso!',
+                      ),
                       backgroundColor: Colors.green,
                     ),
                   );
@@ -1471,8 +1786,13 @@ class _UserPageState extends State<UserPage> {
                   );
                 }
               },
-              style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryBlue),
-              child: const Text('Confirmar 2FA', style: TextStyle(color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryBlue,
+              ),
+              child: const Text(
+                'Confirmar 2FA',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         );
@@ -1491,7 +1811,11 @@ class _UserPageState extends State<UserPage> {
           children: [
             const Row(
               children: [
-                Icon(Icons.security_rounded, color: AppColors.primaryBlue, size: 22),
+                Icon(
+                  Icons.security_rounded,
+                  color: AppColors.primaryBlue,
+                  size: 22,
+                ),
                 SizedBox(width: 8),
                 Text(
                   'Segurança & Autenticação',
@@ -1511,11 +1835,15 @@ class _UserPageState extends State<UserPage> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: _is2FAEnabled ? Colors.green.shade50 : AppColors.primaryBlue.withValues(alpha: 0.1),
+                    color: _is2FAEnabled
+                        ? Colors.green.shade50
+                        : AppColors.primaryBlue.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
-                    _is2FAEnabled ? Icons.verified_user : Icons.mark_email_unread_outlined,
+                    _is2FAEnabled
+                        ? Icons.verified_user
+                        : Icons.mark_email_unread_outlined,
                     color: _is2FAEnabled ? Colors.green : AppColors.primaryBlue,
                     size: 22,
                   ),
@@ -1530,13 +1858,20 @@ class _UserPageState extends State<UserPage> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 13,
-                          color: _is2FAEnabled ? Colors.green.shade900 : Colors.black87,
+                          color: _is2FAEnabled
+                              ? Colors.green.shade900
+                              : Colors.black87,
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        _is2FAEnabled ? 'Ativo em $emailUsuario' : 'Ativar envio de código por e-mail',
-                        style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                        _is2FAEnabled
+                            ? 'Ativo em $emailUsuario'
+                            : 'Ativar envio de código por e-mail',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.grey.shade600,
+                        ),
                       ),
                     ],
                   ),
@@ -1544,7 +1879,8 @@ class _UserPageState extends State<UserPage> {
                 Switch(
                   value: _is2FAEnabled,
                   activeThumbColor: Colors.green,
-                  onChanged: (_) => _exibirModalVerificacaoDuasEtapas(emailUsuario),
+                  onChanged: (_) =>
+                      _exibirModalVerificacaoDuasEtapas(emailUsuario),
                 ),
               ],
             ),
@@ -1557,12 +1893,16 @@ class _UserPageState extends State<UserPage> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: _isBiometriaSplashEnabled ? Colors.green.shade50 : AppColors.primaryBlue.withValues(alpha: 0.1),
+                    color: _isBiometriaSplashEnabled
+                        ? Colors.green.shade50
+                        : AppColors.primaryBlue.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.fingerprint,
-                    color: _isBiometriaSplashEnabled ? Colors.green : AppColors.primaryBlue,
+                    color: _isBiometriaSplashEnabled
+                        ? Colors.green
+                        : AppColors.primaryBlue,
                     size: 22,
                   ),
                 ),
@@ -1576,13 +1916,20 @@ class _UserPageState extends State<UserPage> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 13,
-                          color: _isBiometriaSplashEnabled ? Colors.green.shade900 : Colors.black87,
+                          color: _isBiometriaSplashEnabled
+                              ? Colors.green.shade900
+                              : Colors.black87,
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        _isBiometriaSplashEnabled ? 'Leitura de impressão digital ativa' : 'Exigir digital ao abrir o app',
-                        style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                        _isBiometriaSplashEnabled
+                            ? 'Leitura de impressão digital ativa'
+                            : 'Exigir digital ao abrir o app',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.grey.shade600,
+                        ),
                       ),
                     ],
                   ),
@@ -1621,7 +1968,11 @@ class _UserPageState extends State<UserPage> {
                     color: const Color(0xFFEDF2F9),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(Icons.bug_report_outlined, color: AppColors.primaryBlue, size: 20),
+                  child: const Icon(
+                    Icons.bug_report_outlined,
+                    color: AppColors.primaryBlue,
+                    size: 20,
+                  ),
                 ),
                 const SizedBox(width: 10),
                 const Expanded(
@@ -1630,7 +1981,11 @@ class _UserPageState extends State<UserPage> {
                     children: [
                       Text(
                         'Sessão de Debug & Testes',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryBlue,
+                        ),
                       ),
                       Text(
                         'Ferramentas de simulação e disparo para testes',
@@ -1646,7 +2001,11 @@ class _UserPageState extends State<UserPage> {
             // 1. Operações de Teste de Transações
             const Text(
               'Transações de Teste (Firebase Firestore):',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryBlue,
+              ),
             ),
             const SizedBox(height: 8),
             Row(
@@ -1663,7 +2022,9 @@ class _UserPageState extends State<UserPage> {
                       if (mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('+ R\$ 10,00 adicionados como Receita de teste!'),
+                            content: Text(
+                              '+ R\$ 10,00 adicionados como Receita de teste!',
+                            ),
                             backgroundColor: Colors.green,
                             behavior: SnackBarBehavior.floating,
                           ),
@@ -1671,11 +2032,20 @@ class _UserPageState extends State<UserPage> {
                       }
                     },
                     icon: const Icon(Icons.add, size: 16, color: Colors.white),
-                    label: const Text('+ R\$ 10 Receita', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white)),
+                    label: const Text(
+                      '+ R\$ 10 Receita',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green.shade600,
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       elevation: 0,
                     ),
                   ),
@@ -1693,19 +2063,34 @@ class _UserPageState extends State<UserPage> {
                       if (mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('- R\$ 10,00 debitados como Despesa de teste!'),
+                            content: Text(
+                              '- R\$ 10,00 debitados como Despesa de teste!',
+                            ),
                             backgroundColor: Colors.red,
                             behavior: SnackBarBehavior.floating,
                           ),
                         );
                       }
                     },
-                    icon: const Icon(Icons.remove, size: 16, color: Colors.white),
-                    label: const Text('- R\$ 10 Despesa', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white)),
+                    icon: const Icon(
+                      Icons.remove,
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                    label: const Text(
+                      '- R\$ 10 Despesa',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red.shade600,
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       elevation: 0,
                     ),
                   ),
@@ -1718,7 +2103,11 @@ class _UserPageState extends State<UserPage> {
             // 2. Disparo de Notificações de Teste
             const Text(
               'Disparo de Notificações de Teste:',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryBlue,
+              ),
             ),
             const SizedBox(height: 8),
             Wrap(
@@ -1726,13 +2115,21 @@ class _UserPageState extends State<UserPage> {
               runSpacing: 8,
               children: [
                 ActionChip(
-                  avatar: const Icon(Icons.lightbulb_outline, size: 16, color: AppColors.primaryOrange),
-                  label: const Text('💡 Dica CONRADO', style: TextStyle(fontSize: 11)),
+                  avatar: const Icon(
+                    Icons.lightbulb_outline,
+                    size: 16,
+                    color: AppColors.primaryOrange,
+                  ),
+                  label: const Text(
+                    '💡 Dica CONRADO',
+                    style: TextStyle(fontSize: 11),
+                  ),
                   onPressed: () async {
                     await _firestoreService.criarNotificacao(
                       idCliente: uid,
                       titulo: 'Dica do CONRADO 💡',
-                      mensagem: 'Você economizou R\$ 150,00 na categoria Alimentação este mês!',
+                      mensagem:
+                          'Você economizou R\$ 150,00 na categoria Alimentação este mês!',
                       categoria: 'IA Financeira',
                     );
                     if (mounted) {
@@ -1747,19 +2144,29 @@ class _UserPageState extends State<UserPage> {
                   },
                 ),
                 ActionChip(
-                  avatar: const Icon(Icons.warning_amber_rounded, size: 16, color: Colors.amber),
-                  label: const Text('⚠️ Alerta Orçamento', style: TextStyle(fontSize: 11)),
+                  avatar: const Icon(
+                    Icons.warning_amber_rounded,
+                    size: 16,
+                    color: Colors.amber,
+                  ),
+                  label: const Text(
+                    '⚠️ Alerta Orçamento',
+                    style: TextStyle(fontSize: 11),
+                  ),
                   onPressed: () async {
                     await _firestoreService.criarNotificacao(
                       idCliente: uid,
                       titulo: 'Alerta de Orçamento ⚠️',
-                      mensagem: 'Atenção: Seu envelope de Lazer atingiu 85% do limite estipulado.',
+                      mensagem:
+                          'Atenção: Seu envelope de Lazer atingiu 85% do limite estipulado.',
                       categoria: 'Sistema',
                     );
                     if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Notificação "Alerta Orçamento" enviada!'),
+                          content: Text(
+                            'Notificação "Alerta Orçamento" enviada!',
+                          ),
                           backgroundColor: AppColors.primaryBlue,
                           behavior: SnackBarBehavior.floating,
                         ),
@@ -1768,19 +2175,29 @@ class _UserPageState extends State<UserPage> {
                   },
                 ),
                 ActionChip(
-                  avatar: const Icon(Icons.emoji_events_outlined, size: 16, color: Colors.green),
-                  label: const Text('🎉 Meta Concluída', style: TextStyle(fontSize: 11)),
+                  avatar: const Icon(
+                    Icons.emoji_events_outlined,
+                    size: 16,
+                    color: Colors.green,
+                  ),
+                  label: const Text(
+                    '🎉 Meta Concluída',
+                    style: TextStyle(fontSize: 11),
+                  ),
                   onPressed: () async {
                     await _firestoreService.criarNotificacao(
                       idCliente: uid,
                       titulo: 'Meta Alcançada! 🎉',
-                      mensagem: 'Parabéns! Sua caixinha "Viagem Europa" atingiu 100% da meta calculada.',
+                      mensagem:
+                          'Parabéns! Sua caixinha "Viagem Europa" atingiu 100% da meta calculada.',
                       categoria: 'Metas',
                     );
                     if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Notificação "Meta Concluída" enviada!'),
+                          content: Text(
+                            'Notificação "Meta Concluída" enviada!',
+                          ),
                           backgroundColor: AppColors.primaryBlue,
                           behavior: SnackBarBehavior.floating,
                         ),
@@ -1789,19 +2206,29 @@ class _UserPageState extends State<UserPage> {
                   },
                 ),
                 ActionChip(
-                  avatar: const Icon(Icons.shield_outlined, size: 16, color: AppColors.primaryBlue),
-                  label: const Text('🔒 Aviso Segurança', style: TextStyle(fontSize: 11)),
+                  avatar: const Icon(
+                    Icons.shield_outlined,
+                    size: 16,
+                    color: AppColors.primaryBlue,
+                  ),
+                  label: const Text(
+                    '🔒 Aviso Segurança',
+                    style: TextStyle(fontSize: 11),
+                  ),
                   onPressed: () async {
                     await _firestoreService.criarNotificacao(
                       idCliente: uid,
                       titulo: 'Aviso de Segurança 🔒',
-                      mensagem: 'Sua sessão foi sincronizada com segurança no novo dispositivo.',
+                      mensagem:
+                          'Sua sessão foi sincronizada com segurança no novo dispositivo.',
                       categoria: 'Segurança',
                     );
                     if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Notificação "Aviso Segurança" enviada!'),
+                          content: Text(
+                            'Notificação "Aviso Segurança" enviada!',
+                          ),
                           backgroundColor: AppColors.primaryBlue,
                           behavior: SnackBarBehavior.floating,
                         ),
@@ -1819,12 +2246,26 @@ class _UserPageState extends State<UserPage> {
               children: [
                 Expanded(
                   child: OutlinedButton.icon(
-                    onPressed: () => _exibirDialogoEnviarNotificacaoPersonalizada(uid),
-                    icon: const Icon(Icons.edit_notifications_outlined, size: 16, color: AppColors.primaryBlue),
-                    label: const Text('Personalizada', style: TextStyle(fontSize: 11, color: AppColors.primaryBlue, fontWeight: FontWeight.bold)),
+                    onPressed: () =>
+                        _exibirDialogoEnviarNotificacaoPersonalizada(uid),
+                    icon: const Icon(
+                      Icons.edit_notifications_outlined,
+                      size: 16,
+                      color: AppColors.primaryBlue,
+                    ),
+                    label: const Text(
+                      'Personalizada',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: AppColors.primaryBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: AppColors.primaryBlue),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       padding: const EdgeInsets.symmetric(vertical: 8),
                     ),
                   ),
@@ -1837,18 +2278,33 @@ class _UserPageState extends State<UserPage> {
                       if (mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Todas as notificações foram limpas do Firestore.'),
+                            content: Text(
+                              'Todas as notificações foram limpas do Firestore.',
+                            ),
                             backgroundColor: Colors.orange,
                             behavior: SnackBarBehavior.floating,
                           ),
                         );
                       }
                     },
-                    icon: const Icon(Icons.cleaning_services_outlined, size: 16, color: Colors.grey),
-                    label: const Text('Limpar Todas', style: TextStyle(fontSize: 11, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    icon: const Icon(
+                      Icons.cleaning_services_outlined,
+                      size: 16,
+                      color: Colors.grey,
+                    ),
+                    label: const Text(
+                      'Limpar Todas',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(color: Colors.grey.shade400),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       padding: const EdgeInsets.symmetric(vertical: 8),
                     ),
                   ),
@@ -1871,12 +2327,17 @@ class _UserPageState extends State<UserPage> {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setModalState) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: const Row(
             children: [
               Icon(Icons.add_alert_rounded, color: AppColors.primaryBlue),
               SizedBox(width: 8),
-              Text('Nova Notificação Teste', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Text(
+                'Nova Notificação Teste',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
             ],
           ),
           content: SingleChildScrollView(
@@ -1887,7 +2348,9 @@ class _UserPageState extends State<UserPage> {
                   controller: tituloCtrl,
                   decoration: InputDecoration(
                     labelText: 'Título',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -1896,7 +2359,9 @@ class _UserPageState extends State<UserPage> {
                   maxLines: 2,
                   decoration: InputDecoration(
                     labelText: 'Mensagem',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -1904,13 +2369,21 @@ class _UserPageState extends State<UserPage> {
                   initialValue: categoria,
                   decoration: InputDecoration(
                     labelText: 'Categoria',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   items: const [
                     DropdownMenuItem(value: 'Sistema', child: Text('Sistema')),
-                    DropdownMenuItem(value: 'IA Financeira', child: Text('IA Financeira')),
+                    DropdownMenuItem(
+                      value: 'IA Financeira',
+                      child: Text('IA Financeira'),
+                    ),
                     DropdownMenuItem(value: 'Metas', child: Text('Metas')),
-                    DropdownMenuItem(value: 'Segurança', child: Text('Segurança')),
+                    DropdownMenuItem(
+                      value: 'Segurança',
+                      child: Text('Segurança'),
+                    ),
                   ],
                   onChanged: (val) {
                     if (val != null) setModalState(() => categoria = val);
@@ -1939,7 +2412,9 @@ class _UserPageState extends State<UserPage> {
                   if (mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Notificação personalizada disparada com sucesso!'),
+                        content: Text(
+                          'Notificação personalizada disparada com sucesso!',
+                        ),
                         backgroundColor: AppColors.primaryBlue,
                         behavior: SnackBarBehavior.floating,
                       ),
@@ -1949,9 +2424,17 @@ class _UserPageState extends State<UserPage> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryBlue,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
-              child: const Text('Disparar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              child: const Text(
+                'Disparar',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),

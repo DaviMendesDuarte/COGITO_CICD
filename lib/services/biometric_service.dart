@@ -41,11 +41,14 @@ class BiometricService {
   /// Retorna `true` se a biometria puder ser utilizada.
   Future<bool> podeUsarBiometria() async {
     try {
-      final bool canAuthenticateWithBiometrics = await _localAuth.canCheckBiometrics;
+      final bool canAuthenticateWithBiometrics =
+          await _localAuth.canCheckBiometrics;
       final bool isDeviceSupported = await _localAuth.isDeviceSupported();
-      final List<BiometricType> availableBiometrics = await _localAuth.getAvailableBiometrics();
+      final List<BiometricType> availableBiometrics = await _localAuth
+          .getAvailableBiometrics();
 
-      return (canAuthenticateWithBiometrics || isDeviceSupported) && availableBiometrics.isNotEmpty;
+      return (canAuthenticateWithBiometrics || isDeviceSupported) &&
+          availableBiometrics.isNotEmpty;
     } catch (e) {
       debugPrint('Erro ao checar suporte a biometria: $e');
       return false;

@@ -34,10 +34,7 @@ class WelcomePage extends StatelessWidget {
               const SizedBox(height: 24.0),
 
               // Título de boas-vindas
-              const Text(
-                'BEM-VINDO',
-                style: TextStyles.welcomeTitle,
-              ),
+              const Text('BEM-VINDO', style: TextStyles.welcomeTitle),
 
               const SizedBox(height: 8.0),
 
@@ -53,10 +50,7 @@ class WelcomePage extends StatelessWidget {
 
               const SizedBox(height: 8.0),
 
-              const Text(
-                'Comece o seu controle:',
-                style: TextStyles.subtitle,
-              ),
+              const Text('Comece o seu controle:', style: TextStyles.subtitle),
 
               const SizedBox(height: 24.0),
 
@@ -69,7 +63,9 @@ class WelcomePage extends StatelessWidget {
                     // Navega diretamente para a AuthChoicePage (tela separada de escolha)
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const AuthChoicePage()),
+                      MaterialPageRoute(
+                        builder: (context) => const AuthChoicePage(),
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -78,27 +74,18 @@ class WelcomePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(67),
                     ),
                   ),
-                  child: const Text(
-                    'Começar',
-                    style: TextStyles.buttonPrimary,
-                  ),
+                  child: const Text('Começar', style: TextStyles.buttonPrimary),
                 ),
               ),
 
               const Spacer(),
 
               // Rodapé com o logotipo do COGITO e identificador da turma/desenvolvimento
-              Image.asset(
-                'assets/images/logo/logo.png',
-                width: 50,
-              ),
+              Image.asset('assets/images/logo/logo.png', width: 50),
 
               const SizedBox(height: 8.0),
 
-              const Text(
-                '3°DS 2026',
-                style: TextStyles.footer,
-              ),
+              const Text('3°DS 2026', style: TextStyles.footer),
 
               const SizedBox(height: 24.0),
             ],

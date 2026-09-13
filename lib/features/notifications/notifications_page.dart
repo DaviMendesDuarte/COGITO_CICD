@@ -38,7 +38,6 @@ class _NotificacoesPageState extends State<NotificacoesPage> {
     _firestoreService.limparNotificacoesDoUsuario(uid.toString());
   }
 
-
   @override
   Widget build(BuildContext context) {
     final String uid = FirebaseFirestoreService.idClienteAtual;
@@ -49,7 +48,9 @@ class _NotificacoesPageState extends State<NotificacoesPage> {
         stream: _firestoreService.buscarNotificacoesStream(uid),
         builder: (context, snapshot) {
           final List<Map<String, dynamic>> notificacoes = snapshot.data ?? [];
-          final bool isLoading = snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData;
+          final bool isLoading =
+              snapshot.connectionState == ConnectionState.waiting &&
+              !snapshot.hasData;
 
           return Scaffold(
             backgroundColor: AppColors.backgroundColor,
@@ -59,7 +60,9 @@ class _NotificacoesPageState extends State<NotificacoesPage> {
               elevation: 0,
               centerTitle: true,
               shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(30),
+                ),
               ),
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
@@ -67,14 +70,19 @@ class _NotificacoesPageState extends State<NotificacoesPage> {
               ),
               title: const Text(
                 'Notificações',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
               ),
               actions: [
                 if (notificacoes.isNotEmpty)
                   PopupMenuButton<String>(
                     icon: const Icon(Icons.more_vert, color: Colors.white),
                     onSelected: (val) {
-                      if (val == 'marcar_lidas') _marcarTodasComoLidas(notificacoes);
+                      if (val == 'marcar_lidas')
+                        _marcarTodasComoLidas(notificacoes);
                       if (val == 'limpar') _limparNotificacoes();
                     },
                     itemBuilder: (context) => [
@@ -82,7 +90,11 @@ class _NotificacoesPageState extends State<NotificacoesPage> {
                         value: 'marcar_lidas',
                         child: Row(
                           children: [
-                            Icon(Icons.done_all, color: AppColors.primaryBlue, size: 20),
+                            Icon(
+                              Icons.done_all,
+                              color: AppColors.primaryBlue,
+                              size: 20,
+                            ),
                             SizedBox(width: 10),
                             Text('Marcar todas como lidas'),
                           ],
@@ -92,7 +104,11 @@ class _NotificacoesPageState extends State<NotificacoesPage> {
                         value: 'limpar',
                         child: Row(
                           children: [
-                            Icon(Icons.delete_outline, color: Colors.red, size: 20),
+                            Icon(
+                              Icons.delete_outline,
+                              color: Colors.red,
+                              size: 20,
+                            ),
                             SizedBox(width: 10),
                             Text('Limpar tudo'),
                           ],
@@ -103,17 +119,21 @@ class _NotificacoesPageState extends State<NotificacoesPage> {
               ],
             ),
             body: isLoading
-                ? const Center(child: CircularProgressIndicator(color: AppColors.primaryBlue))
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.primaryBlue,
+                    ),
+                  )
                 : notificacoes.isEmpty
-                    ? _buildEmptyState()
-                    : ListView.builder(
-                        padding: const EdgeInsets.all(16),
-                        itemCount: notificacoes.length,
-                        itemBuilder: (context, index) {
-                          final item = notificacoes[index];
-                          return _buildNotificationCard(item);
-                        },
-                      ),
+                ? _buildEmptyState()
+                : ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: notificacoes.length,
+                    itemBuilder: (context, index) {
+                      final item = notificacoes[index];
+                      return _buildNotificationCard(item);
+                    },
+                  ),
           );
         },
       ),
@@ -181,7 +201,11 @@ class _NotificacoesPageState extends State<NotificacoesPage> {
     }
 
     return Dismissible(
-      key: Key(idNotif.isNotEmpty ? idNotif : DateTime.now().microsecondsSinceEpoch.toString()),
+      key: Key(
+        idNotif.isNotEmpty
+            ? idNotif
+            : DateTime.now().microsecondsSinceEpoch.toString(),
+      ),
       direction: DismissDirection.endToStart,
       onDismissed: (_) {
         if (idNotif.isNotEmpty) {
@@ -208,10 +232,14 @@ class _NotificacoesPageState extends State<NotificacoesPage> {
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: lida ? Colors.white : AppColors.primaryBlue.withValues(alpha: 0.04),
+            color: lida
+                ? Colors.white
+                : AppColors.primaryBlue.withValues(alpha: 0.04),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: lida ? Colors.grey.shade200 : AppColors.primaryBlue.withValues(alpha: 0.3),
+              color: lida
+                  ? Colors.grey.shade200
+                  : AppColors.primaryBlue.withValues(alpha: 0.3),
               width: lida ? 1 : 1.5,
             ),
             boxShadow: [
@@ -249,7 +277,9 @@ class _NotificacoesPageState extends State<NotificacoesPage> {
                             titulo,
                             style: TextStyle(
                               fontSize: 15,
-                              fontWeight: lida ? FontWeight.w600 : FontWeight.bold,
+                              fontWeight: lida
+                                  ? FontWeight.w600
+                                  : FontWeight.bold,
                               color: AppColors.secundaryBlue,
                             ),
                           ),

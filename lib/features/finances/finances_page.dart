@@ -45,9 +45,7 @@ class FinancesPageState extends State<FinancesPage> {
   void selecionarAbaMetas() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => const MetasFinanceirasPage(),
-      ),
+      MaterialPageRoute(builder: (context) => const MetasFinanceirasPage()),
     );
   }
 
@@ -67,11 +65,17 @@ class FinancesPageState extends State<FinancesPage> {
   String _viewMode = 'list';
 
   /// Extrai com segurança a data [DateTime] de uma transação via [FinancialUtils].
-  DateTime _extrairData(Map<String, dynamic> t) => FinancialUtils.extrairDataTransacao(t);
+  DateTime _extrairData(Map<String, dynamic> t) =>
+      FinancialUtils.extrairDataTransacao(t);
 
   /// Filtra a lista de transações conforme o período selecionado via [FinancialUtils].
-  List<Map<String, dynamic>> _filtrarTransacoesPorPeriodo(List<Map<String, dynamic>> lista) {
-    return FinancialUtils.filtrarTransacoesPorPeriodo(lista, _selectedPeriodoFilter);
+  List<Map<String, dynamic>> _filtrarTransacoesPorPeriodo(
+    List<Map<String, dynamic>> lista,
+  ) {
+    return FinancialUtils.filtrarTransacoesPorPeriodo(
+      lista,
+      _selectedPeriodoFilter,
+    );
   }
 
   @override
@@ -124,15 +128,27 @@ class FinancesPageState extends State<FinancesPage> {
                   const Text(
                     'Nova Transação',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryBlue,
+                    ),
                   ),
                   const SizedBox(height: 16),
 
                   // Seleção de Tipo (Despesa / Receita)
                   SegmentedButton<String>(
                     segments: const [
-                      ButtonSegment(value: 'Despesa', label: Text('Despesa'), icon: Icon(Icons.arrow_downward, color: Colors.red)),
-                      ButtonSegment(value: 'Receita', label: Text('Receita'), icon: Icon(Icons.arrow_upward, color: Colors.green)),
+                      ButtonSegment(
+                        value: 'Despesa',
+                        label: Text('Despesa'),
+                        icon: Icon(Icons.arrow_downward, color: Colors.red),
+                      ),
+                      ButtonSegment(
+                        value: 'Receita',
+                        label: Text('Receita'),
+                        icon: Icon(Icons.arrow_upward, color: Colors.green),
+                      ),
                     ],
                     selected: {tipo},
                     onSelectionChanged: (val) {
@@ -148,10 +164,15 @@ class FinancesPageState extends State<FinancesPage> {
                     controller: titleController,
                     decoration: InputDecoration(
                       labelText: 'Descrição (Ex: iFood - Almoço)',
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
-                        borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2),
+                        borderSide: const BorderSide(
+                          color: AppColors.primaryBlue,
+                          width: 2,
+                        ),
                       ),
                     ),
                   ),
@@ -160,13 +181,20 @@ class FinancesPageState extends State<FinancesPage> {
                   // Valor em Reais
                   TextField(
                     controller: amountController,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     decoration: InputDecoration(
                       labelText: 'Valor (R\$)',
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
-                        borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2),
+                        borderSide: const BorderSide(
+                          color: AppColors.primaryBlue,
+                          width: 2,
+                        ),
                       ),
                     ),
                   ),
@@ -177,11 +205,23 @@ class FinancesPageState extends State<FinancesPage> {
                     initialValue: categoria,
                     decoration: InputDecoration(
                       labelText: 'Categoria',
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                     ),
-                    items: ['Alimentação', 'Moradia', 'Transporte', 'Lazer', 'Receita', 'Outros']
-                        .map((c) => DropdownMenuItem(value: c, child: Text(c)))
-                        .toList(),
+                    items:
+                        [
+                              'Alimentação',
+                              'Moradia',
+                              'Transporte',
+                              'Lazer',
+                              'Receita',
+                              'Outros',
+                            ]
+                            .map(
+                              (c) => DropdownMenuItem(value: c, child: Text(c)),
+                            )
+                            .toList(),
                     onChanged: (val) {
                       if (val != null) {
                         setModalState(() {
@@ -195,9 +235,14 @@ class FinancesPageState extends State<FinancesPage> {
                   // Botão para salvar transação no Firestore
                   ElevatedButton(
                     onPressed: () async {
-                      final val = double.tryParse(amountController.text.replaceAll(',', '.')) ?? 0.0;
+                      final val =
+                          double.tryParse(
+                            amountController.text.replaceAll(',', '.'),
+                          ) ??
+                          0.0;
                       if (titleController.text.trim().isNotEmpty && val > 0) {
-                        final String uid = FirebaseFirestoreService.idClienteAtual;
+                        final String uid =
+                            FirebaseFirestoreService.idClienteAtual;
 
                         await _firestoreService.adicionarTransacao(
                           idCliente: uid,
@@ -221,14 +266,18 @@ class FinancesPageState extends State<FinancesPage> {
                               ),
                               backgroundColor: Colors.green.shade600,
                               behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
                           );
                         }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Preencha todos os campos corretamente.'),
+                            content: Text(
+                              'Preencha todos os campos corretamente.',
+                            ),
                             backgroundColor: Colors.orange,
                           ),
                         );
@@ -237,9 +286,17 @@ class FinancesPageState extends State<FinancesPage> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryBlue,
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                      ),
                     ),
-                    child: const Text('SALVAR TRANSAÇÃO', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    child: const Text(
+                      'SALVAR TRANSAÇÃO',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -267,8 +324,8 @@ class FinancesPageState extends State<FinancesPage> {
               child: _mainTabIndex == 0
                   ? _buildExtratoSection()
                   : (_mainTabIndex == 1
-                      ? _buildOrcamentosSection()
-                      : _buildFreelancerSection()),
+                        ? _buildOrcamentosSection()
+                        : _buildFreelancerSection()),
             ),
           ],
         ),
@@ -283,7 +340,8 @@ class FinancesPageState extends State<FinancesPage> {
       padding: EdgeInsets.fromLTRB(20, topPadding + 16, 20, 6),
       decoration: const BoxDecoration(
         color: AppColors.primaryBlue,
-        borderRadius: BorderRadius.zero, // Reto, não arredondado conforme solicitado
+        borderRadius:
+            BorderRadius.zero, // Reto, não arredondado conforme solicitado
       ),
       child: Column(
         children: [
@@ -405,8 +463,6 @@ class FinancesPageState extends State<FinancesPage> {
     return _buildTransacoesSection();
   }
 
-
-
   /// Constrói a aba de TRANSAÇÕES inteiramente conectada ao Firestore em tempo real.
   Widget _buildTransacoesSection() {
     final String uid = FirebaseFirestoreService.idClienteAtual;
@@ -417,7 +473,8 @@ class FinancesPageState extends State<FinancesPage> {
         final rawTransacoes = snapshot.data ?? [];
 
         // Aplica o filtro de período ativo antes de calcular os totais
-        final List<Map<String, dynamic>> transacoesNoPeriodo = _filtrarTransacoesPorPeriodo(rawTransacoes);
+        final List<Map<String, dynamic>> transacoesNoPeriodo =
+            _filtrarTransacoesPorPeriodo(rawTransacoes);
 
         // Cálculo dinâmico das totais de Receitas e Despesas baseado no período selecionado
         double totalReceitas = 0.0;
@@ -433,7 +490,9 @@ class FinancesPageState extends State<FinancesPage> {
         }
 
         // Filtragem adicional por busca de texto e categoria
-        List<Map<String, dynamic>> transacoesFiltradas = List.from(transacoesNoPeriodo);
+        List<Map<String, dynamic>> transacoesFiltradas = List.from(
+          transacoesNoPeriodo,
+        );
 
         if (_searchController.text.trim().isNotEmpty) {
           final query = _searchController.text.trim().toLowerCase();
@@ -498,8 +557,14 @@ class FinancesPageState extends State<FinancesPage> {
                     onChanged: (_) => setState(() {}),
                     decoration: InputDecoration(
                       hintText: 'Buscar transação...',
-                      hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
-                      prefixIcon: Icon(Icons.search, color: Colors.grey.shade400),
+                      hintStyle: TextStyle(
+                        color: Colors.grey.shade400,
+                        fontSize: 14,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: Colors.grey.shade400,
+                      ),
                       contentPadding: const EdgeInsets.symmetric(vertical: 10),
                       filled: true,
                       fillColor: const Color(0xFFF2F4F7),
@@ -520,7 +585,10 @@ class FinancesPageState extends State<FinancesPage> {
                           initialValue: _selectedCategoryFilter,
                           isExpanded: true,
                           decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 8,
+                            ),
                             filled: true,
                             fillColor: const Color(0xFFF2F4F7),
                             border: OutlineInputBorder(
@@ -528,12 +596,27 @@ class FinancesPageState extends State<FinancesPage> {
                               borderSide: BorderSide.none,
                             ),
                           ),
-                          items: ['Todas as categorias', 'Alimentação', 'Moradia', 'Transporte', 'Lazer', 'Receita', 'Outros']
-                              .map((c) => DropdownMenuItem(
-                                    value: c,
-                                    child: Text(c, style: const TextStyle(fontSize: 12), overflow: TextOverflow.ellipsis),
-                                  ))
-                              .toList(),
+                          items:
+                              [
+                                    'Todas as categorias',
+                                    'Alimentação',
+                                    'Moradia',
+                                    'Transporte',
+                                    'Lazer',
+                                    'Receita',
+                                    'Outros',
+                                  ]
+                                  .map(
+                                    (c) => DropdownMenuItem(
+                                      value: c,
+                                      child: Text(
+                                        c,
+                                        style: const TextStyle(fontSize: 12),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
                           onChanged: (val) {
                             if (val != null) {
                               setState(() {
@@ -551,7 +634,10 @@ class FinancesPageState extends State<FinancesPage> {
                           initialValue: _selectedPeriodoFilter,
                           isExpanded: true,
                           decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 8,
+                            ),
                             filled: true,
                             fillColor: const Color(0xFFF2F4F7),
                             border: OutlineInputBorder(
@@ -559,12 +645,25 @@ class FinancesPageState extends State<FinancesPage> {
                               borderSide: BorderSide.none,
                             ),
                           ),
-                          items: ['Este mês', 'Últimos 30 dias', 'Últimos 3 meses', 'Este ano', 'Todo o período']
-                              .map((p) => DropdownMenuItem(
-                                    value: p,
-                                    child: Text(p, style: const TextStyle(fontSize: 12), overflow: TextOverflow.ellipsis),
-                                  ))
-                              .toList(),
+                          items:
+                              [
+                                    'Este mês',
+                                    'Últimos 30 dias',
+                                    'Últimos 3 meses',
+                                    'Este ano',
+                                    'Todo o período',
+                                  ]
+                                  .map(
+                                    (p) => DropdownMenuItem(
+                                      value: p,
+                                      child: Text(
+                                        p,
+                                        style: const TextStyle(fontSize: 12),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
                           onChanged: (val) {
                             if (val != null) {
                               setState(() {
@@ -609,7 +708,8 @@ class FinancesPageState extends State<FinancesPage> {
                   _buildActionPill(
                     label: 'Exportar',
                     icon: Icons.file_download_outlined,
-                    onTap: () => _exibirModalExportar(context, transacoesFiltradas),
+                    onTap: () =>
+                        _exibirModalExportar(context, transacoesFiltradas),
                   ),
                   const SizedBox(width: 8),
                   _buildActionPill(
@@ -618,7 +718,9 @@ class FinancesPageState extends State<FinancesPage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const AnaliseDetalhadaPage()),
+                        MaterialPageRoute(
+                          builder: (context) => const AnaliseDetalhadaPage(),
+                        ),
                       );
                     },
                   ),
@@ -634,7 +736,11 @@ class FinancesPageState extends State<FinancesPage> {
               children: [
                 Text(
                   'Transações (${transacoesFiltradas.length})',
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primaryBlue,
+                  ),
                 ),
                 Row(
                   children: [
@@ -648,23 +754,51 @@ class FinancesPageState extends State<FinancesPage> {
                       child: Row(
                         children: [
                           IconButton(
-                            icon: Icon(Icons.view_list_rounded, size: 20, color: _viewMode == 'list' ? AppColors.primaryBlue : Colors.grey),
+                            icon: Icon(
+                              Icons.view_list_rounded,
+                              size: 20,
+                              color: _viewMode == 'list'
+                                  ? AppColors.primaryBlue
+                                  : Colors.grey,
+                            ),
                             onPressed: () => setState(() => _viewMode = 'list'),
-                            constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+                            constraints: const BoxConstraints(
+                              minWidth: 36,
+                              minHeight: 36,
+                            ),
                             padding: EdgeInsets.zero,
                             tooltip: 'Visualizar em Lista',
                           ),
                           IconButton(
-                            icon: Icon(Icons.grid_view_rounded, size: 20, color: _viewMode == 'grid' ? AppColors.primaryBlue : Colors.grey),
+                            icon: Icon(
+                              Icons.grid_view_rounded,
+                              size: 20,
+                              color: _viewMode == 'grid'
+                                  ? AppColors.primaryBlue
+                                  : Colors.grey,
+                            ),
                             onPressed: () => setState(() => _viewMode = 'grid'),
-                            constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+                            constraints: const BoxConstraints(
+                              minWidth: 36,
+                              minHeight: 36,
+                            ),
                             padding: EdgeInsets.zero,
                             tooltip: 'Visualizar em Grade',
                           ),
                           IconButton(
-                            icon: Icon(Icons.table_chart_outlined, size: 20, color: _viewMode == 'table' ? AppColors.primaryBlue : Colors.grey),
-                            onPressed: () => setState(() => _viewMode = 'table'),
-                            constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+                            icon: Icon(
+                              Icons.table_chart_outlined,
+                              size: 20,
+                              color: _viewMode == 'table'
+                                  ? AppColors.primaryBlue
+                                  : Colors.grey,
+                            ),
+                            onPressed: () =>
+                                setState(() => _viewMode = 'table'),
+                            constraints: const BoxConstraints(
+                              minWidth: 36,
+                              minHeight: 36,
+                            ),
                             padding: EdgeInsets.zero,
                             tooltip: 'Visualizar em Tabela',
                           ),
@@ -675,12 +809,24 @@ class FinancesPageState extends State<FinancesPage> {
 
                     // Botão "Exportar" em Laranja
                     InkWell(
-                      onTap: () => _exibirModalExportar(context, transacoesFiltradas),
+                      onTap: () =>
+                          _exibirModalExportar(context, transacoesFiltradas),
                       child: const Row(
                         children: [
-                          Icon(Icons.file_download_outlined, color: AppColors.primaryOrange, size: 16),
+                          Icon(
+                            Icons.file_download_outlined,
+                            color: AppColors.primaryOrange,
+                            size: 16,
+                          ),
                           SizedBox(width: 4),
-                          Text('Exportar', style: TextStyle(color: AppColors.primaryOrange, fontWeight: FontWeight.bold, fontSize: 13)),
+                          Text(
+                            'Exportar',
+                            style: TextStyle(
+                              color: AppColors.primaryOrange,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -697,7 +843,10 @@ class FinancesPageState extends State<FinancesPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 40),
                 child: Center(
-                  child: Text('Nenhuma transação encontrada.', style: TextStyle(color: Colors.grey.shade500)),
+                  child: Text(
+                    'Nenhuma transação encontrada.',
+                    style: TextStyle(color: Colors.grey.shade500),
+                  ),
                 ),
               )
             else if (_viewMode == 'table')
@@ -728,7 +877,9 @@ class FinancesPageState extends State<FinancesPage> {
                   final String firestoreId = t['firestore_id'] ?? '';
 
                   return Dismissible(
-                    key: Key(firestoreId.isEmpty ? index.toString() : firestoreId),
+                    key: Key(
+                      firestoreId.isEmpty ? index.toString() : firestoreId,
+                    ),
                     direction: DismissDirection.horizontal,
                     confirmDismiss: (direction) async {
                       if (direction == DismissDirection.startToEnd) {
@@ -742,7 +893,8 @@ class FinancesPageState extends State<FinancesPage> {
                     },
                     onDismissed: (direction) async {
                       if (direction == DismissDirection.endToStart) {
-                        if (firestoreId.isNotEmpty && !firestoreId.startsWith('mock_')) {
+                        if (firestoreId.isNotEmpty &&
+                            !firestoreId.startsWith('mock_')) {
                           await _firestoreService.excluirTransacao(firestoreId);
                         }
                         if (context.mounted) {
@@ -751,7 +903,9 @@ class FinancesPageState extends State<FinancesPage> {
                               content: const Text('Transação excluída.'),
                               backgroundColor: Colors.red.shade400,
                               behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
                           );
                         }
@@ -769,7 +923,13 @@ class FinancesPageState extends State<FinancesPage> {
                         children: [
                           Icon(Icons.edit, color: Colors.white),
                           SizedBox(width: 8),
-                          Text('Editar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                          Text(
+                            'Editar',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -784,7 +944,13 @@ class FinancesPageState extends State<FinancesPage> {
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text('Excluir', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                          Text(
+                            'Excluir',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           SizedBox(width: 8),
                           Icon(Icons.delete, color: Colors.white),
                         ],
@@ -805,14 +971,23 @@ class FinancesPageState extends State<FinancesPage> {
   /// Parâmetros:
   /// - [transacao]: Mapa contendo os dados atuais da transação a ser editada.
   void _exibirDialogoEditarTransacao(Map<String, dynamic> transacao) {
-    final tituloController = TextEditingController(text: transacao['titulo'] ?? '');
+    final tituloController = TextEditingController(
+      text: transacao['titulo'] ?? '',
+    );
     final valorController = TextEditingController(
       text: (transacao['valor'] as num?)?.toStringAsFixed(2) ?? '',
     );
     String categoriaSelecionada = transacao['categoria'] ?? 'Alimentação';
     String tipoSelecionado = transacao['tipo'] ?? 'Despesa';
 
-    final categorias = ['Alimentação', 'Moradia', 'Transporte', 'Lazer', 'Receita', 'Outros'];
+    final categorias = [
+      'Alimentação',
+      'Moradia',
+      'Transporte',
+      'Lazer',
+      'Receita',
+      'Outros',
+    ];
 
     showDialog(
       context: context,
@@ -820,7 +995,9 @@ class FinancesPageState extends State<FinancesPage> {
         return StatefulBuilder(
           builder: (context, setModalState) {
             return AlertDialog(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+              ),
               title: const Row(
                 children: [
                   Icon(Icons.edit_note_rounded, color: AppColors.primaryBlue),
@@ -836,28 +1013,43 @@ class FinancesPageState extends State<FinancesPage> {
                       controller: tituloController,
                       decoration: InputDecoration(
                         labelText: 'Descrição / Título',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 12),
                     TextField(
                       controller: valorController,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       decoration: InputDecoration(
                         labelText: 'Valor (R\$)',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
-                      initialValue: categorias.contains(categoriaSelecionada) ? categoriaSelecionada : 'Outros',
+                      initialValue: categorias.contains(categoriaSelecionada)
+                          ? categoriaSelecionada
+                          : 'Outros',
                       decoration: InputDecoration(
                         labelText: 'Categoria',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                       ),
-                      items: categorias.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+                      items: categorias
+                          .map(
+                            (c) => DropdownMenuItem(value: c, child: Text(c)),
+                          )
+                          .toList(),
                       onChanged: (val) {
-                        if (val != null) setModalState(() => categoriaSelecionada = val);
+                        if (val != null)
+                          setModalState(() => categoriaSelecionada = val);
                       },
                     ),
                     const SizedBox(height: 12),
@@ -865,14 +1057,23 @@ class FinancesPageState extends State<FinancesPage> {
                       initialValue: tipoSelecionado,
                       decoration: InputDecoration(
                         labelText: 'Tipo',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                       ),
                       items: const [
-                        DropdownMenuItem(value: 'Receita', child: Text('Receita (+)')),
-                        DropdownMenuItem(value: 'Despesa', child: Text('Despesa (-)')),
+                        DropdownMenuItem(
+                          value: 'Receita',
+                          child: Text('Receita (+)'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'Despesa',
+                          child: Text('Despesa (-)'),
+                        ),
                       ],
                       onChanged: (val) {
-                        if (val != null) setModalState(() => tipoSelecionado = val);
+                        if (val != null)
+                          setModalState(() => tipoSelecionado = val);
                       },
                     ),
                   ],
@@ -886,13 +1087,17 @@ class FinancesPageState extends State<FinancesPage> {
                 ElevatedButton(
                   onPressed: () async {
                     final String novoTitulo = tituloController.text.trim();
-                    final double? novoValor = double.tryParse(valorController.text.replaceAll(',', '.').trim());
+                    final double? novoValor = double.tryParse(
+                      valorController.text.replaceAll(',', '.').trim(),
+                    );
 
                     if (novoTitulo.isNotEmpty && novoValor != null) {
                       final messenger = ScaffoldMessenger.of(context);
                       Navigator.pop(context);
-                      final String firestoreId = (transacao['firestore_id'] ?? '').toString();
-                      if (firestoreId.isNotEmpty && !firestoreId.startsWith('mock_')) {
+                      final String firestoreId =
+                          (transacao['firestore_id'] ?? '').toString();
+                      if (firestoreId.isNotEmpty &&
+                          !firestoreId.startsWith('mock_')) {
                         await _firestoreService.atualizarTransacao(
                           transacaoId: firestoreId,
                           titulo: novoTitulo,
@@ -914,9 +1119,14 @@ class FinancesPageState extends State<FinancesPage> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryBlue,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                  child: const Text('Salvar Alterações', style: TextStyle(color: Colors.white)),
+                  child: const Text(
+                    'Salvar Alterações',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             );
@@ -927,8 +1137,12 @@ class FinancesPageState extends State<FinancesPage> {
   }
 
   /// Exibe o modal para exportação real do extrato financeiro nos formatos CSV, PDF/Texto, TXT e JSON.
-  void _exibirModalExportar(BuildContext context, [List<Map<String, dynamic>>? listaTransacoes]) {
-    final List<Map<String, dynamic>> transacoes = listaTransacoes ?? _firestoreService.cacheTransacoesLocal;
+  void _exibirModalExportar(
+    BuildContext context, [
+    List<Map<String, dynamic>>? listaTransacoes,
+  ]) {
+    final List<Map<String, dynamic>> transacoes =
+        listaTransacoes ?? _firestoreService.cacheTransacoesLocal;
 
     showModalBottomSheet(
       context: context,
@@ -956,7 +1170,11 @@ class FinancesPageState extends State<FinancesPage> {
               ),
               const Text(
                 'Exportar Extrato Financeiro',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryBlue,
+                ),
               ),
               const SizedBox(height: 6),
               Text(
@@ -965,42 +1183,90 @@ class FinancesPageState extends State<FinancesPage> {
               ),
               const SizedBox(height: 18),
               ListTile(
-                leading: const Icon(Icons.table_view_outlined, color: Colors.green, size: 28),
-                title: const Text('Microsoft Excel / Google Planilhas (.CSV)', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                subtitle: const Text('Estrutura de colunas com Data, Categoria, Título e Valor'),
+                leading: const Icon(
+                  Icons.table_view_outlined,
+                  color: Colors.green,
+                  size: 28,
+                ),
+                title: const Text(
+                  'Microsoft Excel / Google Planilhas (.CSV)',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                ),
+                subtitle: const Text(
+                  'Estrutura de colunas com Data, Categoria, Título e Valor',
+                ),
                 onTap: () {
                   Navigator.pop(context);
-                  _gerarEProcessarExportacao('CSV', _gerarConteudoCSV(transacoes));
+                  _gerarEProcessarExportacao(
+                    'CSV',
+                    _gerarConteudoCSV(transacoes),
+                  );
                 },
               ),
               const Divider(height: 1),
               ListTile(
-                leading: const Icon(Icons.picture_as_pdf_outlined, color: Colors.red, size: 28),
-                title: const Text('Relatório Financeiro Formatado (.PDF / Texto)', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                subtitle: const Text('Relatório executivo estruturado com balanço e envelopes'),
+                leading: const Icon(
+                  Icons.picture_as_pdf_outlined,
+                  color: Colors.red,
+                  size: 28,
+                ),
+                title: const Text(
+                  'Relatório Financeiro Formatado (.PDF / Texto)',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                ),
+                subtitle: const Text(
+                  'Relatório executivo estruturado com balanço e envelopes',
+                ),
                 onTap: () {
                   Navigator.pop(context);
-                  _gerarEProcessarExportacao('PDF / Relatório Formatado', _gerarConteudoRelatorio(transacoes));
+                  _gerarEProcessarExportacao(
+                    'PDF / Relatório Formatado',
+                    _gerarConteudoRelatorio(transacoes),
+                  );
                 },
               ),
               const Divider(height: 1),
               ListTile(
-                leading: const Icon(Icons.description_outlined, color: Colors.blue, size: 28),
-                title: const Text('Texto Simples (.TXT)', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                subtitle: const Text('Extrato limpo para anotações e compartilhamento rápido'),
+                leading: const Icon(
+                  Icons.description_outlined,
+                  color: Colors.blue,
+                  size: 28,
+                ),
+                title: const Text(
+                  'Texto Simples (.TXT)',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                ),
+                subtitle: const Text(
+                  'Extrato limpo para anotações e compartilhamento rápido',
+                ),
                 onTap: () {
                   Navigator.pop(context);
-                  _gerarEProcessarExportacao('TXT', _gerarConteudoTXT(transacoes));
+                  _gerarEProcessarExportacao(
+                    'TXT',
+                    _gerarConteudoTXT(transacoes),
+                  );
                 },
               ),
               const Divider(height: 1),
               ListTile(
-                leading: const Icon(Icons.code_outlined, color: Colors.purple, size: 28),
-                title: const Text('Dados Estruturados (.JSON)', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                subtitle: const Text('JSON válido com metadados para desenvolvedores e integrações'),
+                leading: const Icon(
+                  Icons.code_outlined,
+                  color: Colors.purple,
+                  size: 28,
+                ),
+                title: const Text(
+                  'Dados Estruturados (.JSON)',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                ),
+                subtitle: const Text(
+                  'JSON válido com metadados para desenvolvedores e integrações',
+                ),
                 onTap: () {
                   Navigator.pop(context);
-                  _gerarEProcessarExportacao('JSON', _gerarConteudoJSON(transacoes));
+                  _gerarEProcessarExportacao(
+                    'JSON',
+                    _gerarConteudoJSON(transacoes),
+                  );
                 },
               ),
             ],
@@ -1017,7 +1283,10 @@ class FinancesPageState extends State<FinancesPage> {
 
   /// Gera relatório executivo detalhado em formato de texto via [FinancialUtils].
   String _gerarConteudoRelatorio(List<Map<String, dynamic>> transacoes) {
-    return FinancialUtils.gerarRelatorioExecutivo(transacoes, _selectedPeriodoFilter);
+    return FinancialUtils.gerarRelatorioExecutivo(
+      transacoes,
+      _selectedPeriodoFilter,
+    );
   }
 
   /// Gera arquivo de texto simples para cópia rápida.
@@ -1026,9 +1295,12 @@ class FinancesPageState extends State<FinancesPage> {
     buffer.writeln('EXTRATO COGITO - $_selectedPeriodoFilter');
     for (final t in transacoes) {
       final dt = _extrairData(t);
-      final dataStr = '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}';
+      final dataStr =
+          '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}';
       final val = ((t['valor'] as num?)?.toDouble() ?? 0.0).toStringAsFixed(2);
-      buffer.writeln('$dataStr - ${t['titulo']} (${t['categoria']}): R\$ $val [${t['tipo']}]');
+      buffer.writeln(
+        '$dataStr - ${t['titulo']} (${t['categoria']}): R\$ $val [${t['tipo']}]',
+      );
     }
     return buffer.toString();
   }
@@ -1046,9 +1318,16 @@ class FinancesPageState extends State<FinancesPage> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
       builder: (ctx) => Padding(
-        padding: EdgeInsets.only(top: 24, left: 24, right: 24, bottom: MediaQuery.of(ctx).viewInsets.bottom + 24),
+        padding: EdgeInsets.only(
+          top: 24,
+          left: 24,
+          right: 24,
+          bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1057,24 +1336,47 @@ class FinancesPageState extends State<FinancesPage> {
               children: [
                 Container(
                   padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(color: Colors.green.shade100, shape: BoxShape.circle),
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade100,
+                    shape: BoxShape.circle,
+                  ),
                   child: const Icon(Icons.check, color: Colors.green, size: 22),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text('Exportação Gerada ($formato)', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primaryBlue)),
+                  child: Text(
+                    'Exportação Gerada ($formato)',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: AppColors.primaryBlue,
+                    ),
+                  ),
                 ),
               ],
             ),
             const SizedBox(height: 12),
-            const Text('O conteúdo foi copiado para a Área de Transferência com sucesso. Você pode colar onde desejar ou visualizar o conteúdo abaixo:', style: TextStyle(fontSize: 12, color: Colors.grey)),
+            const Text(
+              'O conteúdo foi copiado para a Área de Transferência com sucesso. Você pode colar onde desejar ou visualizar o conteúdo abaixo:',
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
             const SizedBox(height: 12),
             Container(
               constraints: const BoxConstraints(maxHeight: 220),
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(color: const Color(0xFFF2F4F7), borderRadius: BorderRadius.circular(12)),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF2F4F7),
+                borderRadius: BorderRadius.circular(12),
+              ),
               child: SingleChildScrollView(
-                child: Text(conteudo, style: const TextStyle(fontFamily: 'monospace', fontSize: 11, color: Colors.black87)),
+                child: Text(
+                  conteudo,
+                  style: const TextStyle(
+                    fontFamily: 'monospace',
+                    fontSize: 11,
+                    color: Colors.black87,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -1091,8 +1393,16 @@ class FinancesPageState extends State<FinancesPage> {
                 );
               },
               icon: const Icon(Icons.copy, color: Colors.white, size: 18),
-              label: const Text('Copiar Novamente', style: TextStyle(color: Colors.white)),
-              style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryBlue, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+              label: const Text(
+                'Copiar Novamente',
+                style: TextStyle(color: Colors.white),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryBlue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
             ),
           ],
         ),
@@ -1117,43 +1427,120 @@ class FinancesPageState extends State<FinancesPage> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
-          headingRowColor: WidgetStateProperty.all(AppColors.primaryBlue.withValues(alpha: 0.1)),
+          headingRowColor: WidgetStateProperty.all(
+            AppColors.primaryBlue.withValues(alpha: 0.1),
+          ),
           columns: const [
-            DataColumn(label: Text('Data', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryBlue))),
-            DataColumn(label: Text('Categoria', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryBlue))),
-            DataColumn(label: Text('Descrição', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryBlue))),
-            DataColumn(label: Text('Tipo', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryBlue))),
-            DataColumn(label: Text('Valor', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryBlue))),
-            DataColumn(label: Text('Ações', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryBlue))),
+            DataColumn(
+              label: Text(
+                'Data',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryBlue,
+                ),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Categoria',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryBlue,
+                ),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Descrição',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryBlue,
+                ),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Tipo',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryBlue,
+                ),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Valor',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryBlue,
+                ),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Ações',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryBlue,
+                ),
+              ),
+            ),
           ],
           rows: transacoes.map((t) {
             final DateTime dt = t['data_dt'] ?? DateTime.now();
-            final String dataStr = '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}';
+            final String dataStr =
+                '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}';
             final bool isReceita = t['tipo'] == 'Receita';
             final double val = (t['valor'] as num?)?.toDouble() ?? 0.0;
 
             return DataRow(
               cells: [
                 DataCell(Text(dataStr, style: const TextStyle(fontSize: 12))),
-                DataCell(Text(t['categoria'] ?? '-', style: const TextStyle(fontSize: 12))),
-                DataCell(Text(t['titulo'] ?? '-', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600))),
+                DataCell(
+                  Text(
+                    t['categoria'] ?? '-',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ),
+                DataCell(
+                  Text(
+                    t['titulo'] ?? '-',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
                 DataCell(
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
-                      color: isReceita ? Colors.green.withValues(alpha: 0.1) : Colors.red.withValues(alpha: 0.1),
+                      color: isReceita
+                          ? Colors.green.withValues(alpha: 0.1)
+                          : Colors.red.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
                       isReceita ? 'Receita' : 'Despesa',
-                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: isReceita ? Colors.green : Colors.red),
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: isReceita ? Colors.green : Colors.red,
+                      ),
                     ),
                   ),
                 ),
                 DataCell(
                   Text(
                     '${isReceita ? '+' : '-'} R\$ ${val.toStringAsFixed(2)}',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isReceita ? Colors.green : Colors.red),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: isReceita ? Colors.green : Colors.red,
+                    ),
                   ),
                 ),
                 DataCell(
@@ -1161,15 +1548,26 @@ class FinancesPageState extends State<FinancesPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.edit_outlined, size: 18, color: AppColors.primaryBlue),
+                        icon: const Icon(
+                          Icons.edit_outlined,
+                          size: 18,
+                          color: AppColors.primaryBlue,
+                        ),
                         onPressed: () => _exibirDialogoEditarTransacao(t),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.delete_outline, size: 18, color: Colors.red),
+                        icon: const Icon(
+                          Icons.delete_outline,
+                          size: 18,
+                          color: Colors.red,
+                        ),
                         onPressed: () async {
                           final String firestoreId = t['firestore_id'] ?? '';
-                          if (firestoreId.isNotEmpty && !firestoreId.startsWith('mock_')) {
-                            await _firestoreService.excluirTransacao(firestoreId);
+                          if (firestoreId.isNotEmpty &&
+                              !firestoreId.startsWith('mock_')) {
+                            await _firestoreService.excluirTransacao(
+                              firestoreId,
+                            );
                           }
                           if (mounted) setState(() {});
                         },
@@ -1213,12 +1611,18 @@ class FinancesPageState extends State<FinancesPage> {
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: isReceita ? const Color(0xFFE3F2FD) : const Color(0xFFF0F4FA),
+                  color: isReceita
+                      ? const Color(0xFFE3F2FD)
+                      : const Color(0xFFF0F4FA),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
-                  isReceita ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded,
-                  color: isReceita ? const Color(0xFF1976D2) : AppColors.primaryBlue,
+                  isReceita
+                      ? Icons.arrow_upward_rounded
+                      : Icons.arrow_downward_rounded,
+                  color: isReceita
+                      ? const Color(0xFF1976D2)
+                      : AppColors.primaryBlue,
                   size: 16,
                 ),
               ),
@@ -1240,7 +1644,9 @@ class FinancesPageState extends State<FinancesPage> {
           Text(
             'R\$ ${valor.toStringAsFixed(2).replaceAll('.', ',')}',
             style: TextStyle(
-              color: isReceita ? const Color(0xFF1976D2) : AppColors.primaryBlue,
+              color: isReceita
+                  ? const Color(0xFF1976D2)
+                  : AppColors.primaryBlue,
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
@@ -1320,7 +1726,11 @@ class FinancesPageState extends State<FinancesPage> {
               color: const Color(0xFFEDF2F9),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: Icon(_obterIconeCategoria(categoria), color: AppColors.primaryBlue, size: 22),
+            child: Icon(
+              _obterIconeCategoria(categoria),
+              color: AppColors.primaryBlue,
+              size: 22,
+            ),
           ),
           const SizedBox(width: 12),
 
@@ -1352,7 +1762,9 @@ class FinancesPageState extends State<FinancesPage> {
           Text(
             '${isDespesa ? "- " : "+ "}R\$ ${valor.toStringAsFixed(2).replaceAll('.', ',')}',
             style: TextStyle(
-              color: isDespesa ? AppColors.primaryBlue : const Color(0xFF1976D2),
+              color: isDespesa
+                  ? AppColors.primaryBlue
+                  : const Color(0xFF1976D2),
               fontWeight: FontWeight.bold,
               fontSize: 15,
             ),
@@ -1387,18 +1799,28 @@ class FinancesPageState extends State<FinancesPage> {
               color: const Color(0xFFEDF2F9),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(_obterIconeCategoria(categoria), color: AppColors.primaryBlue, size: 20),
+            child: Icon(
+              _obterIconeCategoria(categoria),
+              color: AppColors.primaryBlue,
+              size: 20,
+            ),
           ),
           Text(
             titulo,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppColors.primaryBlue),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+              color: AppColors.primaryBlue,
+            ),
           ),
           Text(
             '${isDespesa ? "- " : "+ "}R\$ ${valor.toStringAsFixed(2).replaceAll('.', ',')}',
             style: TextStyle(
-              color: isDespesa ? AppColors.primaryBlue : const Color(0xFF1976D2),
+              color: isDespesa
+                  ? AppColors.primaryBlue
+                  : const Color(0xFF1976D2),
               fontWeight: FontWeight.bold,
               fontSize: 14,
             ),
@@ -1417,12 +1839,28 @@ class FinancesPageState extends State<FinancesPage> {
     if (dataTrans == hoje) return 'Hoje';
     if (dataTrans == hoje.subtract(const Duration(days: 1))) return 'Ontem';
 
-    final meses = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+    final meses = [
+      'jan',
+      'fev',
+      'mar',
+      'abr',
+      'mai',
+      'jun',
+      'jul',
+      'ago',
+      'set',
+      'out',
+      'nov',
+      'dez',
+    ];
     return '${dt.day.toString().padLeft(2, '0')} de ${meses[dt.month - 1]}.';
   }
 
   /// Formata dinamicamente o valor monetário no padrão R$ 0,00 enquanto o usuário digita.
-  void _formatarMoedaEmTempoReal(String value, TextEditingController controller) {
+  void _formatarMoedaEmTempoReal(
+    String value,
+    TextEditingController controller,
+  ) {
     String clean = value.replaceAll(RegExp(r'[^0-9]'), '');
     if (clean.isEmpty) {
       controller.value = const TextEditingValue(
@@ -1432,7 +1870,8 @@ class FinancesPageState extends State<FinancesPage> {
       return;
     }
     final double parsed = (double.tryParse(clean) ?? 0) / 100.0;
-    final String formatted = 'R\$ ${parsed.toStringAsFixed(2).replaceAll('.', ',')}';
+    final String formatted =
+        'R\$ ${parsed.toStringAsFixed(2).replaceAll('.', ',')}';
     controller.value = TextEditingValue(
       text: formatted,
       selection: TextSelection.collapsed(offset: formatted.length),
@@ -1452,8 +1891,10 @@ class FinancesPageState extends State<FinancesPage> {
 
   /// Exibe o modal para criação ou edição de um Orçamento por categoria com o design solicitado.
   void _exibirDialogoNovoOrcamento({Map<String, dynamic>? orcamentoExistente}) {
-    String categoriaSelecionada = orcamentoExistente?['categoria'] ?? 'Alimentação';
-    final double limiteOriginal = (orcamentoExistente?['limite'] as num?)?.toDouble() ?? 0.0;
+    String categoriaSelecionada =
+        orcamentoExistente?['categoria'] ?? 'Alimentação';
+    final double limiteOriginal =
+        (orcamentoExistente?['limite'] as num?)?.toDouble() ?? 0.0;
     final limiteController = TextEditingController(
       text: limiteOriginal > 0
           ? 'R\$ ${limiteOriginal.toStringAsFixed(2).replaceAll('.', ',')}'
@@ -1498,7 +1939,9 @@ class FinancesPageState extends State<FinancesPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          orcamentoExistente != null ? 'Editar Orçamento' : 'Novo Orçamento',
+                          orcamentoExistente != null
+                              ? 'Editar Orçamento'
+                              : 'Novo Orçamento',
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -1506,7 +1949,11 @@ class FinancesPageState extends State<FinancesPage> {
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.close, color: Colors.grey, size: 22),
+                          icon: const Icon(
+                            Icons.close,
+                            color: Colors.grey,
+                            size: 22,
+                          ),
                           onPressed: () => Navigator.pop(modalCtx),
                         ),
                       ],
@@ -1529,12 +1976,13 @@ class FinancesPageState extends State<FinancesPage> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: opcoesCategorias.length,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4,
-                        crossAxisSpacing: 8,
-                        mainAxisSpacing: 8,
-                        childAspectRatio: 1.15,
-                      ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            crossAxisSpacing: 8,
+                            mainAxisSpacing: 8,
+                            childAspectRatio: 1.15,
+                          ),
                       itemBuilder: (context, index) {
                         final cat = opcoesCategorias[index];
                         final String nome = cat['nome'];
@@ -1550,7 +1998,9 @@ class FinancesPageState extends State<FinancesPage> {
                           child: Container(
                             decoration: BoxDecoration(
                               color: isSelecionado
-                                  ? AppColors.primaryOrange.withValues(alpha: 0.08)
+                                  ? AppColors.primaryOrange.withValues(
+                                      alpha: 0.08,
+                                    )
                                   : Colors.white,
                               borderRadius: BorderRadius.circular(14),
                               border: Border.all(
@@ -1575,8 +2025,12 @@ class FinancesPageState extends State<FinancesPage> {
                                   nome,
                                   style: TextStyle(
                                     fontSize: 11,
-                                    fontWeight: isSelecionado ? FontWeight.bold : FontWeight.w500,
-                                    color: isSelecionado ? AppColors.primaryOrange : Colors.grey.shade700,
+                                    fontWeight: isSelecionado
+                                        ? FontWeight.bold
+                                        : FontWeight.w500,
+                                    color: isSelecionado
+                                        ? AppColors.primaryOrange
+                                        : Colors.grey.shade700,
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -1602,7 +2056,10 @@ class FinancesPageState extends State<FinancesPage> {
 
                     // Input formatado automaticamente em R$
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFFF8F9FD),
                         borderRadius: BorderRadius.circular(14),
@@ -1611,7 +2068,8 @@ class FinancesPageState extends State<FinancesPage> {
                       child: TextField(
                         controller: limiteController,
                         keyboardType: TextInputType.number,
-                        onChanged: (val) => _formatarMoedaEmTempoReal(val, limiteController),
+                        onChanged: (val) =>
+                            _formatarMoedaEmTempoReal(val, limiteController),
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -1637,7 +2095,11 @@ class FinancesPageState extends State<FinancesPage> {
                       child: const Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.track_changes_outlined, color: Color(0xFF1976D2), size: 20),
+                          Icon(
+                            Icons.track_changes_outlined,
+                            color: Color(0xFF1976D2),
+                            size: 20,
+                          ),
                           SizedBox(width: 8),
                           Expanded(
                             child: Text(
@@ -1664,11 +2126,16 @@ class FinancesPageState extends State<FinancesPage> {
                             style: OutlinedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 14),
                               side: BorderSide(color: Colors.grey.shade300),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
                             ),
                             child: const Text(
                               'Cancelar',
-                              style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ),
@@ -1676,11 +2143,15 @@ class FinancesPageState extends State<FinancesPage> {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () async {
-                              final double limite = _extrairValorMoeda(limiteController.text);
+                              final double limite = _extrairValorMoeda(
+                                limiteController.text,
+                              );
                               if (limite <= 0) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Por favor, informe um limite mensal maior que R\$ 0,00.'),
+                                    content: Text(
+                                      'Por favor, informe um limite mensal maior que R\$ 0,00.',
+                                    ),
                                     backgroundColor: Colors.orange,
                                     behavior: SnackBarBehavior.floating,
                                   ),
@@ -1688,7 +2159,8 @@ class FinancesPageState extends State<FinancesPage> {
                                 return;
                               }
 
-                              final String idCliente = FirebaseFirestoreService.idClienteAtual;
+                              final String idCliente =
+                                  FirebaseFirestoreService.idClienteAtual;
                               final messenger = ScaffoldMessenger.of(context);
                               Navigator.pop(modalCtx);
 
@@ -1702,7 +2174,9 @@ class FinancesPageState extends State<FinancesPage> {
                                 setState(() {});
                                 messenger.showSnackBar(
                                   SnackBar(
-                                    content: Text('Orçamento de $categoriaSelecionada salvo com sucesso!'),
+                                    content: Text(
+                                      'Orçamento de $categoriaSelecionada salvo com sucesso!',
+                                    ),
                                     backgroundColor: AppColors.primaryBlue,
                                     behavior: SnackBarBehavior.floating,
                                   ),
@@ -1712,12 +2186,18 @@ class FinancesPageState extends State<FinancesPage> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primaryOrange,
                               padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
                               elevation: 0,
                             ),
                             child: const Text(
                               'Salvar Orçamento',
-                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                         ),
@@ -1744,18 +2224,21 @@ class FinancesPageState extends State<FinancesPage> {
       stream: _firestoreService.buscarOrcamentosStream(idCliente),
       builder: (context, snapshotOrcamentos) {
         // Previne o "piscar" da tela aguardando a primeira emissão de dados
-        if (snapshotOrcamentos.connectionState == ConnectionState.waiting && !snapshotOrcamentos.hasData) {
+        if (snapshotOrcamentos.connectionState == ConnectionState.waiting &&
+            !snapshotOrcamentos.hasData) {
           return const Center(
             child: CircularProgressIndicator(color: AppColors.primaryBlue),
           );
         }
 
-        final List<Map<String, dynamic>> orcamentosFirestore = snapshotOrcamentos.data ?? [];
+        final List<Map<String, dynamic>> orcamentosFirestore =
+            snapshotOrcamentos.data ?? [];
 
         return StreamBuilder<List<Map<String, dynamic>>>(
           stream: _firestoreService.buscarTransacoesStream(idCliente),
           builder: (context, snapshotTransacoes) {
-            final List<Map<String, dynamic>> transacoes = snapshotTransacoes.data ?? [];
+            final List<Map<String, dynamic>> transacoes =
+                snapshotTransacoes.data ?? [];
 
             // Calcula o total gasto no mês corrente para cada categoria a partir das transações reais
             final Map<String, double> gastosPorCategoria = {};
@@ -1766,24 +2249,28 @@ class FinancesPageState extends State<FinancesPage> {
                 if (dt.year == agora.year && dt.month == agora.month) {
                   final String cat = t['categoria'] ?? 'Outros';
                   final double val = (t['valor'] as num?)?.toDouble() ?? 0.0;
-                  gastosPorCategoria[cat] = (gastosPorCategoria[cat] ?? 0.0) + val;
+                  gastosPorCategoria[cat] =
+                      (gastosPorCategoria[cat] ?? 0.0) + val;
                 }
               }
             }
 
             // Lista consolidada de orçamentos (apenas dados reais salvos no Firestore)
-            final List<Map<String, dynamic>> listaExibicao = orcamentosFirestore.map((orc) {
-              final String cat = orc['categoria'] ?? 'Outros';
-              final double limite = (orc['limite'] as num?)?.toDouble() ?? 0.0;
-              final double gasto = gastosPorCategoria[cat] ?? 0.0;
-              return {
-                'categoria': cat,
-                'limite': limite,
-                'gasto': gasto,
-                'cor': _obterCorCategoria(cat),
-                'id': orc['id'] ?? cat,
-              };
-            }).toList();
+            final List<Map<String, dynamic>> listaExibicao = orcamentosFirestore
+                .map((orc) {
+                  final String cat = orc['categoria'] ?? 'Outros';
+                  final double limite =
+                      (orc['limite'] as num?)?.toDouble() ?? 0.0;
+                  final double gasto = gastosPorCategoria[cat] ?? 0.0;
+                  return {
+                    'categoria': cat,
+                    'limite': limite,
+                    'gasto': gasto,
+                    'cor': _obterCorCategoria(cat),
+                    'id': orc['id'] ?? cat,
+                  };
+                })
+                .toList();
 
             // Estado vazio quando não houver orçamentos cadastrados pelo usuário
             if (listaExibicao.isEmpty) {
@@ -1827,15 +2314,27 @@ class FinancesPageState extends State<FinancesPage> {
                       const SizedBox(height: 24),
                       ElevatedButton.icon(
                         onPressed: () => _exibirDialogoNovoOrcamento(),
-                        icon: const Icon(Icons.add, size: 18, color: Colors.white),
+                        icon: const Icon(
+                          Icons.add,
+                          size: 18,
+                          color: Colors.white,
+                        ),
                         label: const Text(
                           'Novo Orçamento',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryBlue,
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 14,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
                           elevation: 0,
                         ),
                       ),
@@ -1852,7 +2351,9 @@ class FinancesPageState extends State<FinancesPage> {
               totalGasto += (item['gasto'] as num).toDouble();
             }
 
-            final double pctGeral = totalLimite > 0 ? (totalGasto / totalLimite).clamp(0.0, 1.0) : 0.0;
+            final double pctGeral = totalLimite > 0
+                ? (totalGasto / totalLimite).clamp(0.0, 1.0)
+                : 0.0;
             final double saldoRestanteGeral = totalLimite - totalGasto;
 
             return ListView(
@@ -1883,24 +2384,38 @@ class FinancesPageState extends State<FinancesPage> {
                             children: [
                               Text(
                                 'Total Orçado no Mês',
-                                style: TextStyle(color: Colors.white70, fontSize: 13),
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 13,
+                                ),
                               ),
                               SizedBox(height: 4),
                               Text(
                                 'Resumo de Envelopes',
-                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
                               ),
                             ],
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 6,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.white24,
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: Text(
                               '${(pctGeral * 100).toStringAsFixed(0)}% Usado',
-                              style: const TextStyle(color: AppColors.primaryYellow, fontWeight: FontWeight.bold, fontSize: 12),
+                              style: const TextStyle(
+                                color: AppColors.primaryYellow,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
                             ),
                           ),
                         ],
@@ -1916,7 +2431,9 @@ class FinancesPageState extends State<FinancesPage> {
                           minHeight: 10,
                           backgroundColor: Colors.white24,
                           valueColor: AlwaysStoppedAnimation<Color>(
-                            pctGeral > 0.85 ? Colors.redAccent : AppColors.primaryYellow,
+                            pctGeral > 0.85
+                                ? Colors.redAccent
+                                : AppColors.primaryYellow,
                           ),
                         ),
                       ),
@@ -1929,20 +2446,40 @@ class FinancesPageState extends State<FinancesPage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Gasto Total', style: TextStyle(color: Colors.grey.shade300, fontSize: 12)),
+                              Text(
+                                'Gasto Total',
+                                style: TextStyle(
+                                  color: Colors.grey.shade300,
+                                  fontSize: 12,
+                                ),
+                              ),
                               Text(
                                 'R\$ ${totalGasto.toStringAsFixed(2).replaceAll('.', ',')}',
-                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
                               ),
                             ],
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text('Restante Livre', style: TextStyle(color: Colors.grey.shade300, fontSize: 12)),
+                              Text(
+                                'Restante Livre',
+                                style: TextStyle(
+                                  color: Colors.grey.shade300,
+                                  fontSize: 12,
+                                ),
+                              ),
                               Text(
                                 'R\$ ${saldoRestanteGeral.toStringAsFixed(2).replaceAll('.', ',')}',
-                                style: const TextStyle(color: Color(0xFF00E676), fontWeight: FontWeight.bold, fontSize: 15),
+                                style: const TextStyle(
+                                  color: Color(0xFF00E676),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
                               ),
                             ],
                           ),
@@ -1960,10 +2497,18 @@ class FinancesPageState extends State<FinancesPage> {
                   children: [
                     const Text(
                       'Envelopes de Categorias',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                      ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.add_circle, color: AppColors.primaryOrange, size: 24),
+                      icon: const Icon(
+                        Icons.add_circle,
+                        color: AppColors.primaryOrange,
+                        size: 24,
+                      ),
                       onPressed: () => _exibirDialogoNovoOrcamento(),
                       tooltip: 'Novo Orçamento',
                     ),
@@ -1986,7 +2531,9 @@ class FinancesPageState extends State<FinancesPage> {
                   final double gasto = (item['gasto'] as num).toDouble();
                   final double limite = (item['limite'] as num).toDouble();
                   final Color cor = item['cor'] as Color;
-                  final double pct = limite > 0 ? (gasto / limite).clamp(0.0, 1.0) : 0.0;
+                  final double pct = limite > 0
+                      ? (gasto / limite).clamp(0.0, 1.0)
+                      : 0.0;
                   final double restante = limite - gasto;
                   final bool isAlerta = pct >= 0.8;
 
@@ -2007,7 +2554,11 @@ class FinancesPageState extends State<FinancesPage> {
                           SizedBox(width: 8),
                           Text(
                             'Editar',
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
                           ),
                         ],
                       ),
@@ -2025,10 +2576,18 @@ class FinancesPageState extends State<FinancesPage> {
                         children: [
                           Text(
                             'Excluir',
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
                           ),
                           SizedBox(width: 8),
-                          Icon(Icons.delete_outline, color: Colors.white, size: 24),
+                          Icon(
+                            Icons.delete_outline,
+                            color: Colors.white,
+                            size: 24,
+                          ),
                         ],
                       ),
                     ),
@@ -2043,7 +2602,9 @@ class FinancesPageState extends State<FinancesPage> {
                         final bool? confirmar = await showDialog<bool>(
                           context: context,
                           builder: (ctx) => AlertDialog(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                             title: const Row(
                               children: [
                                 Icon(Icons.delete_outline, color: Colors.red),
@@ -2051,7 +2612,9 @@ class FinancesPageState extends State<FinancesPage> {
                                 Text('Excluir Orçamento'),
                               ],
                             ),
-                            content: Text('Deseja realmente remover o orçamento da categoria "$cat"?'),
+                            content: Text(
+                              'Deseja realmente remover o orçamento da categoria "$cat"?',
+                            ),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(ctx, false),
@@ -2061,9 +2624,14 @@ class FinancesPageState extends State<FinancesPage> {
                                 onPressed: () => Navigator.pop(ctx, true),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.red,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                 ),
-                                child: const Text('Excluir', style: TextStyle(color: Colors.white)),
+                                child: const Text(
+                                  'Excluir',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
                             ],
                           ),
@@ -2102,7 +2670,9 @@ class FinancesPageState extends State<FinancesPage> {
                           ),
                         ],
                         border: Border.all(
-                          color: isAlerta ? Colors.red.shade300 : Colors.grey.shade200,
+                          color: isAlerta
+                              ? Colors.red.shade300
+                              : Colors.grey.shade200,
                           width: isAlerta ? 1.5 : 1.0,
                         ),
                       ),
@@ -2120,19 +2690,31 @@ class FinancesPageState extends State<FinancesPage> {
                                       color: cor.withValues(alpha: 0.12),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
-                                    child: Icon(_obterIconeCategoria(cat), color: cor, size: 20),
+                                    child: Icon(
+                                      _obterIconeCategoria(cat),
+                                      color: cor,
+                                      size: 20,
+                                    ),
                                   ),
                                   const SizedBox(width: 12),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         cat,
-                                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: AppColors.textPrimary),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: AppColors.textPrimary,
+                                        ),
                                       ),
                                       Text(
                                         '${(pct * 100).toStringAsFixed(0)}% utilizado',
-                                        style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                                        style: TextStyle(
+                                          color: Colors.grey.shade500,
+                                          fontSize: 12,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -2143,11 +2725,20 @@ class FinancesPageState extends State<FinancesPage> {
                                 children: [
                                   Text(
                                     'R\$ ${gasto.toStringAsFixed(2).replaceAll('.', ',')}',
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: isAlerta ? Colors.red.shade600 : AppColors.textPrimary),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: isAlerta
+                                          ? Colors.red.shade600
+                                          : AppColors.textPrimary,
+                                    ),
                                   ),
                                   Text(
                                     'de R\$ ${limite.toStringAsFixed(2).replaceAll('.', ',')}',
-                                    style: TextStyle(color: Colors.grey.shade500, fontSize: 11),
+                                    style: TextStyle(
+                                      color: Colors.grey.shade500,
+                                      fontSize: 11,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -2163,7 +2754,9 @@ class FinancesPageState extends State<FinancesPage> {
                               value: pct,
                               minHeight: 8,
                               backgroundColor: Colors.grey.shade200,
-                              valueColor: AlwaysStoppedAnimation<Color>(isAlerta ? Colors.red.shade500 : cor),
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                isAlerta ? Colors.red.shade500 : cor,
+                              ),
                             ),
                           ),
 
@@ -2174,18 +2767,29 @@ class FinancesPageState extends State<FinancesPage> {
                             children: [
                               if (isAlerta)
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: Colors.red.shade50,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: const Row(
                                     children: [
-                                      Icon(Icons.warning_amber_rounded, color: Colors.red, size: 14),
+                                      Icon(
+                                        Icons.warning_amber_rounded,
+                                        color: Colors.red,
+                                        size: 14,
+                                      ),
                                       SizedBox(width: 4),
                                       Text(
                                         'Atenção aos gastos!',
-                                        style: TextStyle(color: Colors.red, fontSize: 11, fontWeight: FontWeight.w600),
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -2196,14 +2800,22 @@ class FinancesPageState extends State<FinancesPage> {
                                       ? 'Disponível: R\$ ${restante.toStringAsFixed(2).replaceAll('.', ',')}'
                                       : 'Excedido em: R\$ ${(-restante).toStringAsFixed(2).replaceAll('.', ',')}',
                                   style: TextStyle(
-                                    color: restante >= 0 ? Colors.green.shade700 : Colors.red,
+                                    color: restante >= 0
+                                        ? Colors.green.shade700
+                                        : Colors.red,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               IconButton(
-                                icon: const Icon(Icons.edit_outlined, size: 18, color: Colors.grey),
-                                onPressed: () => _exibirDialogoNovoOrcamento(orcamentoExistente: item),
+                                icon: const Icon(
+                                  Icons.edit_outlined,
+                                  size: 18,
+                                  color: Colors.grey,
+                                ),
+                                onPressed: () => _exibirDialogoNovoOrcamento(
+                                  orcamentoExistente: item,
+                                ),
                                 tooltip: 'Editar',
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
@@ -2275,7 +2887,8 @@ class FinancesPageState extends State<FinancesPage> {
     final String uid = FirebaseFirestoreService.idClienteAtual;
     final DateTime agora = DateTime.now();
     final usuario = FirebaseFirestoreService.usuarioLogado;
-    final double metaMensal = (usuario?['renda_mensal'] as num?)?.toDouble() ?? 5000.0;
+    final double metaMensal =
+        (usuario?['renda_mensal'] as num?)?.toDouble() ?? 5000.0;
 
     return StreamBuilder<List<Map<String, dynamic>>>(
       stream: _firestoreService.buscarTransacoesStream(uid),
@@ -2309,9 +2922,15 @@ class FinancesPageState extends State<FinancesPage> {
           }
         }
 
-        final double ticketMedio = jobsCount > 0 ? faturamentoMes / jobsCount : 0.0;
-        final double reservaRecomendada = despesasMes > 0 ? despesasMes * 3 : metaMensal * 1.5;
-        final double progressoMeta = metaMensal > 0 ? (faturamentoMes / metaMensal).clamp(0.0, 1.0) : 0.0;
+        final double ticketMedio = jobsCount > 0
+            ? faturamentoMes / jobsCount
+            : 0.0;
+        final double reservaRecomendada = despesasMes > 0
+            ? despesasMes * 3
+            : metaMensal * 1.5;
+        final double progressoMeta = metaMensal > 0
+            ? (faturamentoMes / metaMensal).clamp(0.0, 1.0)
+            : 0.0;
 
         return ListView(
           padding: const EdgeInsets.all(16),
@@ -2338,23 +2957,38 @@ class FinancesPageState extends State<FinancesPage> {
                     children: [
                       const Row(
                         children: [
-                          Icon(Icons.workspace_premium_outlined, color: AppColors.primaryYellow, size: 22),
+                          Icon(
+                            Icons.workspace_premium_outlined,
+                            color: AppColors.primaryYellow,
+                            size: 22,
+                          ),
                           SizedBox(width: 8),
                           Text(
                             'Modo Freelancer & Job',
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                         ],
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.white24,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           '${(progressoMeta * 100).toStringAsFixed(0)}% da Meta',
-                          style: const TextStyle(color: AppColors.primaryYellow, fontWeight: FontWeight.bold, fontSize: 11),
+                          style: const TextStyle(
+                            color: AppColors.primaryYellow,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11,
+                          ),
                         ),
                       ),
                     ],
@@ -2367,7 +3001,11 @@ class FinancesPageState extends State<FinancesPage> {
                   const SizedBox(height: 4),
                   Text(
                     'R\$ ${faturamentoMes.toStringAsFixed(2).replaceAll('.', ',')}',
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 28),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 28,
+                    ),
                   ),
                   const SizedBox(height: 14),
 
@@ -2378,7 +3016,9 @@ class FinancesPageState extends State<FinancesPage> {
                       value: progressoMeta,
                       minHeight: 8,
                       backgroundColor: Colors.white24,
-                      valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primaryYellow),
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                        AppColors.primaryYellow,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 14),
@@ -2390,20 +3030,40 @@ class FinancesPageState extends State<FinancesPage> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Meta Mensal', style: TextStyle(color: Colors.white70, fontSize: 11)),
+                          const Text(
+                            'Meta Mensal',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 11,
+                            ),
+                          ),
                           Text(
                             'R\$ ${metaMensal.toStringAsFixed(2).replaceAll('.', ',')}',
-                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
                           ),
                         ],
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const Text('Reserva Sugerida (3x)', style: TextStyle(color: Colors.white70, fontSize: 11)),
+                          const Text(
+                            'Reserva Sugerida (3x)',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 11,
+                            ),
+                          ),
                           Text(
                             'R\$ ${reservaRecomendada.toStringAsFixed(2).replaceAll('.', ',')}',
-                            style: const TextStyle(color: Color(0xFF00E676), fontWeight: FontWeight.bold, fontSize: 13),
+                            style: const TextStyle(
+                              color: Color(0xFF00E676),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
                           ),
                         ],
                       ),
@@ -2430,7 +3090,8 @@ class FinancesPageState extends State<FinancesPage> {
                 Expanded(
                   child: _buildFreelancerMetricCard(
                     titulo: 'Ticket Médio',
-                    valor: 'R\$ ${ticketMedio.toStringAsFixed(2).replaceAll('.', ',')}',
+                    valor:
+                        'R\$ ${ticketMedio.toStringAsFixed(2).replaceAll('.', ',')}',
                     icone: Icons.price_check_outlined,
                     cor: const Color(0xFF1976D2),
                   ),
@@ -2454,11 +3115,19 @@ class FinancesPageState extends State<FinancesPage> {
                   children: [
                     const Row(
                       children: [
-                        Icon(Icons.schedule_outlined, color: AppColors.primaryBlue, size: 20),
+                        Icon(
+                          Icons.schedule_outlined,
+                          color: AppColors.primaryBlue,
+                          size: 20,
+                        ),
                         SizedBox(width: 8),
                         Text(
                           'Cálculo de Hora Produtiva',
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryBlue,
+                          ),
                         ),
                       ],
                     ),
@@ -2469,7 +3138,10 @@ class FinancesPageState extends State<FinancesPage> {
                     ),
                     const SizedBox(height: 12),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 10,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFFEDF2F9),
                         borderRadius: BorderRadius.circular(12),
@@ -2479,11 +3151,19 @@ class FinancesPageState extends State<FinancesPage> {
                         children: [
                           const Text(
                             'Valor Mínimo da Hora:',
-                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13, color: AppColors.primaryBlue),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
+                              color: AppColors.primaryBlue,
+                            ),
                           ),
                           Text(
                             'R\$ ${(metaMensal / 120).toStringAsFixed(2).replaceAll('.', ',')} / hora',
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.primaryBlue),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: AppColors.primaryBlue,
+                            ),
                           ),
                         ],
                       ),
@@ -2501,16 +3181,32 @@ class FinancesPageState extends State<FinancesPage> {
               children: [
                 const Text(
                   'Jobs & Receitas Recentes',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
                 ElevatedButton.icon(
                   onPressed: _exibirDialogoNovoJobFreelancer,
                   icon: const Icon(Icons.add, size: 16, color: Colors.white),
-                  label: const Text('Novo Job', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white)),
+                  label: const Text(
+                    'Novo Job',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryBlue,
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 8,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     elevation: 0,
                   ),
                 ),
@@ -2537,12 +3233,20 @@ class FinancesPageState extends State<FinancesPage> {
                           color: Color(0xFFEDF2F9),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.work_off_outlined, color: AppColors.primaryBlue, size: 36),
+                        child: const Icon(
+                          Icons.work_off_outlined,
+                          color: AppColors.primaryBlue,
+                          size: 36,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       const Text(
                         'Nenhum job registrado ainda',
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryBlue,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       const Text(
@@ -2559,7 +3263,8 @@ class FinancesPageState extends State<FinancesPage> {
                 final String titulo = job['titulo'] ?? 'Job Freelancer';
                 final double valor = (job['valor'] as num?)?.toDouble() ?? 0.0;
                 final DateTime dt = FinancialUtils.extrairDataTransacao(job);
-                final String dataFormatada = '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}';
+                final String dataFormatada =
+                    '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}';
 
                 return Card(
                   margin: const EdgeInsets.only(bottom: 10),
@@ -2569,18 +3274,28 @@ class FinancesPageState extends State<FinancesPage> {
                     side: BorderSide(color: Colors.grey.shade200),
                   ),
                   child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 6,
+                    ),
                     leading: Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: const Color(0xFFEDF2F9),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Icon(Icons.business_center_outlined, color: AppColors.primaryBlue, size: 20),
+                      child: const Icon(
+                        Icons.business_center_outlined,
+                        color: AppColors.primaryBlue,
+                        size: 20,
+                      ),
                     ),
                     title: Text(
                       titulo,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
                     ),
                     subtitle: Text(
                       dataFormatada,
@@ -2636,7 +3351,11 @@ class FinancesPageState extends State<FinancesPage> {
               Flexible(
                 child: Text(
                   titulo,
-                  style: const TextStyle(fontSize: 11, color: Colors.grey, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -2645,7 +3364,11 @@ class FinancesPageState extends State<FinancesPage> {
           const SizedBox(height: 10),
           Text(
             valor,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimary,
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -2697,7 +3420,11 @@ class FinancesPageState extends State<FinancesPage> {
                     SizedBox(width: 8),
                     Text(
                       'Novo Job Freelancer',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                      ),
                     ),
                   ],
                 ),
@@ -2707,8 +3434,13 @@ class FinancesPageState extends State<FinancesPage> {
                   decoration: InputDecoration(
                     labelText: 'Título do Job / Projeto',
                     hintText: 'Ex: Desenvolvimento Website',
-                    prefixIcon: const Icon(Icons.title_rounded, color: AppColors.primaryBlue),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                    prefixIcon: const Icon(
+                      Icons.title_rounded,
+                      color: AppColors.primaryBlue,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -2717,19 +3449,30 @@ class FinancesPageState extends State<FinancesPage> {
                   decoration: InputDecoration(
                     labelText: 'Cliente / Empresa (Opcional)',
                     hintText: 'Ex: Studio Alpha',
-                    prefixIcon: const Icon(Icons.business_rounded, color: AppColors.primaryBlue),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                    prefixIcon: const Icon(
+                      Icons.business_rounded,
+                      color: AppColors.primaryBlue,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
                 TextField(
                   controller: valorController,
                   keyboardType: TextInputType.number,
-                  onChanged: (val) => _formatarMoedaEmTempoReal(val, valorController),
+                  onChanged: (val) =>
+                      _formatarMoedaEmTempoReal(val, valorController),
                   decoration: InputDecoration(
                     labelText: 'Valor Negociado (R\$)',
-                    prefixIcon: const Icon(Icons.attach_money_rounded, color: AppColors.primaryBlue),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                    prefixIcon: const Icon(
+                      Icons.attach_money_rounded,
+                      color: AppColors.primaryBlue,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -2738,21 +3481,31 @@ class FinancesPageState extends State<FinancesPage> {
                     Expanded(
                       child: TextButton(
                         onPressed: () => Navigator.pop(modalCtx),
-                        child: const Text('Cancelar', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                        child: const Text(
+                          'Cancelar',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () async {
-                          final double valor = _extrairValorMoeda(valorController.text);
+                          final double valor = _extrairValorMoeda(
+                            valorController.text,
+                          );
                           final String titulo = tituloController.text.trim();
                           final String cliente = clienteController.text.trim();
 
                           if (titulo.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text('Por favor, informe o título do projeto.'),
+                                content: Text(
+                                  'Por favor, informe o título do projeto.',
+                                ),
                                 backgroundColor: Colors.orange,
                                 behavior: SnackBarBehavior.floating,
                               ),
@@ -2763,7 +3516,9 @@ class FinancesPageState extends State<FinancesPage> {
                           if (valor <= 0) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text('Por favor, informe um valor maior que R\$ 0,00.'),
+                                content: Text(
+                                  'Por favor, informe um valor maior que R\$ 0,00.',
+                                ),
                                 backgroundColor: Colors.orange,
                                 behavior: SnackBarBehavior.floating,
                               ),
@@ -2771,8 +3526,11 @@ class FinancesPageState extends State<FinancesPage> {
                             return;
                           }
 
-                          final String uid = FirebaseFirestoreService.idClienteAtual;
-                          final String tituloFinal = cliente.isNotEmpty ? '$titulo ($cliente)' : titulo;
+                          final String uid =
+                              FirebaseFirestoreService.idClienteAtual;
+                          final String tituloFinal = cliente.isNotEmpty
+                              ? '$titulo ($cliente)'
+                              : titulo;
 
                           Navigator.pop(modalCtx);
 
@@ -2789,7 +3547,9 @@ class FinancesPageState extends State<FinancesPage> {
                             setState(() {});
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Job "$titulo" adicionado com sucesso!'),
+                                content: Text(
+                                  'Job "$titulo" adicionado com sucesso!',
+                                ),
                                 backgroundColor: AppColors.primaryBlue,
                                 behavior: SnackBarBehavior.floating,
                               ),
@@ -2799,12 +3559,18 @@ class FinancesPageState extends State<FinancesPage> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryBlue,
                           padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
                           elevation: 0,
                         ),
                         child: const Text(
                           'Salvar Job',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
                     ),

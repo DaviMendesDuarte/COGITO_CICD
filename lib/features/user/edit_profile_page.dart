@@ -40,12 +40,17 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
     super.initState();
 
     final usuario = FirebaseFirestoreService.usuarioLogado;
-    final double rendaNum = (usuario?['renda_mensal'] as num?)?.toDouble() ?? 3500.0;
+    final double rendaNum =
+        (usuario?['renda_mensal'] as num?)?.toDouble() ?? 3500.0;
 
     _nomeController = TextEditingController(text: usuario?['nome'] ?? '');
     _emailController = TextEditingController(text: usuario?['email'] ?? '');
-    _telefoneController = TextEditingController(text: usuario?['telefone'] ?? '');
-    _rendaMensalController = TextEditingController(text: 'R\$${rendaNum.toStringAsFixed(2)}');
+    _telefoneController = TextEditingController(
+      text: usuario?['telefone'] ?? '',
+    );
+    _rendaMensalController = TextEditingController(
+      text: 'R\$${rendaNum.toStringAsFixed(2)}',
+    );
 
     final String rawTipo = (usuario?['tipo_renda'] ?? '').toString();
     if (rawTipo == 'Freelancer') {
@@ -74,7 +79,9 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
       final int countDots = '.'.allMatches(limpo).length;
       if (countDots > 1) {
         final lastIndex = limpo.lastIndexOf('.');
-        limpo = limpo.substring(0, lastIndex).replaceAll('.', '') + limpo.substring(lastIndex);
+        limpo =
+            limpo.substring(0, lastIndex).replaceAll('.', '') +
+            limpo.substring(lastIndex);
       }
     }
     return double.tryParse(limpo) ?? 0.0;
@@ -108,7 +115,9 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
 
     try {
       final String uid = FirebaseFirestoreService.idClienteAtual;
-      final double rendaMensal = _converterTextoParaMoeda(_rendaMensalController.text);
+      final double rendaMensal = _converterTextoParaMoeda(
+        _rendaMensalController.text,
+      );
 
       // Salva no Firestore e atualiza o cache em memória
       await _firestoreService.atualizarPerfil(
@@ -133,7 +142,9 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
           ),
           backgroundColor: Colors.green.shade600,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
       );
 
@@ -147,7 +158,9 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
           content: Text('Erro ao salvar perfil: ${e.toString()}'),
           backgroundColor: Colors.redAccent,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
       );
     } finally {
@@ -185,13 +198,15 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                       Center(
                         child: Column(
                           children: [
-                            ProfilePhotoHelper.buildProfileAvatar(
-                              radius: 42,
-                            ),
+                            ProfilePhotoHelper.buildProfileAvatar(radius: 42),
                             const SizedBox(height: 10),
                             Text(
                               'Foto de Perfil Padrão COGITO',
-                              style: TextStyle(color: Colors.grey.shade600, fontWeight: FontWeight.w500, fontSize: 13),
+                              style: TextStyle(
+                                color: Colors.grey.shade600,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 13,
+                              ),
                             ),
                           ],
                         ),
@@ -211,8 +226,10 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                             icone: Icons.badge_outlined,
                             hint: 'Seu nome completo',
                             validator: (v) {
-                              if (v == null || v.trim().isEmpty) return 'Informe seu nome';
-                              if (v.trim().length < 3) return 'Nome muito curto';
+                              if (v == null || v.trim().isEmpty)
+                                return 'Informe seu nome';
+                              if (v.trim().length < 3)
+                                return 'Nome muito curto';
                               return null;
                             },
                           ),
@@ -227,8 +244,10 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                             hint: 'seu@email.com',
                             keyboardType: TextInputType.emailAddress,
                             validator: (v) {
-                              if (v == null || v.trim().isEmpty) return 'Informe seu e-mail';
-                              if (!v.contains('@') || !v.contains('.')) return 'E-mail inválido';
+                              if (v == null || v.trim().isEmpty)
+                                return 'Informe seu e-mail';
+                              if (!v.contains('@') || !v.contains('.'))
+                                return 'E-mail inválido';
                               return null;
                             },
                           ),
@@ -243,7 +262,8 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                             hint: '(11) 99999-9999',
                             keyboardType: TextInputType.phone,
                             validator: (v) {
-                              if (v == null || v.trim().isEmpty) return 'Informe seu telefone';
+                              if (v == null || v.trim().isEmpty)
+                                return 'Informe seu telefone';
                               return null;
                             },
                           ),
@@ -256,9 +276,12 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                             label: 'Renda Mensal (Ex: R\$100.00)',
                             icone: Icons.attach_money_outlined,
                             hint: 'R\$100.00',
-                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
                             validator: (v) {
-                              if (v == null || v.trim().isEmpty) return 'Informe sua renda mensal';
+                              if (v == null || v.trim().isEmpty)
+                                return 'Informe sua renda mensal';
                               return null;
                             },
                           ),
@@ -270,35 +293,56 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                             initialValue: _tipoRendaSelecionada,
                             decoration: InputDecoration(
                               labelText: 'Tipo de Renda',
-                              prefixIcon: const Icon(Icons.work_outline, color: AppColors.primaryBlue, size: 20),
+                              prefixIcon: const Icon(
+                                Icons.work_outline,
+                                color: AppColors.primaryBlue,
+                                size: 20,
+                              ),
                               filled: true,
                               fillColor: AppColors.backgroundColor,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(14),
-                                borderSide: BorderSide(color: Colors.grey.shade200),
+                                borderSide: BorderSide(
+                                  color: Colors.grey.shade200,
+                                ),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(14),
-                                borderSide: BorderSide(color: Colors.grey.shade200),
+                                borderSide: BorderSide(
+                                  color: Colors.grey.shade200,
+                                ),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(14),
-                                borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primaryBlue,
+                                  width: 2,
+                                ),
                               ),
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 16,
+                              ),
                             ),
                             items: const [
                               DropdownMenuItem(
                                 value: 'Salario_Fixo',
-                                child: Text('Renda Fixa (CLT / Funcionário)', style: TextStyle(fontSize: 14)),
+                                child: Text(
+                                  'Renda Fixa (CLT / Funcionário)',
+                                  style: TextStyle(fontSize: 14),
+                                ),
                               ),
                               DropdownMenuItem(
                                 value: 'Freelancer',
-                                child: Text('Renda Variável (Freelancer / Autônomo)', style: TextStyle(fontSize: 14)),
+                                child: Text(
+                                  'Renda Variável (Freelancer / Autônomo)',
+                                  style: TextStyle(fontSize: 14),
+                                ),
                               ),
                             ],
                             onChanged: (String? novoValor) {
-                              if (novoValor != null && novoValor != _tipoRendaSelecionada) {
+                              if (novoValor != null &&
+                                  novoValor != _tipoRendaSelecionada) {
                                 setState(() {
                                   _tipoRendaSelecionada = novoValor;
                                 });
@@ -321,12 +365,19 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.info_outline, color: Colors.amber.shade700, size: 20),
+                            Icon(
+                              Icons.info_outline,
+                              color: Colors.amber.shade700,
+                              size: 20,
+                            ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: Text(
                                 'As alterações de e-mail podem exigir novo login na próxima vez.',
-                                style: TextStyle(fontSize: 12, color: Colors.amber.shade800),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.amber.shade800,
+                                ),
                               ),
                             ),
                           ],
@@ -339,7 +390,9 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                       SizedBox(
                         height: 54,
                         child: ElevatedButton(
-                          onPressed: (_hasChanges && !_isSaving) ? _salvarAlteracoes : null,
+                          onPressed: (_hasChanges && !_isSaving)
+                              ? _salvarAlteracoes
+                              : null,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primaryBlue,
                             disabledBackgroundColor: Colors.grey.shade300,
@@ -347,7 +400,9 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                               borderRadius: BorderRadius.circular(30),
                             ),
                             elevation: 4,
-                            shadowColor: AppColors.primaryBlue.withValues(alpha: 0.3),
+                            shadowColor: AppColors.primaryBlue.withValues(
+                              alpha: 0.3,
+                            ),
                           ),
                           child: _isSaving
                               ? const SizedBox(
@@ -361,7 +416,11 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                               : const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.save_rounded, color: Colors.white, size: 20),
+                                    Icon(
+                                      Icons.save_rounded,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
                                     SizedBox(width: 10),
                                     Text(
                                       'SALVAR ALTERAÇÕES',
@@ -522,7 +581,10 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
           borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: Colors.red, width: 1.5),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
       ),
     );
   }

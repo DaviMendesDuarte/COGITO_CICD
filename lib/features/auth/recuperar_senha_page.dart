@@ -25,7 +25,8 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _codigoController = TextEditingController();
   final TextEditingController _novaSenhaController = TextEditingController();
-  final TextEditingController _confirmarSenhaController = TextEditingController();
+  final TextEditingController _confirmarSenhaController =
+      TextEditingController();
 
   /// Chaves de formulário para validação dos dados em cada etapa.
   final GlobalKey<FormState> _formEmailKey = GlobalKey<FormState>();
@@ -113,19 +114,27 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Código confirmado com sucesso! Defina sua nova senha.'),
+          content: const Text(
+            'Código confirmado com sucesso! Defina sua nova senha.',
+          ),
           backgroundColor: Colors.green.shade600,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Código inválido ou expirado. Verifique os 6 dígitos digitados.'),
+          content: const Text(
+            'Código inválido ou expirado. Verifique os 6 dígitos digitados.',
+          ),
           backgroundColor: Colors.redAccent,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
         ),
       );
     }
@@ -168,9 +177,17 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryBlue,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
-            child: const Text('Ir para o Login', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            child: const Text(
+              'Ir para o Login',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
@@ -182,7 +199,9 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: AppColors.statusBarStyle,
       child: Scaffold(
-        backgroundColor: const Color(0xFFF3F4F8), // Fundo característico da Dashboard
+        backgroundColor: const Color(
+          0xFFF3F4F8,
+        ), // Fundo característico da Dashboard
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -225,16 +244,18 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(20, topPadding + 12, 20, 50),
-      decoration: const BoxDecoration(
-        color: AppColors.primaryBlue,
-      ),
+      decoration: const BoxDecoration(color: AppColors.primaryBlue),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               IconButton(
-                icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 22),
+                icon: const Icon(
+                  Icons.arrow_back_ios_new,
+                  color: Colors.white,
+                  size: 22,
+                ),
                 onPressed: () => Navigator.pop(context),
               ),
               const SizedBox(width: 8),
@@ -254,8 +275,8 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
               _etapaAtual == 0
                   ? 'Informe seu e-mail para receber o código de 6 números de recuperação.'
                   : (_etapaAtual == 1
-                      ? 'Digite o código de 6 números enviado para sua caixa de entrada.'
-                      : 'Crie uma nova senha de acesso segura para sua conta.'),
+                        ? 'Digite o código de 6 números enviado para sua caixa de entrada.'
+                        : 'Crie uma nova senha de acesso segura para sua conta.'),
               style: TextStyles.poppinsRegular(
                 fontSize: 13,
                 color: Colors.white70,
@@ -295,7 +316,11 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
                   color: AppColors.primaryBlue.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.email_outlined, color: AppColors.primaryBlue, size: 24),
+                child: const Icon(
+                  Icons.email_outlined,
+                  color: AppColors.primaryBlue,
+                  size: 24,
+                ),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -304,11 +329,17 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
                   children: [
                     Text(
                       'E-mail da Conta',
-                      style: TextStyles.poppinsBold(fontSize: 16, color: AppColors.primaryBlue),
+                      style: TextStyles.poppinsBold(
+                        fontSize: 16,
+                        color: AppColors.primaryBlue,
+                      ),
                     ),
                     Text(
                       'Enviaremos um código de 6 dígitos',
-                      style: TextStyles.poppinsRegular(fontSize: 12, color: Colors.grey.shade600),
+                      style: TextStyles.poppinsRegular(
+                        fontSize: 12,
+                        color: Colors.grey.shade600,
+                      ),
                     ),
                   ],
                 ),
@@ -322,7 +353,10 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
             decoration: InputDecoration(
               labelText: 'E-mail cadastrado',
               hintText: 'seu.email@exemplo.com',
-              prefixIcon: const Icon(Icons.mail_outline, color: AppColors.primaryBlue),
+              prefixIcon: const Icon(
+                Icons.mail_outline,
+                color: AppColors.primaryBlue,
+              ),
               filled: true,
               fillColor: const Color(0xFFF8F9FA),
               border: OutlineInputBorder(
@@ -335,7 +369,10 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2),
+                borderSide: const BorderSide(
+                  color: AppColors.primaryBlue,
+                  width: 2,
+                ),
               ),
             ),
             validator: (valor) {
@@ -356,17 +393,25 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryBlue,
                 elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
               child: _isLoading
                   ? const SizedBox(
                       width: 22,
                       height: 22,
-                      child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
                     )
                   : Text(
                       'ENVIAR CÓDIGO',
-                      style: TextStyles.poppinsBold(fontSize: 15, color: Colors.white),
+                      style: TextStyles.poppinsBold(
+                        fontSize: 15,
+                        color: Colors.white,
+                      ),
                     ),
             ),
           ),
@@ -390,7 +435,11 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
                   color: AppColors.primaryYellow.withValues(alpha: 0.15),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.pin_outlined, color: AppColors.primaryOrange, size: 24),
+                child: const Icon(
+                  Icons.pin_outlined,
+                  color: AppColors.primaryOrange,
+                  size: 24,
+                ),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -399,11 +448,17 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
                   children: [
                     Text(
                       'Código de Verificação',
-                      style: TextStyles.poppinsBold(fontSize: 16, color: AppColors.primaryBlue),
+                      style: TextStyles.poppinsBold(
+                        fontSize: 16,
+                        color: AppColors.primaryBlue,
+                      ),
                     ),
                     Text(
                       'Insira os 6 números recebidos',
-                      style: TextStyles.poppinsRegular(fontSize: 12, color: Colors.grey.shade600),
+                      style: TextStyles.poppinsRegular(
+                        fontSize: 12,
+                        color: Colors.grey.shade600,
+                      ),
                     ),
                   ],
                 ),
@@ -419,12 +474,19 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
             ),
             child: Row(
               children: [
-                const Icon(Icons.info_outline, color: AppColors.primaryBlue, size: 20),
+                const Icon(
+                  Icons.info_outline,
+                  color: AppColors.primaryBlue,
+                  size: 20,
+                ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
                     'Enviamos o código para ${_emailController.text.trim()}. Verifique também a pasta de spam.',
-                    style: TextStyles.poppinsRegular(fontSize: 12, color: AppColors.primaryBlue),
+                    style: TextStyles.poppinsRegular(
+                      fontSize: 12,
+                      color: AppColors.primaryBlue,
+                    ),
                   ),
                 ),
               ],
@@ -436,7 +498,11 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
             keyboardType: TextInputType.number,
             maxLength: 6,
             textAlign: TextAlign.center,
-            style: TextStyles.poppinsBold(fontSize: 24, letterSpacing: 8, color: AppColors.primaryBlue),
+            style: TextStyles.poppinsBold(
+              fontSize: 24,
+              letterSpacing: 8,
+              color: AppColors.primaryBlue,
+            ),
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             decoration: InputDecoration(
               counterText: '',
@@ -449,7 +515,10 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2),
+                borderSide: const BorderSide(
+                  color: AppColors.primaryBlue,
+                  width: 2,
+                ),
               ),
             ),
             validator: (valor) {
@@ -467,11 +536,16 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryBlue,
                 elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
               child: Text(
                 'VERIFICAR CÓDIGO',
-                style: TextStyles.poppinsBold(fontSize: 15, color: Colors.white),
+                style: TextStyles.poppinsBold(
+                  fontSize: 15,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -480,7 +554,10 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
             onPressed: _enviarCodigoVerificacao,
             child: Text(
               'Não recebeu? Reenviar código',
-              style: TextStyles.poppinsBold(fontSize: 13, color: AppColors.primaryBlue),
+              style: TextStyles.poppinsBold(
+                fontSize: 13,
+                color: AppColors.primaryBlue,
+              ),
             ),
           ),
         ],
@@ -503,7 +580,11 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
                   color: Colors.green.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.lock_reset, color: Colors.green, size: 24),
+                child: const Icon(
+                  Icons.lock_reset,
+                  color: Colors.green,
+                  size: 24,
+                ),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -512,11 +593,17 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
                   children: [
                     Text(
                       'Criar Nova Senha',
-                      style: TextStyles.poppinsBold(fontSize: 16, color: AppColors.primaryBlue),
+                      style: TextStyles.poppinsBold(
+                        fontSize: 16,
+                        color: AppColors.primaryBlue,
+                      ),
                     ),
                     Text(
                       'Defina uma senha forte de 6+ dígitos',
-                      style: TextStyles.poppinsRegular(fontSize: 12, color: Colors.grey.shade600),
+                      style: TextStyles.poppinsRegular(
+                        fontSize: 12,
+                        color: Colors.grey.shade600,
+                      ),
                     ),
                   ],
                 ),
@@ -529,17 +616,30 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
             obscureText: _obscureNovaSenha,
             decoration: InputDecoration(
               labelText: 'Nova senha',
-              prefixIcon: const Icon(Icons.lock_outline, color: AppColors.primaryBlue),
+              prefixIcon: const Icon(
+                Icons.lock_outline,
+                color: AppColors.primaryBlue,
+              ),
               suffixIcon: IconButton(
-                icon: Icon(_obscureNovaSenha ? Icons.visibility_outlined : Icons.visibility_off_outlined),
-                onPressed: () => setState(() => _obscureNovaSenha = !_obscureNovaSenha),
+                icon: Icon(
+                  _obscureNovaSenha
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
+                ),
+                onPressed: () =>
+                    setState(() => _obscureNovaSenha = !_obscureNovaSenha),
               ),
               filled: true,
               fillColor: const Color(0xFFF8F9FA),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2),
+                borderSide: const BorderSide(
+                  color: AppColors.primaryBlue,
+                  width: 2,
+                ),
               ),
             ),
             validator: (valor) {
@@ -555,17 +655,31 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
             obscureText: _obscureConfirmarSenha,
             decoration: InputDecoration(
               labelText: 'Confirmar nova senha',
-              prefixIcon: const Icon(Icons.lock_clock_outlined, color: AppColors.primaryBlue),
+              prefixIcon: const Icon(
+                Icons.lock_clock_outlined,
+                color: AppColors.primaryBlue,
+              ),
               suffixIcon: IconButton(
-                icon: Icon(_obscureConfirmarSenha ? Icons.visibility_outlined : Icons.visibility_off_outlined),
-                onPressed: () => setState(() => _obscureConfirmarSenha = !_obscureConfirmarSenha),
+                icon: Icon(
+                  _obscureConfirmarSenha
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
+                ),
+                onPressed: () => setState(
+                  () => _obscureConfirmarSenha = !_obscureConfirmarSenha,
+                ),
               ),
               filled: true,
               fillColor: const Color(0xFFF8F9FA),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2),
+                borderSide: const BorderSide(
+                  color: AppColors.primaryBlue,
+                  width: 2,
+                ),
               ),
             ),
             validator: (valor) {
@@ -583,17 +697,25 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryBlue,
                 elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
               child: _isLoading
                   ? const SizedBox(
                       width: 22,
                       height: 22,
-                      child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
                     )
                   : Text(
                       'SALVAR NOVA SENHA',
-                      style: TextStyles.poppinsBold(fontSize: 15, color: Colors.white),
+                      style: TextStyles.poppinsBold(
+                        fontSize: 15,
+                        color: Colors.white,
+                      ),
                     ),
             ),
           ),

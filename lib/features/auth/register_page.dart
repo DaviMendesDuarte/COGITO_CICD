@@ -25,7 +25,8 @@ class _CadastroPageState extends State<CadastroPage> {
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
-  final TextEditingController _confirmarSenhaController = TextEditingController();
+  final TextEditingController _confirmarSenhaController =
+      TextEditingController();
 
   /// Flags de visibilidade de senha e estado de carregamento.
   bool _obscurePassword = true;
@@ -253,23 +254,24 @@ class _CadastroPageState extends State<CadastroPage> {
                   TextFormField(
                     controller: _senhaController,
                     obscureText: _obscurePassword,
-                    decoration: _buildInputDecoration(
-                      'Senha',
-                      Icons.lock_outline,
-                    ).copyWith(
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword
-                              ? Icons.visibility_outlined
-                              : Icons.visibility_off_outlined,
+                    decoration:
+                        _buildInputDecoration(
+                          'Senha',
+                          Icons.lock_outline,
+                        ).copyWith(
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _obscurePassword = !_obscurePassword;
-                          });
-                        },
-                      ),
-                    ),
                     validator: (v) {
                       if (v == null || v.length < 6) {
                         return 'A senha deve ter no mínimo 6 caracteres';
@@ -284,23 +286,25 @@ class _CadastroPageState extends State<CadastroPage> {
                   TextFormField(
                     controller: _confirmarSenhaController,
                     obscureText: _obscureConfirmPassword,
-                    decoration: _buildInputDecoration(
-                      'Confirmar Senha',
-                      Icons.lock_reset_outlined,
-                    ).copyWith(
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscureConfirmPassword
-                              ? Icons.visibility_outlined
-                              : Icons.visibility_off_outlined,
+                    decoration:
+                        _buildInputDecoration(
+                          'Confirmar Senha',
+                          Icons.lock_reset_outlined,
+                        ).copyWith(
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureConfirmPassword
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureConfirmPassword =
+                                    !_obscureConfirmPassword;
+                              });
+                            },
+                          ),
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _obscureConfirmPassword = !_obscureConfirmPassword;
-                          });
-                        },
-                      ),
-                    ),
                     validator: (v) {
                       if (v != _senhaController.text) {
                         return 'As senhas não coincidem';
@@ -342,7 +346,9 @@ class _CadastroPageState extends State<CadastroPage> {
                         child: Text(
                           'ou',
                           style: TextStyle(
-                              color: Colors.grey.shade500, fontSize: 13),
+                            color: Colors.grey.shade500,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                       const Expanded(child: Divider(thickness: 1)),
@@ -358,7 +364,9 @@ class _CadastroPageState extends State<CadastroPage> {
                       onPressed: _isLoading ? null : _cadastrarComGoogle,
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(
-                            color: Colors.grey.shade300, width: 1.5),
+                          color: Colors.grey.shade300,
+                          width: 1.5,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),

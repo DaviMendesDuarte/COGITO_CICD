@@ -58,7 +58,10 @@ class FirebaseFirestoreService {
     };
 
     try {
-      await _db.collection(_colecaoUsuarios).doc(uid).set(dados, SetOptions(merge: true));
+      await _db
+          .collection(_colecaoUsuarios)
+          .doc(uid)
+          .set(dados, SetOptions(merge: true));
     } catch (e) {
       debugPrint('Aviso: Armazenando usuário em sessão local offline: $e');
     }
@@ -111,7 +114,9 @@ class FirebaseFirestoreService {
       usuarioLogado!['plano'] = novoPlano;
     }
     try {
-      await _db.collection(_colecaoUsuarios).doc(uid).update({'plano': novoPlano});
+      await _db.collection(_colecaoUsuarios).doc(uid).update({
+        'plano': novoPlano,
+      });
     } catch (e) {
       debugPrint('Atualizado plano em memória local: $e');
     }
@@ -155,10 +160,12 @@ class FirebaseFirestoreService {
     }
 
     if (usuarioLogado != null) {
-      if (usuarioLogado!['uid'] != null && usuarioLogado!['uid'].toString().isNotEmpty) {
+      if (usuarioLogado!['uid'] != null &&
+          usuarioLogado!['uid'].toString().isNotEmpty) {
         return usuarioLogado!['uid'].toString();
       }
-      if (usuarioLogado!['id_cliente'] != null && usuarioLogado!['id_cliente'].toString().isNotEmpty) {
+      if (usuarioLogado!['id_cliente'] != null &&
+          usuarioLogado!['id_cliente'].toString().isNotEmpty) {
         return usuarioLogado!['id_cliente'].toString();
       }
     }
@@ -184,37 +191,55 @@ class FirebaseFirestoreService {
 
     try {
       // 1. Exclui todas as transações associadas ao UID do usuário
-      final transacoesQuery = await _db.collection(_colecaoTransacoes).where('id_cliente', isEqualTo: uid).get();
+      final transacoesQuery = await _db
+          .collection(_colecaoTransacoes)
+          .where('id_cliente', isEqualTo: uid)
+          .get();
       for (final doc in transacoesQuery.docs) {
         await doc.reference.delete();
       }
 
       // 2. Exclui transações pendentes/guest registradas sem ID vinculado
-      final transacoesGuestQuery = await _db.collection(_colecaoTransacoes).where('id_cliente', isEqualTo: 'guest').get();
+      final transacoesGuestQuery = await _db
+          .collection(_colecaoTransacoes)
+          .where('id_cliente', isEqualTo: 'guest')
+          .get();
       for (final doc in transacoesGuestQuery.docs) {
         await doc.reference.delete();
       }
 
       // 3. Exclui todas as sessões de chat com o assistente Conrado
-      final chatsQuery = await _db.collection(_colecaoChats).where('id_cliente', isEqualTo: uid).get();
+      final chatsQuery = await _db
+          .collection(_colecaoChats)
+          .where('id_cliente', isEqualTo: uid)
+          .get();
       for (final doc in chatsQuery.docs) {
         await doc.reference.delete();
       }
 
       // 4. Exclui todas as metas financeiras (caixinhas) do usuário
-      final metasQuery = await _db.collection(_colecaoMetas).where('id_cliente', isEqualTo: uid).get();
+      final metasQuery = await _db
+          .collection(_colecaoMetas)
+          .where('id_cliente', isEqualTo: uid)
+          .get();
       for (final doc in metasQuery.docs) {
         await doc.reference.delete();
       }
 
       // 5. Exclui orçamentos por categoria vinculados
-      final orcamentosQuery = await _db.collection(_colecaoOrcamentos).where('id_cliente', isEqualTo: uid).get();
+      final orcamentosQuery = await _db
+          .collection(_colecaoOrcamentos)
+          .where('id_cliente', isEqualTo: uid)
+          .get();
       for (final doc in orcamentosQuery.docs) {
         await doc.reference.delete();
       }
 
       // 6. Exclui notificações registradas para o usuário
-      final notificacoesQuery = await _db.collection(_colecaoNotificacoes).where('id_cliente', isEqualTo: uid).get();
+      final notificacoesQuery = await _db
+          .collection(_colecaoNotificacoes)
+          .where('id_cliente', isEqualTo: uid)
+          .get();
       for (final doc in notificacoesQuery.docs) {
         await doc.reference.delete();
       }
@@ -223,7 +248,10 @@ class FirebaseFirestoreService {
       try {
         await _db.collection(_colecaoContasBancarias).doc(uid).delete();
       } catch (_) {}
-      final contasBancariasQuery = await _db.collection(_colecaoContasBancarias).where('id_cliente', isEqualTo: uid).get();
+      final contasBancariasQuery = await _db
+          .collection(_colecaoContasBancarias)
+          .where('id_cliente', isEqualTo: uid)
+          .get();
       for (final doc in contasBancariasQuery.docs) {
         await doc.reference.delete();
       }
@@ -233,7 +261,9 @@ class FirebaseFirestoreService {
         await _db.collection(_colecaoUsuarios).doc(uid).delete();
       } catch (_) {}
     } catch (e) {
-      debugPrint('Aviso/Erro ao apagar dados do usuário no Cloud Firestore: $e');
+      debugPrint(
+        'Aviso/Erro ao apagar dados do usuário no Cloud Firestore: $e',
+      );
     }
 
     // 9. Reseta os caches locais da aplicação para evitar persistência em tela
@@ -252,19 +282,28 @@ class FirebaseFirestoreService {
 
     try {
       // Atualiza transações pendentes para o UID autenticado
-      final transacoesPendentes = await _db.collection(_colecaoTransacoes).where('id_cliente', isEqualTo: 'guest').get();
+      final transacoesPendentes = await _db
+          .collection(_colecaoTransacoes)
+          .where('id_cliente', isEqualTo: 'guest')
+          .get();
       for (final doc in transacoesPendentes.docs) {
         await doc.reference.update({'id_cliente': uid});
       }
 
       // Atualiza chats pendentes do Conrado
-      final chatsPendentes = await _db.collection(_colecaoChats).where('id_cliente', isEqualTo: 'guest').get();
+      final chatsPendentes = await _db
+          .collection(_colecaoChats)
+          .where('id_cliente', isEqualTo: 'guest')
+          .get();
       for (final doc in chatsPendentes.docs) {
         await doc.reference.update({'id_cliente': uid});
       }
 
       // Atualiza metas financeiras pendentes
-      final metasPendentes = await _db.collection(_colecaoMetas).where('id_cliente', isEqualTo: 'guest').get();
+      final metasPendentes = await _db
+          .collection(_colecaoMetas)
+          .where('id_cliente', isEqualTo: 'guest')
+          .get();
       for (final doc in metasPendentes.docs) {
         await doc.reference.update({'id_cliente': uid});
       }
@@ -308,7 +347,10 @@ class FirebaseFirestoreService {
     };
 
     try {
-      await _db.collection(_colecaoContasBancarias).doc(idCliente).set(dadosConta, SetOptions(merge: true));
+      await _db
+          .collection(_colecaoContasBancarias)
+          .doc(idCliente)
+          .set(dadosConta, SetOptions(merge: true));
     } catch (e) {
       debugPrint('Erro no Firestore ao salvar conta bancária: $e');
     }
@@ -323,7 +365,10 @@ class FirebaseFirestoreService {
   /// Busca os dados da conta bancária vinculada ao usuário.
   Future<Map<String, dynamic>?> buscarContaBancaria(String idCliente) async {
     try {
-      final doc = await _db.collection(_colecaoContasBancarias).doc(idCliente).get();
+      final doc = await _db
+          .collection(_colecaoContasBancarias)
+          .doc(idCliente)
+          .get();
       if (doc.exists) {
         return doc.data();
       }
@@ -343,20 +388,24 @@ class FirebaseFirestoreService {
   ///
   /// Parâmetros:
   /// - [idCliente]: UID do cliente cadastrado no sistema.
-  Stream<List<Map<String, dynamic>>> buscarContasBancariasStream(String idCliente) {
+  Stream<List<Map<String, dynamic>>> buscarContasBancariasStream(
+    String idCliente,
+  ) {
     return _db
         .collection(_colecaoContasBancarias)
         .where('id_cliente', isEqualTo: idCliente)
         .snapshots()
         .map((snapshot) {
-      if (snapshot.docs.isEmpty) {
-        return usuarioLogado != null && usuarioLogado!['conta_bancaria'] != null
-            ? [usuarioLogado!['conta_bancaria'] as Map<String, dynamic>]
-            : [];
-      }
-      return snapshot.docs.map((doc) => doc.data()).toList();
-    });
+          if (snapshot.docs.isEmpty) {
+            return usuarioLogado != null &&
+                    usuarioLogado!['conta_bancaria'] != null
+                ? [usuarioLogado!['conta_bancaria'] as Map<String, dynamic>]
+                : [];
+          }
+          return snapshot.docs.map((doc) => doc.data()).toList();
+        });
   }
+
   /// Cache local em memória para sincronização instantânea e offline de transações.
   static final List<Map<String, dynamic>> _cacheTransacoesLocal = [];
 
@@ -364,7 +413,8 @@ class FirebaseFirestoreService {
   List<Map<String, dynamic>> get cacheTransacoesLocal => _cacheTransacoesLocal;
 
   /// StreamController Broadcast para notificação reativa instantânea de transações.
-  static final StreamController<List<Map<String, dynamic>>> _transacoesStreamController =
+  static final StreamController<List<Map<String, dynamic>>>
+  _transacoesStreamController =
       StreamController<List<Map<String, dynamic>>>.broadcast();
 
   /// Notifica todos os ouvintes reativos de transações/saldo instantaneamente sem recarregar a tela.
@@ -430,7 +480,8 @@ class FirebaseFirestoreService {
     required String tipo, // 'Receita' ou 'Despesa'
     required DateTime data,
   }) async {
-    final String tempId = 't_${DateTime.now().millisecondsSinceEpoch}_${_cacheTransacoesLocal.length}';
+    final String tempId =
+        't_${DateTime.now().millisecondsSinceEpoch}_${_cacheTransacoesLocal.length}';
     final transacao = {
       'firestore_id': tempId,
       'id_cliente': idCliente,
@@ -448,7 +499,9 @@ class FirebaseFirestoreService {
     _notificarAtualizacaoTransacoes();
 
     try {
-      final payload = Map<String, dynamic>.from(transacao)..remove('firestore_id')..remove('data_dt');
+      final payload = Map<String, dynamic>.from(transacao)
+        ..remove('firestore_id')
+        ..remove('data_dt');
       final docRef = await _db.collection(_colecaoTransacoes).add(payload);
       transacao['firestore_id'] = docRef.id;
 
@@ -459,7 +512,9 @@ class FirebaseFirestoreService {
 
       _notificarAtualizacaoTransacoes();
     } catch (e) {
-      debugPrint('Aviso: Transação armazenada no cache local (modo offline): $e');
+      debugPrint(
+        'Aviso: Transação armazenada no cache local (modo offline): $e',
+      );
     }
   }
 
@@ -478,7 +533,9 @@ class FirebaseFirestoreService {
     required String categoria,
     required String tipo,
   }) async {
-    final int index = _cacheTransacoesLocal.indexWhere((t) => t['firestore_id'] == transacaoId);
+    final int index = _cacheTransacoesLocal.indexWhere(
+      (t) => t['firestore_id'] == transacaoId,
+    );
     if (index != -1) {
       _cacheTransacoesLocal[index]['titulo'] = titulo;
       _cacheTransacoesLocal[index]['valor'] = valor;
@@ -532,7 +589,9 @@ class FirebaseFirestoreService {
     StreamSubscription? localSub;
 
     List<Map<String, dynamic>> obterListaAtual() {
-      final list = _cacheTransacoesLocal.where((t) => t['id_cliente'] == idCliente).toList();
+      final list = _cacheTransacoesLocal
+          .where((t) => t['id_cliente'] == idCliente)
+          .toList();
       list.sort((a, b) {
         final dtA = a['data_dt'] as DateTime? ?? DateTime.now();
         final dtB = b['data_dt'] as DateTime? ?? DateTime.now();
@@ -560,31 +619,35 @@ class FirebaseFirestoreService {
               .where('id_cliente', isEqualTo: idCliente)
               .snapshots()
               .listen(
-            (snapshot) {
-              for (final doc in snapshot.docs) {
-                final data = doc.data();
-                data['firestore_id'] = doc.id;
-                if (data['data'] is Timestamp) {
-                  data['data_dt'] = (data['data'] as Timestamp).toDate();
-                }
-                final idx = _cacheTransacoesLocal.indexWhere((t) => t['firestore_id'] == doc.id);
-                if (idx >= 0) {
-                  _cacheTransacoesLocal[idx] = data;
-                } else {
-                  _cacheTransacoesLocal.add(data);
-                }
-              }
-              if (!controller.isClosed) {
-                controller.add(obterListaAtual());
-              }
-            },
-            onError: (error) {
-              debugPrint('Aviso ao sincronizar transações com o Firestore: $error');
-              if (!controller.isClosed) {
-                controller.add(obterListaAtual());
-              }
-            },
-          );
+                (snapshot) {
+                  for (final doc in snapshot.docs) {
+                    final data = doc.data();
+                    data['firestore_id'] = doc.id;
+                    if (data['data'] is Timestamp) {
+                      data['data_dt'] = (data['data'] as Timestamp).toDate();
+                    }
+                    final idx = _cacheTransacoesLocal.indexWhere(
+                      (t) => t['firestore_id'] == doc.id,
+                    );
+                    if (idx >= 0) {
+                      _cacheTransacoesLocal[idx] = data;
+                    } else {
+                      _cacheTransacoesLocal.add(data);
+                    }
+                  }
+                  if (!controller.isClosed) {
+                    controller.add(obterListaAtual());
+                  }
+                },
+                onError: (error) {
+                  debugPrint(
+                    'Aviso ao sincronizar transações com o Firestore: $error',
+                  );
+                  if (!controller.isClosed) {
+                    controller.add(obterListaAtual());
+                  }
+                },
+              );
         } catch (e) {
           debugPrint('Erro ao iniciar stream Firestore de transações: $e');
         }
@@ -620,7 +683,10 @@ class FirebaseFirestoreService {
     if (tipoRenda != null) atualizacoes['tipo_renda'] = tipoRenda;
 
     try {
-      await _db.collection(_colecaoUsuarios).doc(uid).set(atualizacoes, SetOptions(merge: true));
+      await _db
+          .collection(_colecaoUsuarios)
+          .doc(uid)
+          .set(atualizacoes, SetOptions(merge: true));
     } catch (e) {
       debugPrint('Erro ao atualizar perfil no Firestore: $e');
     }
@@ -664,7 +730,10 @@ class FirebaseFirestoreService {
   /// Parâmetros:
   /// - [uid]: Identificador único do usuário.
   /// - [codigoEncriptado]: String contendo os dados da imagem codificados/encriptados.
-  Future<bool> salvarFotoPerfilEncriptada(String uid, String codigoEncriptado) async {
+  Future<bool> salvarFotoPerfilEncriptada(
+    String uid,
+    String codigoEncriptado,
+  ) async {
     try {
       await _db.collection(_colecaoUsuarios).doc(uid).set({
         'foto_perfil_encriptada': codigoEncriptado,
@@ -714,11 +783,11 @@ class FirebaseFirestoreService {
           .collection(_colecaoOrcamentos)
           .doc('${idCliente}_$categoria')
           .set({
-        'id_cliente': idCliente,
-        'categoria': categoria,
-        'limite': limite,
-        'atualizado_em': FieldValue.serverTimestamp(),
-      }, SetOptions(merge: true));
+            'id_cliente': idCliente,
+            'categoria': categoria,
+            'limite': limite,
+            'atualizado_em': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
       return true;
     } catch (e) {
       debugPrint('Aviso: Orçamento salvo no cache local (modo offline): $e');
@@ -735,24 +804,33 @@ class FirebaseFirestoreService {
           .where('id_cliente', isEqualTo: idCliente)
           .snapshots()
           .map((snapshot) {
-        final docs = snapshot.docs.map((doc) {
-          final data = doc.data();
-          data['id'] = doc.id;
-          return data;
-        }).toList();
+            final docs = snapshot.docs.map((doc) {
+              final data = doc.data();
+              data['id'] = doc.id;
+              return data;
+            }).toList();
 
-        // Atualiza o cache local com os dados exatamente presentes no Firestore
-        _cacheOrcamentosLocal.removeWhere((o) => o['id_cliente'] == idCliente);
-        _cacheOrcamentosLocal.addAll(docs);
+            // Atualiza o cache local com os dados exatamente presentes no Firestore
+            _cacheOrcamentosLocal.removeWhere(
+              (o) => o['id_cliente'] == idCliente,
+            );
+            _cacheOrcamentosLocal.addAll(docs);
 
-        return docs;
-      }).handleError((error) {
-        debugPrint('Aviso ao ouvir orçamentos no Firestore: $error');
-        return _cacheOrcamentosLocal.where((o) => o['id_cliente'] == idCliente).toList();
-      });
+            return docs;
+          })
+          .handleError((error) {
+            debugPrint('Aviso ao ouvir orçamentos no Firestore: $error');
+            return _cacheOrcamentosLocal
+                .where((o) => o['id_cliente'] == idCliente)
+                .toList();
+          });
     } catch (e) {
       debugPrint('Erro ao buscar orçamentos no Firestore: $e');
-      return Stream.value(_cacheOrcamentosLocal.where((o) => o['id_cliente'] == idCliente).toList());
+      return Stream.value(
+        _cacheOrcamentosLocal
+            .where((o) => o['id_cliente'] == idCliente)
+            .toList(),
+      );
     }
   }
 
@@ -783,18 +861,26 @@ class FirebaseFirestoreService {
   static final List<Map<String, dynamic>> _cacheNotificacoesLocal = [];
 
   /// StreamController Broadcast para notificação reativa instantânea de notificações.
-  static final StreamController<List<Map<String, dynamic>>> _notificacoesStreamController =
+  static final StreamController<List<Map<String, dynamic>>>
+  _notificacoesStreamController =
       StreamController<List<Map<String, dynamic>>>.broadcast();
 
   /// Retorna um Stream em tempo real das notificações do usuário cadastradas no Firestore.
-  Stream<List<Map<String, dynamic>>> buscarNotificacoesStream(String idCliente) {
+  Stream<List<Map<String, dynamic>>> buscarNotificacoesStream(
+    String idCliente,
+  ) {
     late StreamController<List<Map<String, dynamic>>> controller;
     StreamSubscription? firestoreSub;
     StreamSubscription? localSub;
 
     List<Map<String, dynamic>> obterListaNotificacoes() {
       final list = _cacheNotificacoesLocal
-          .where((n) => n['id_cliente'] == idCliente || n['id_cliente'] == null || n['id_cliente'] == 'guest')
+          .where(
+            (n) =>
+                n['id_cliente'] == idCliente ||
+                n['id_cliente'] == null ||
+                n['id_cliente'] == 'guest',
+          )
           .toList();
       list.sort((a, b) {
         final dtA = (a['data'] is Timestamp)
@@ -827,28 +913,32 @@ class FirebaseFirestoreService {
               .where('id_cliente', isEqualTo: idCliente)
               .snapshots()
               .listen(
-            (snapshot) {
-              for (final doc in snapshot.docs) {
-                final data = doc.data();
-                data['id'] = doc.id;
-                final idx = _cacheNotificacoesLocal.indexWhere((n) => n['id'] == doc.id);
-                if (idx >= 0) {
-                  _cacheNotificacoesLocal[idx] = data;
-                } else {
-                  _cacheNotificacoesLocal.add(data);
-                }
-              }
-              if (!controller.isClosed) {
-                controller.add(obterListaNotificacoes());
-              }
-            },
-            onError: (err) {
-              debugPrint('Aviso ao sincronizar notificações do Firestore: $err');
-              if (!controller.isClosed) {
-                controller.add(obterListaNotificacoes());
-              }
-            },
-          );
+                (snapshot) {
+                  for (final doc in snapshot.docs) {
+                    final data = doc.data();
+                    data['id'] = doc.id;
+                    final idx = _cacheNotificacoesLocal.indexWhere(
+                      (n) => n['id'] == doc.id,
+                    );
+                    if (idx >= 0) {
+                      _cacheNotificacoesLocal[idx] = data;
+                    } else {
+                      _cacheNotificacoesLocal.add(data);
+                    }
+                  }
+                  if (!controller.isClosed) {
+                    controller.add(obterListaNotificacoes());
+                  }
+                },
+                onError: (err) {
+                  debugPrint(
+                    'Aviso ao sincronizar notificações do Firestore: $err',
+                  );
+                  if (!controller.isClosed) {
+                    controller.add(obterListaNotificacoes());
+                  }
+                },
+              );
         } catch (e) {
           debugPrint('Erro ao iniciar stream Firestore de notificações: $e');
         }
@@ -870,7 +960,8 @@ class FirebaseFirestoreService {
     required String categoria,
   }) async {
     final item = {
-      'id': 'notif_${DateTime.now().millisecondsSinceEpoch}_${_cacheNotificacoesLocal.length}',
+      'id':
+          'notif_${DateTime.now().millisecondsSinceEpoch}_${_cacheNotificacoesLocal.length}',
       'id_cliente': idCliente,
       'titulo': titulo,
       'mensagem': mensagem,
@@ -902,13 +993,17 @@ class FirebaseFirestoreService {
 
   /// Marca uma notificação específica como lida no Firestore e no cache local.
   Future<void> marcarNotificacaoComoLida(String idNotificacao) async {
-    final idx = _cacheNotificacoesLocal.indexWhere((n) => n['id'] == idNotificacao);
+    final idx = _cacheNotificacoesLocal.indexWhere(
+      (n) => n['id'] == idNotificacao,
+    );
     if (idx >= 0) {
       _cacheNotificacoesLocal[idx]['lida'] = true;
       _notificacoesStreamController.add(List.from(_cacheNotificacoesLocal));
     }
     try {
-      await _db.collection(_colecaoNotificacoes).doc(idNotificacao).update({'lida': true});
+      await _db.collection(_colecaoNotificacoes).doc(idNotificacao).update({
+        'lida': true,
+      });
     } catch (e) {
       debugPrint('Erro ao marcar notificação como lida: $e');
     }
@@ -917,12 +1012,18 @@ class FirebaseFirestoreService {
   /// Limpa todas as notificações do usuário no Cloud Firestore e no cache local.
   Future<void> limparNotificacoesDoUsuario(String idCliente) async {
     _cacheNotificacoesLocal.removeWhere(
-      (n) => n['id_cliente'] == idCliente || n['id_cliente'] == null || n['id_cliente'] == 'guest',
+      (n) =>
+          n['id_cliente'] == idCliente ||
+          n['id_cliente'] == null ||
+          n['id_cliente'] == 'guest',
     );
     _notificacoesStreamController.add(List.from(_cacheNotificacoesLocal));
 
     try {
-      final query = await _db.collection(_colecaoNotificacoes).where('id_cliente', isEqualTo: idCliente).get();
+      final query = await _db
+          .collection(_colecaoNotificacoes)
+          .where('id_cliente', isEqualTo: idCliente)
+          .get();
       for (final doc in query.docs) {
         await doc.reference.delete();
       }
@@ -932,7 +1033,9 @@ class FirebaseFirestoreService {
   }
 
   /// Busca as notificações do usuário no Firestore (compatibilidade síncrona/fallback).
-  Future<List<Map<String, dynamic>>> buscarNotificacoes(String idCliente) async {
+  Future<List<Map<String, dynamic>>> buscarNotificacoes(
+    String idCliente,
+  ) async {
     try {
       final querySnapshot = await _db
           .collection(_colecaoNotificacoes)
@@ -961,7 +1064,8 @@ class FirebaseFirestoreService {
       {
         'id': 'notif_1',
         'titulo': 'Bem-vindo ao COGITO!',
-        'mensagem': 'Sua conta foi criada com sucesso. Configure seus envelopes de orçamento.',
+        'mensagem':
+            'Sua conta foi criada com sucesso. Configure seus envelopes de orçamento.',
         'categoria': 'Sistema',
         'lida': false,
         'data': DateTime.now().subtract(const Duration(minutes: 30)),
@@ -969,7 +1073,8 @@ class FirebaseFirestoreService {
       {
         'id': 'notif_2',
         'titulo': 'Dica do CONRADO 💡',
-        'mensagem': 'Você atingiu 70% do seu limite de gastos com Alimentação este mês.',
+        'mensagem':
+            'Você atingiu 70% do seu limite de gastos com Alimentação este mês.',
         'categoria': 'IA Financeira',
         'lida': false,
         'data': DateTime.now().subtract(const Duration(hours: 4)),
@@ -977,7 +1082,8 @@ class FirebaseFirestoreService {
       {
         'id': 'notif_3',
         'titulo': 'Segurança em Primeiro Lugar',
-        'mensagem': 'Seus dados estão protegidos com criptografia de ponta a ponta na nuvem.',
+        'mensagem':
+            'Seus dados estão protegidos com criptografia de ponta a ponta na nuvem.',
         'categoria': 'Segurança',
         'lida': true,
         'data': DateTime.now().subtract(const Duration(days: 1)),
@@ -1022,10 +1128,7 @@ class FirebaseFirestoreService {
     required String chatId,
   }) async {
     try {
-      await _db
-          .collection(_colecaoChats)
-          .doc('${idCliente}_$chatId')
-          .delete();
+      await _db.collection(_colecaoChats).doc('${idCliente}_$chatId').delete();
       return true;
     } catch (e) {
       debugPrint('Erro ao excluir sessão de chat no Firestore: $e');
@@ -1056,7 +1159,8 @@ class FirebaseFirestoreService {
     String categoria = 'Geral',
   }) async {
     final bool concluida = valorAtual >= valorObjetivo;
-    final String generatedId = (metaId != null && metaId.isNotEmpty && !metaId.startsWith('mock_'))
+    final String generatedId =
+        (metaId != null && metaId.isNotEmpty && !metaId.startsWith('mock_'))
         ? metaId
         : 'meta_${DateTime.now().millisecondsSinceEpoch}';
 
@@ -1071,7 +1175,9 @@ class FirebaseFirestoreService {
     };
 
     // Atualiza o cache local imediatamente para disponibilidade instantânea da UI
-    final existingIndex = _cacheMetasLocal.indexWhere((m) => m['firestore_id'] == generatedId);
+    final existingIndex = _cacheMetasLocal.indexWhere(
+      (m) => m['firestore_id'] == generatedId,
+    );
     if (existingIndex >= 0) {
       _cacheMetasLocal[existingIndex] = dadosMeta;
     } else {
@@ -1079,14 +1185,20 @@ class FirebaseFirestoreService {
     }
 
     try {
-      final Map<String, dynamic> firestorePayload = Map.from(dadosMeta)..remove('firestore_id');
+      final Map<String, dynamic> firestorePayload = Map.from(dadosMeta)
+        ..remove('firestore_id');
       firestorePayload['atualizado_em'] = FieldValue.serverTimestamp();
 
       if (metaId != null && metaId.isNotEmpty && !metaId.startsWith('mock_')) {
-        await _db.collection(_colecaoMetas).doc(metaId).set(firestorePayload, SetOptions(merge: true));
+        await _db
+            .collection(_colecaoMetas)
+            .doc(metaId)
+            .set(firestorePayload, SetOptions(merge: true));
       } else {
         firestorePayload['criado_em'] = FieldValue.serverTimestamp();
-        final docRef = await _db.collection(_colecaoMetas).add(firestorePayload);
+        final docRef = await _db
+            .collection(_colecaoMetas)
+            .add(firestorePayload);
         dadosMeta['firestore_id'] = docRef.id;
       }
       return true;
@@ -1113,7 +1225,9 @@ class FirebaseFirestoreService {
     final bool concluida = novoValorAtual >= valorObjetivo;
 
     // Atualiza o cache em memória
-    final index = _cacheMetasLocal.indexWhere((m) => m['firestore_id'] == metaId);
+    final index = _cacheMetasLocal.indexWhere(
+      (m) => m['firestore_id'] == metaId,
+    );
     if (index >= 0) {
       _cacheMetasLocal[index]['valor_atual'] = novoValorAtual;
       _cacheMetasLocal[index]['concluida'] = concluida;
@@ -1164,15 +1278,19 @@ class FirebaseFirestoreService {
           .where('id_cliente', isEqualTo: idCliente)
           .snapshots()
           .map((snapshot) {
-            final List<Map<String, dynamic>> metasFirestore = snapshot.docs.map((doc) {
-              final data = doc.data();
-              data['firestore_id'] = doc.id;
-              return data;
-            }).toList();
+            final List<Map<String, dynamic>> metasFirestore = snapshot.docs.map(
+              (doc) {
+                final data = doc.data();
+                data['firestore_id'] = doc.id;
+                return data;
+              },
+            ).toList();
 
             // Sincroniza o cache local com os dados atualizados do Firestore
             for (final m in metasFirestore) {
-              final idx = _cacheMetasLocal.indexWhere((c) => c['firestore_id'] == m['firestore_id']);
+              final idx = _cacheMetasLocal.indexWhere(
+                (c) => c['firestore_id'] == m['firestore_id'],
+              );
               if (idx >= 0) {
                 _cacheMetasLocal[idx] = m;
               } else {
@@ -1180,10 +1298,14 @@ class FirebaseFirestoreService {
               }
             }
 
-            return metasFirestore.isNotEmpty ? metasFirestore : List<Map<String, dynamic>>.from(_cacheMetasLocal);
+            return metasFirestore.isNotEmpty
+                ? metasFirestore
+                : List<Map<String, dynamic>>.from(_cacheMetasLocal);
           })
           .handleError((error) {
-            debugPrint('Aviso ao ouvir metas no Firestore, utilizando cache local: $error');
+            debugPrint(
+              'Aviso ao ouvir metas no Firestore, utilizando cache local: $error',
+            );
             return _cacheMetasLocal;
           });
     } catch (e) {
@@ -1241,7 +1363,8 @@ class FirebaseFirestoreService {
   ];
 
   /// Controlador reativo para emissão imediata de atualizações nos cartões de crédito.
-  static final StreamController<List<Map<String, dynamic>>> _cartoesStreamController =
+  static final StreamController<List<Map<String, dynamic>>>
+  _cartoesStreamController =
       StreamController<List<Map<String, dynamic>>>.broadcast();
 
   /// Cadastra um novo cartão de crédito para o cliente no Firestore e no cache local.
@@ -1270,10 +1393,13 @@ class FirebaseFirestoreService {
     String cor = '0xFF142251',
     String corFinal = '0xFF244288',
   }) async {
-    final double limiteDisponivel = (limiteTotal - faturaAtual).clamp(0.0, limiteTotal);
+    final double limiteDisponivel = (limiteTotal - faturaAtual).clamp(
+      0.0,
+      limiteTotal,
+    );
     final String digitosLimpos = ultimosDigitos.replaceAll(RegExp(r'\D'), '');
-    final String digitosFinais = digitosLimpos.length >= 4 
-        ? digitosLimpos.substring(digitosLimpos.length - 4) 
+    final String digitosFinais = digitosLimpos.length >= 4
+        ? digitosLimpos.substring(digitosLimpos.length - 4)
         : digitosLimpos.padLeft(4, '0');
 
     final String cartaoId = 'card_${DateTime.now().millisecondsSinceEpoch}';
@@ -1317,11 +1443,20 @@ class FirebaseFirestoreService {
   ///
   /// Retorno:
   /// - [Stream<List<Map<String, dynamic>>>]: Lista em tempo real de cartões.
-  Stream<List<Map<String, dynamic>>> buscarCartoesStream(String idCliente) async* {
-    List<Map<String, dynamic>> filtrarParaCliente(List<Map<String, dynamic>> lista) {
-      final filtrados = lista.where(
-        (c) => c['id_cliente'] == idCliente || c['id_cliente'] == 'default' || c['id_cliente'] == null,
-      ).toList();
+  Stream<List<Map<String, dynamic>>> buscarCartoesStream(
+    String idCliente,
+  ) async* {
+    List<Map<String, dynamic>> filtrarParaCliente(
+      List<Map<String, dynamic>> lista,
+    ) {
+      final filtrados = lista
+          .where(
+            (c) =>
+                c['id_cliente'] == idCliente ||
+                c['id_cliente'] == 'default' ||
+                c['id_cliente'] == null,
+          )
+          .toList();
       return filtrados.isNotEmpty ? filtrados : lista;
     }
 
@@ -1345,34 +1480,38 @@ class FirebaseFirestoreService {
           .where('id_cliente', isEqualTo: idCliente)
           .snapshots()
           .listen(
-        (snapshot) {
-          final List<Map<String, dynamic>> cartoesFirestore = snapshot.docs.map((doc) {
-            final data = doc.data();
-            data['id'] = doc.id;
-            return data;
-          }).toList();
+            (snapshot) {
+              final List<Map<String, dynamic>> cartoesFirestore = snapshot.docs
+                  .map((doc) {
+                    final data = doc.data();
+                    data['id'] = doc.id;
+                    return data;
+                  })
+                  .toList();
 
-          if (cartoesFirestore.isNotEmpty) {
-            for (final cf in cartoesFirestore) {
-              final idx = _cacheCartoesLocal.indexWhere((c) => c['id'] == cf['id']);
-              if (idx >= 0) {
-                _cacheCartoesLocal[idx] = cf;
-              } else {
-                _cacheCartoesLocal.insert(0, cf);
+              if (cartoesFirestore.isNotEmpty) {
+                for (final cf in cartoesFirestore) {
+                  final idx = _cacheCartoesLocal.indexWhere(
+                    (c) => c['id'] == cf['id'],
+                  );
+                  if (idx >= 0) {
+                    _cacheCartoesLocal[idx] = cf;
+                  } else {
+                    _cacheCartoesLocal.insert(0, cf);
+                  }
+                }
+                if (!controller.isClosed) {
+                  controller.add(filtrarParaCliente(_cacheCartoesLocal));
+                }
               }
-            }
-            if (!controller.isClosed) {
-              controller.add(filtrarParaCliente(_cacheCartoesLocal));
-            }
-          }
-        },
-        onError: (e) {
-          debugPrint('Aviso ao sincronizar cartões no Firestore: $e');
-          if (!controller.isClosed) {
-            controller.add(filtrarParaCliente(_cacheCartoesLocal));
-          }
-        },
-      );
+            },
+            onError: (e) {
+              debugPrint('Aviso ao sincronizar cartões no Firestore: $e');
+              if (!controller.isClosed) {
+                controller.add(filtrarParaCliente(_cacheCartoesLocal));
+              }
+            },
+          );
     } catch (e) {
       debugPrint('Erro ao iniciar stream de cartões no Firestore: $e');
     }
@@ -1405,4 +1544,3 @@ class FirebaseFirestoreService {
     return true;
   }
 }
-

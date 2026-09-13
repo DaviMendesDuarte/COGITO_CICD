@@ -156,7 +156,9 @@ class _DashboardState extends State<Dashboard> {
                 _buildInfoItem(
                   Icons.calendar_today_outlined,
                   'Vencimento',
-                  cartao['vencimento']?.toString() ?? cartao['validade']?.toString() ?? 'Dia 10',
+                  cartao['vencimento']?.toString() ??
+                      cartao['validade']?.toString() ??
+                      'Dia 10',
                 ),
                 const SizedBox(height: 24),
                 SizedBox(
@@ -423,7 +425,8 @@ class _DashboardState extends State<Dashboard> {
               }
             }
 
-            final double saldoCalculado = saldoBaseContas + totalEntradas - totalSaidas;
+            final double saldoCalculado =
+                saldoBaseContas + totalEntradas - totalSaidas;
 
             return Container(
               decoration: BoxDecoration(
@@ -604,11 +607,7 @@ class _DashboardState extends State<Dashboard> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Ícone autêntico de coroa em branco
-              Icon(
-                MdiIcons.crown,
-                color: Colors.white,
-                size: 28,
-              ),
+              Icon(MdiIcons.crown, color: Colors.white, size: 28),
               const SizedBox(width: 8),
               Text(
                 'Entenda o CONRADO',
@@ -907,7 +906,9 @@ class _DashboardState extends State<Dashboard> {
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primaryBlue.withValues(alpha: 0.25),
+                            color: AppColors.primaryBlue.withValues(
+                              alpha: 0.25,
+                            ),
                             blurRadius: 8,
                             offset: const Offset(0, 3),
                           ),
@@ -928,9 +929,13 @@ class _DashboardState extends State<Dashboard> {
                       itemCount: cartoes.length,
                       itemBuilder: (context, index) {
                         final c = cartoes[index];
-                        final Color corInicial = _obterCorCartao(c['cor'] ?? c['corInicial'], AppColors.primaryBlue);
+                        final Color corInicial = _obterCorCartao(
+                          c['cor'] ?? c['corInicial'],
+                          AppColors.primaryBlue,
+                        );
 
-                        final double? ld = (c['limite_disponivel'] as num?)?.toDouble();
+                        final double? ld = (c['limite_disponivel'] as num?)
+                            ?.toDouble();
                         final String strLimiteDisp = ld != null
                             ? 'R\$ ${ld.toStringAsFixed(2)}'
                             : (c['limite']?.toString() ?? 'R\$ 0,00');
@@ -957,7 +962,8 @@ class _DashboardState extends State<Dashboard> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       c['banco'].toString(),
@@ -994,10 +1000,12 @@ class _DashboardState extends State<Dashboard> {
                                   ),
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'TITULAR',
@@ -1016,7 +1024,8 @@ class _DashboardState extends State<Dashboard> {
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: [
                                         Text(
                                           'DISPONÍVEL',
@@ -1136,7 +1145,10 @@ class _DashboardState extends State<Dashboard> {
               if (metasEmAndamento.isEmpty)
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 20,
+                    horizontal: 16,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFF8F9FD),
                     borderRadius: BorderRadius.circular(16),
@@ -1174,10 +1186,18 @@ class _DashboardState extends State<Dashboard> {
                             builder: (context) => const MetasFinanceirasPage(),
                           ),
                         ),
-                        icon: const Icon(Icons.add, size: 16, color: Colors.white),
+                        icon: const Icon(
+                          Icons.add,
+                          size: 16,
+                          color: Colors.white,
+                        ),
                         label: const Text(
                           'Criar Meta',
-                          style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryBlue,
@@ -1198,9 +1218,14 @@ class _DashboardState extends State<Dashboard> {
                     children: metasEmAndamento.map((meta) {
                       final String titulo = meta['titulo'] ?? 'Meta';
                       final String? categoria = meta['categoria']?.toString();
-                      final double atual = (meta['valor_atual'] as num?)?.toDouble() ?? 0.0;
-                      final double objetivo = (meta['valor_objetivo'] as num?)?.toDouble() ?? 1.0;
-                      final double progresso = (atual / objetivo).clamp(0.0, 1.0);
+                      final double atual =
+                          (meta['valor_atual'] as num?)?.toDouble() ?? 0.0;
+                      final double objetivo =
+                          (meta['valor_objetivo'] as num?)?.toDouble() ?? 1.0;
+                      final double progresso = (atual / objetivo).clamp(
+                        0.0,
+                        1.0,
+                      );
                       final int porcentagem = (progresso * 100).toInt();
 
                       return Container(
@@ -1233,7 +1258,9 @@ class _DashboardState extends State<Dashboard> {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                    color: AppColors.primaryBlue.withValues(alpha: 0.08),
+                                    color: AppColors.primaryBlue.withValues(
+                                      alpha: 0.08,
+                                    ),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Icon(

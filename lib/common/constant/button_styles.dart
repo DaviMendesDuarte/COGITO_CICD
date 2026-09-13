@@ -9,19 +9,12 @@ class ButtonStyles {
   /// Estilo de botão primário preenchido (ElevatedButton), com fundo azul e bordas arredondadas.
   static ButtonStyle primary = ElevatedButton.styleFrom(
     backgroundColor: AppColors.primaryBlue,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(67),
-    ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(67)),
   );
 
   /// Estilo de botão secundário com contorno (OutlinedButton), com borda azul espessa.
   static ButtonStyle secondary = OutlinedButton.styleFrom(
-    side: const BorderSide(
-      color: AppColors.primaryBlue,
-      width: 3.5,
-    ),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(67),
-    ),
+    side: const BorderSide(color: AppColors.primaryBlue, width: 3.5),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(67)),
   );
 }

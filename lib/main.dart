@@ -22,4 +22,4 @@ void main() async {
 
   // Inicializa a árvore de widgets da aplicação chamando a classe raiz App.
   runApp(const App());
-}
+}

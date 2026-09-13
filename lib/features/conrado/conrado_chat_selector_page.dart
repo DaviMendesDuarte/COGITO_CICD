@@ -13,7 +13,8 @@ class ConradoChatSelectorPage extends StatefulWidget {
   const ConradoChatSelectorPage({super.key});
 
   @override
-  State<ConradoChatSelectorPage> createState() => _ConradoChatSelectorPageState();
+  State<ConradoChatSelectorPage> createState() =>
+      _ConradoChatSelectorPageState();
 }
 
 class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
@@ -22,7 +23,8 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
     {
       'id': 'chat_1',
       'titulo': 'Planejamento Financeiro',
-      'ultimaMensagem': 'Olá! Como posso ajudar você a organizar seu dinheiro hoje?',
+      'ultimaMensagem':
+          'Olá! Como posso ajudar você a organizar seu dinheiro hoje?',
       'mensagensCount': 4,
       'atualizadoEm': 'Hoje, 14:30',
       'iconColor': AppColors.primaryBlue,
@@ -30,7 +32,8 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
     {
       'id': 'chat_2',
       'titulo': 'Modo Freelancer & Job',
-      'ultimaMensagem': 'Dica: Calcule seu valor hora considerando seus custos fixos.',
+      'ultimaMensagem':
+          'Dica: Calcule seu valor hora considerando seus custos fixos.',
       'mensagensCount': 8,
       'atualizadoEm': 'Ontem',
       'iconColor': AppColors.primaryOrange,
@@ -59,7 +62,8 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
   /// Cria um novo chat e abre a tela de conversa individual.
   void _criarNovoChat([String? tituloInicial]) {
     final String novoId = 'chat_${DateTime.now().millisecondsSinceEpoch}';
-    final String titulo = tituloInicial ?? 'Conversa ${_chatSessions.length + 1}';
+    final String titulo =
+        tituloInicial ?? 'Conversa ${_chatSessions.length + 1}';
 
     setState(() {
       _chatSessions.add({
@@ -68,14 +72,17 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
         'ultimaMensagem': 'Nova conversa iniciada.',
         'mensagensCount': 1,
         'atualizadoEm': 'Agora',
-        'iconColor': _chatSessions.length % 2 == 0 ? AppColors.primaryBlue : AppColors.primaryOrange,
+        'iconColor': _chatSessions.length % 2 == 0
+            ? AppColors.primaryBlue
+            : AppColors.primaryOrange,
       });
     });
 
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ConradoChatPage(chatId: novoId, tituloChat: titulo),
+        builder: (context) =>
+            ConradoChatPage(chatId: novoId, tituloChat: titulo),
       ),
     ).then((_) => _carregarPlanoUsuario());
   }
@@ -88,7 +95,8 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
     final chat = _chatSessions[index];
     final String chatId = chat['id'] ?? '';
     final usuario = FirebaseFirestoreService.usuarioLogado;
-    final String uid = (usuario?['uid'] ?? usuario?['id_cliente'] ?? 'guest').toString();
+    final String uid = (usuario?['uid'] ?? usuario?['id_cliente'] ?? 'guest')
+        .toString();
 
     final bool? confirmar = await showDialog<bool>(
       context: context,
@@ -101,7 +109,9 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
             Text('Apagar Conversa'),
           ],
         ),
-        content: Text('Deseja realmente apagar a conversa "${chat['titulo']}"?'),
+        content: Text(
+          'Deseja realmente apagar a conversa "${chat['titulo']}"?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -158,7 +168,11 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
                     // Carrossel de Tópicos Sugeridos
                     const Text(
                       'Tópicos Recomendados',
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primaryBlue,
+                      ),
                     ),
                     const SizedBox(height: 10),
                     _buildSuggestedTopics(),
@@ -171,11 +185,18 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
                       children: [
                         const Text(
                           'Suas Conversas',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
                         Text(
                           '${_chatSessions.length} ativas',
-                          style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 13,
+                          ),
                         ),
                       ],
                     ),
@@ -218,14 +239,21 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
             children: [
               Container(
                 padding: const EdgeInsets.all(2),
-                decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
                 child: CircleAvatar(
                   radius: 24,
                   backgroundColor: AppColors.primaryOrange,
                   child: Image.asset(
                     'assets/images/conrado/conrado_hi.png',
                     fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) => const Icon(Icons.psychology, color: Colors.white, size: 28),
+                    errorBuilder: (context, error, stackTrace) => const Icon(
+                      Icons.psychology,
+                      color: Colors.white,
+                      size: 28,
+                    ),
                   ),
                 ),
               ),
@@ -246,7 +274,11 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
                     const SizedBox(height: 2),
                     Row(
                       children: [
-                        const Icon(Icons.circle, size: 8, color: Colors.greenAccent),
+                        const Icon(
+                          Icons.circle,
+                          size: 8,
+                          color: Colors.greenAccent,
+                        ),
                         const SizedBox(width: 6),
                         const Text(
                           'Assistente de Inteligência Financeira',
@@ -267,19 +299,32 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
                   ).then((_) => _carregarPlanoUsuario());
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
-                    color: _planoUsuario == 'Grátis' ? AppColors.primaryOrange : Colors.green.shade600,
+                    color: _planoUsuario == 'Grátis'
+                        ? AppColors.primaryOrange
+                        : Colors.green.shade600,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.workspace_premium, color: Colors.white, size: 14),
+                      const Icon(
+                        Icons.workspace_premium,
+                        color: Colors.white,
+                        size: 14,
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         _planoUsuario,
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 11),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 11,
+                        ),
                       ),
                     ],
                   ),
@@ -301,12 +346,18 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
         icon: const Icon(Icons.add_comment_rounded, color: Colors.white),
         label: const Text(
           'NOVA CONVERSA COM O CONRADO',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+          ),
         ),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryOrange,
           padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           elevation: 3,
         ),
       ),
@@ -332,10 +383,15 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
           return Padding(
             padding: const EdgeInsets.only(right: 8),
             child: InkWell(
-              onTap: () => _criarNovoChat(title.replaceAll(RegExp(r'[^\w\s\-]'), '').trim()),
+              onTap: () => _criarNovoChat(
+                title.replaceAll(RegExp(r'[^\w\s\-]'), '').trim(),
+              ),
               borderRadius: BorderRadius.circular(16),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
                   color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
@@ -343,7 +399,11 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
                 ),
                 child: Text(
                   title,
-                  style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12),
+                  style: TextStyle(
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
                 ),
               ),
             ),
@@ -381,14 +441,19 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ConradoChatPage(chatId: id, tituloChat: titulo),
+              builder: (context) =>
+                  ConradoChatPage(chatId: id, tituloChat: titulo),
             ),
           ).then((_) => _carregarPlanoUsuario());
         },
         leading: CircleAvatar(
           radius: 22,
           backgroundColor: iconColor.withValues(alpha: 0.12),
-          child: Icon(Icons.chat_bubble_outline_rounded, color: iconColor, size: 22),
+          child: Icon(
+            Icons.chat_bubble_outline_rounded,
+            color: iconColor,
+            size: 22,
+          ),
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -398,7 +463,11 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
                 titulo,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: AppColors.textPrimary),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: AppColors.textPrimary,
+                ),
               ),
             ),
             Text(
@@ -417,7 +486,11 @@ class _ConradoChatSelectorPageState extends State<ConradoChatSelectorPage> {
           ),
         ),
         trailing: IconButton(
-          icon: const Icon(Icons.delete_outline, color: Colors.redAccent, size: 20),
+          icon: const Icon(
+            Icons.delete_outline,
+            color: Colors.redAccent,
+            size: 20,
+          ),
           onPressed: () => _excluirChat(index),
           tooltip: 'Excluir conversa',
         ),

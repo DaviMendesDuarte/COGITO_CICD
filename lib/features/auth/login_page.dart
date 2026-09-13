@@ -54,14 +54,12 @@ class _LoginPageState extends State<LoginPage> {
     final String senha = _senhaController.text;
 
     try {
-      await _firebaseService.entrarComEmailESenha(
-        email: email,
-        senha: senha,
-      );
+      await _firebaseService.entrarComEmailESenha(email: email, senha: senha);
 
       if (!mounted) return;
 
-      final String nomeExibicao = FirebaseFirestoreService.usuarioLogado?['nome'] ??
+      final String nomeExibicao =
+          FirebaseFirestoreService.usuarioLogado?['nome'] ??
           (email.contains('@') ? email.split('@').first : 'Usuário COGITO');
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -107,8 +105,11 @@ class _LoginPageState extends State<LoginPage> {
         FirebaseFirestoreService.usuarioLogado =
             FirebaseAuthService.extrairDadosUsuarioGoogle(usuario);
 
-        final perfil = await FirebaseFirestoreService().buscarUsuario(usuario.uid);
-        final bool precisaInformacoesAdicionais = perfil == null ||
+        final perfil = await FirebaseFirestoreService().buscarUsuario(
+          usuario.uid,
+        );
+        final bool precisaInformacoesAdicionais =
+            perfil == null ||
             perfil['idade'] == null ||
             perfil['idade'] == 0 ||
             perfil['tipo_renda'] == null;
@@ -124,7 +125,9 @@ class _LoginPageState extends State<LoginPage> {
 
         if (precisaInformacoesAdicionais) {
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const PrimeirosPassosPage()),
+            MaterialPageRoute(
+              builder: (context) => const PrimeirosPassosPage(),
+            ),
             (route) => false,
           );
         } else {
@@ -161,13 +164,19 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: AppColors.white,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.primaryBlue),
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: AppColors.primaryBlue,
+            ),
             onPressed: () => Navigator.pop(context),
           ),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 16.0,
+            ),
             child: Form(
               key: _formKey,
               child: Column(
@@ -206,11 +215,19 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: InputDecoration(
                       labelText: 'E-mail',
                       hintText: 'exemplo@cogito.com',
-                      prefixIcon: const Icon(Icons.email_outlined, color: AppColors.primaryBlue),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+                      prefixIcon: const Icon(
+                        Icons.email_outlined,
+                        color: AppColors.primaryBlue,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2),
+                        borderSide: const BorderSide(
+                          color: AppColors.primaryBlue,
+                          width: 2,
+                        ),
                       ),
                     ),
                     validator: (value) {
@@ -231,10 +248,15 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: _obscurePassword,
                     decoration: InputDecoration(
                       labelText: 'Senha',
-                      prefixIcon: const Icon(Icons.lock_outline, color: AppColors.primaryBlue),
+                      prefixIcon: const Icon(
+                        Icons.lock_outline,
+                        color: AppColors.primaryBlue,
+                      ),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                          _obscurePassword
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
                           color: Colors.grey,
                         ),
                         onPressed: () {
@@ -243,10 +265,15 @@ class _LoginPageState extends State<LoginPage> {
                           });
                         },
                       ),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2),
+                        borderSide: const BorderSide(
+                          color: AppColors.primaryBlue,
+                          width: 2,
+                        ),
                       ),
                     ),
                     validator: (value) {
@@ -289,12 +316,17 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: _isLoading ? null : _efetuarLogin,
                       style: ButtonStyles.primary.copyWith(
                         shape: WidgetStateProperty.all(
-                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
                         ),
                       ),
                       child: _isLoading
                           ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text('ENTRAR', style: TextStyles.buttonPrimary),
+                          : const Text(
+                              'ENTRAR',
+                              style: TextStyles.buttonPrimary,
+                            ),
                     ),
                   ),
 
@@ -307,7 +339,10 @@ class _LoginPageState extends State<LoginPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Text(
                           'ou',
-                          style: TextStyle(color: Colors.grey.shade500, fontSize: 13),
+                          style: TextStyle(
+                            color: Colors.grey.shade500,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                       const Expanded(child: Divider(thickness: 1)),
@@ -322,7 +357,10 @@ class _LoginPageState extends State<LoginPage> {
                     child: OutlinedButton(
                       onPressed: _isLoading ? null : _entrarComGoogle,
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: Colors.grey.shade300, width: 1.5),
+                        side: BorderSide(
+                          color: Colors.grey.shade300,
+                          width: 1.5,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -366,7 +404,9 @@ class _LoginPageState extends State<LoginPage> {
                         onTap: () {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => const CadastroPage()),
+                            MaterialPageRoute(
+                              builder: (context) => const CadastroPage(),
+                            ),
                           );
                         },
                         child: const Text(
@@ -388,4 +428,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-

@@ -19,7 +19,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   /// Chave de estado local única para a instância da FinancesPage.
-  final GlobalKey<FinancesPageState> _financasPageKey = GlobalKey<FinancesPageState>();
+  final GlobalKey<FinancesPageState> _financasPageKey =
+      GlobalKey<FinancesPageState>();
 
   /// Guarda o índice da aba atual ativa (0: Dashboard, 1: Finanças, 2: Conrado Hub, 3: Perfil).
   int _currentIndex = 0;
@@ -31,8 +32,6 @@ class _HomePageState extends State<HomePage> {
     const ConradoChatSelectorPage(),
     const UserPage(),
   ];
-
-
 
   /// Atualiza o índice da aba selecionada no estado e opcionalmente seleciona a sub-aba na FinancasPage.
   void _onItemTapped(int index, [int? subTabIndex]) {
@@ -77,10 +76,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: AppColors.getBackgroundColor(context),
         body: SafeArea(
           top: false,
-          child: IndexedStack(
-            index: _currentIndex,
-            children: _pages,
-          ),
+          child: IndexedStack(index: _currentIndex, children: _pages),
         ),
         bottomNavigationBar: AppNavigation(
           currentIndex: _currentIndex,

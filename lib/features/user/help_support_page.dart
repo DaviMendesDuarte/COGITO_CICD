@@ -77,7 +77,9 @@ class AjudaSuportePage extends StatelessWidget {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('E-mail para suporte: $_emailSuporte (copiado ou indisponível no cliente de e-mail).'),
+          content: Text(
+            'E-mail para suporte: $_emailSuporte (copiado ou indisponível no cliente de e-mail).',
+          ),
           backgroundColor: AppColors.primaryBlue,
         ),
       );
@@ -101,7 +103,11 @@ class AjudaSuportePage extends StatelessWidget {
           ),
           title: const Text(
             'Ajuda e Suporte',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: Colors.white,
+            ),
           ),
         ),
         body: SingleChildScrollView(
@@ -155,14 +161,24 @@ class AjudaSuportePage extends StatelessWidget {
                     const SizedBox(height: 16),
                     ElevatedButton.icon(
                       onPressed: () => _enviarEmail(context),
-                      icon: const Icon(Icons.send_rounded, color: Colors.white, size: 18),
+                      icon: const Icon(
+                        Icons.send_rounded,
+                        color: Colors.white,
+                        size: 18,
+                      ),
                       label: const Text(
                         'Enviar E-mail para cogito.tcc@gmail.com',
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryBlue,
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 14,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -177,7 +193,11 @@ class AjudaSuportePage extends StatelessWidget {
               // Título de Seção FAQ
               const Row(
                 children: [
-                  Icon(Icons.quiz_outlined, color: AppColors.primaryBlue, size: 22),
+                  Icon(
+                    Icons.quiz_outlined,
+                    color: AppColors.primaryBlue,
+                    size: 22,
+                  ),
                   SizedBox(width: 8),
                   Text(
                     'Perguntas Frequentes (FAQ)',
@@ -203,7 +223,10 @@ class AjudaSuportePage extends StatelessWidget {
                   child: ExpansionTile(
                     iconColor: AppColors.primaryBlue,
                     collapsedIconColor: AppColors.primaryBlue,
-                    tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    tilePadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 4,
+                    ),
                     title: Text(
                       faq['pergunta']!,
                       style: const TextStyle(

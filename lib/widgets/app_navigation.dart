@@ -38,7 +38,8 @@ class _AppNavigationState extends State<AppNavigation> {
   Widget build(BuildContext context) {
     final Color navBgColor = AppColors.getCardColor(context);
     final Color selectedColor = AppColors.getPrimaryAccent(context);
-    final Color unselectedColor = Theme.of(context).brightness == Brightness.dark
+    final Color unselectedColor =
+        Theme.of(context).brightness == Brightness.dark
         ? Colors.white54
         : AppColors.gray;
 
@@ -65,21 +66,41 @@ class _AppNavigationState extends State<AppNavigation> {
               children: [
                 // Aba 0: Início (Dashboard)
                 Expanded(
-                  child: _buildItem(icon: Icons.home_filled, index: 0, selectedColor: selectedColor, unselectedColor: unselectedColor),
+                  child: _buildItem(
+                    icon: Icons.home_filled,
+                    index: 0,
+                    selectedColor: selectedColor,
+                    unselectedColor: unselectedColor,
+                  ),
                 ),
                 // Aba 1: Finanças
                 Expanded(
-                  child: _buildItem(icon: Icons.bar_chart, index: 1, selectedColor: selectedColor, unselectedColor: unselectedColor),
+                  child: _buildItem(
+                    icon: Icons.bar_chart,
+                    index: 1,
+                    selectedColor: selectedColor,
+                    unselectedColor: unselectedColor,
+                  ),
                 ),
                 // Botão central de adicionar ("+") temporariamente oculto (largura e opacidade 0)
                 _buildAddButton(selectedColor),
                 // Aba 2: Conrado (IA / Recursos Premium)
                 Expanded(
-                  child: _buildItem(icon: MdiIcons.crown, index: 2, selectedColor: selectedColor, unselectedColor: unselectedColor),
+                  child: _buildItem(
+                    icon: MdiIcons.crown,
+                    index: 2,
+                    selectedColor: selectedColor,
+                    unselectedColor: unselectedColor,
+                  ),
                 ),
                 // Aba 3: Perfil do Usuário
                 Expanded(
-                  child: _buildItem(icon: Icons.person, index: 3, selectedColor: selectedColor, unselectedColor: unselectedColor),
+                  child: _buildItem(
+                    icon: Icons.person,
+                    index: 3,
+                    selectedColor: selectedColor,
+                    unselectedColor: unselectedColor,
+                  ),
                 ),
               ],
             ),
@@ -107,11 +128,7 @@ class _AppNavigationState extends State<AppNavigation> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              size: 26,
-              color: itemColor,
-            ),
+            Icon(icon, size: 26, color: itemColor),
             const SizedBox(height: 4),
             AnimatedContainer(
               duration: const Duration(milliseconds: 200),

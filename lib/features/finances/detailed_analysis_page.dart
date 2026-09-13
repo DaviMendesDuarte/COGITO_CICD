@@ -42,7 +42,9 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
   }
 
   /// Filtra a lista de transações conforme o período selecionado no Combo Box.
-  List<Map<String, dynamic>> _filtrarTransacoesPorPeriodo(List<Map<String, dynamic>> transacoes) {
+  List<Map<String, dynamic>> _filtrarTransacoesPorPeriodo(
+    List<Map<String, dynamic>> transacoes,
+  ) {
     final agora = DateTime.now();
 
     return transacoes.where((t) {
@@ -77,7 +79,10 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primaryBlue.withValues(alpha: 0.25), width: 1.5),
+        border: Border.all(
+          color: AppColors.primaryBlue.withValues(alpha: 0.25),
+          width: 1.5,
+        ),
         boxShadow: [
           BoxShadow(
             color: AppColors.primaryBlue.withValues(alpha: 0.08),
@@ -110,15 +115,21 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                   Icon(
                     entry.value,
                     size: 18,
-                    color: isSelected ? AppColors.primaryBlue : Colors.grey.shade600,
+                    color: isSelected
+                        ? AppColors.primaryBlue
+                        : Colors.grey.shade600,
                   ),
                   const SizedBox(width: 8),
                   Text(
                     entry.key,
                     style: TextStyle(
                       fontSize: 13,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                      color: isSelected ? AppColors.primaryBlue : AppColors.textPrimary,
+                      fontWeight: isSelected
+                          ? FontWeight.bold
+                          : FontWeight.w500,
+                      color: isSelected
+                          ? AppColors.primaryBlue
+                          : AppColors.textPrimary,
                     ),
                   ),
                 ],
@@ -138,7 +149,11 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
   }
 
   /// Exibe Pop-Up Modal com os detalhes completos do Gráfico de Categorias.
-  void _exibirModalGraficoCategorias(BuildContext context, Map<String, double> categoriasMap, double totalSaidas) {
+  void _exibirModalGraficoCategorias(
+    BuildContext context,
+    Map<String, double> categoriasMap,
+    double totalSaidas,
+  ) {
     final List<PieChartSectionData> secoes = [];
     final List<Color> cores = [
       AppColors.primaryBlue,
@@ -160,14 +175,25 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
           value: valor > 0 ? valor : 1,
           title: '${pct.toStringAsFixed(0)}%',
           radius: 45,
-          titleStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+          titleStyle: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+          ),
         ),
       );
       idx++;
     });
 
     if (secoes.isEmpty) {
-      secoes.add(PieChartSectionData(color: Colors.grey, value: 100, title: '100%', radius: 45));
+      secoes.add(
+        PieChartSectionData(
+          color: Colors.grey,
+          value: 100,
+          title: '100%',
+          radius: 45,
+        ),
+      );
     }
 
     showDialog(
@@ -189,13 +215,20 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                         color: AppColors.primaryBlue.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.pie_chart, color: AppColors.primaryBlue),
+                      child: const Icon(
+                        Icons.pie_chart,
+                        color: AppColors.primaryBlue,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     const Expanded(
                       child: Text(
                         'Detalhamento por Categoria',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryBlue,
+                        ),
                       ),
                     ),
                     IconButton(
@@ -208,23 +241,30 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                 SizedBox(
                   height: 180,
                   child: PieChart(
-                    PieChartData(
-                      sections: secoes,
-                      centerSpaceRadius: 35,
-                    ),
+                    PieChartData(sections: secoes, centerSpaceRadius: 35),
                   ),
                 ),
                 const SizedBox(height: 20),
                 const Divider(),
                 const SizedBox(height: 10),
                 if (categoriasMap.isEmpty)
-                  const Text('Nenhum gasto registrado neste período.', style: TextStyle(color: Colors.grey))
+                  const Text(
+                    'Nenhum gasto registrado neste período.',
+                    style: TextStyle(color: Colors.grey),
+                  )
                 else
                   ...categoriasMap.entries.map((e) {
                     final int i = categoriasMap.keys.toList().indexOf(e.key);
                     final Color cor = cores[i % cores.length];
-                    final double pct = totalSaidas > 0 ? (e.value / totalSaidas * 100) : 0;
-                    return _buildCategoriaDetailItem(e.key, 'R\$ ${e.value.toStringAsFixed(2)}', '${pct.toStringAsFixed(0)}%', cor);
+                    final double pct = totalSaidas > 0
+                        ? (e.value / totalSaidas * 100)
+                        : 0;
+                    return _buildCategoriaDetailItem(
+                      e.key,
+                      'R\$ ${e.value.toStringAsFixed(2)}',
+                      '${pct.toStringAsFixed(0)}%',
+                      cor,
+                    );
                   }),
                 const SizedBox(height: 16),
                 Container(
@@ -240,7 +280,10 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                       Expanded(
                         child: Text(
                           'Dica do CONRADO: Acompanhar seus maiores envelopes de gastos reduz em até 30% despesas impulsivas.',
-                          style: TextStyle(fontSize: 12, color: AppColors.textPrimary),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
                       ),
                     ],
@@ -255,11 +298,39 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
   }
 
   /// Classe auxiliar interna para agrupar totais de gastos dos últimos meses.
-  List<Map<String, dynamic>> _calcularEvolucaoUltimos4Meses(List<Map<String, dynamic>> todasTransacoes) {
+  List<Map<String, dynamic>> _calcularEvolucaoUltimos4Meses(
+    List<Map<String, dynamic>> todasTransacoes,
+  ) {
     final agora = DateTime.now();
     final List<Map<String, dynamic>> mesesData = [];
-    final nomesMeses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-    final nomesCompletos = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    final nomesMeses = [
+      'Jan',
+      'Fev',
+      'Mar',
+      'Abr',
+      'Mai',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Set',
+      'Out',
+      'Nov',
+      'Dez',
+    ];
+    final nomesCompletos = [
+      'Janeiro',
+      'Fevereiro',
+      'Março',
+      'Abril',
+      'Maio',
+      'Junho',
+      'Julho',
+      'Agosto',
+      'Setembro',
+      'Outubro',
+      'Novembro',
+      'Dezembro',
+    ];
 
     // Coleta os últimos 4 meses em ordem cronológica (de 3 meses atrás até o atual)
     for (int i = 3; i >= 0; i--) {
@@ -277,7 +348,8 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
 
       mesesData.add({
         'sigla': nomesMeses[mes - 1],
-        'nomeCompleto': '${nomesCompletos[mes - 1]}${i == 0 ? ' (Mês Atual)' : ''}',
+        'nomeCompleto':
+            '${nomesCompletos[mes - 1]}${i == 0 ? ' (Mês Atual)' : ''}',
         'ano': ano,
         'totalGasto': totalGastoMes,
       });
@@ -304,7 +376,10 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
   }
 
   /// Exibe Pop-Up Modal com os detalhes completos do Gráfico de Evolução Mensal.
-  void _exibirModalGraficoEvolucao(BuildContext context, List<Map<String, dynamic>> evolucaoMeses) {
+  void _exibirModalGraficoEvolucao(
+    BuildContext context,
+    List<Map<String, dynamic>> evolucaoMeses,
+  ) {
     double maxGasto = 100.0;
     for (final m in evolucaoMeses) {
       final double g = m['totalGasto'] as double;
@@ -330,13 +405,20 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                         color: AppColors.primaryOrange.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.bar_chart, color: AppColors.primaryOrange),
+                      child: const Icon(
+                        Icons.bar_chart,
+                        color: AppColors.primaryOrange,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     const Expanded(
                       child: Text(
                         'Evolução Mensal de Gastos',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryBlue,
+                        ),
                       ),
                     ),
                     IconButton(
@@ -353,9 +435,15 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                       borderData: FlBorderData(show: false),
                       gridData: const FlGridData(show: false),
                       titlesData: FlTitlesData(
-                        topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                        rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                        leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                        topTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        rightTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        leftTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
                         bottomTitles: AxisTitles(
                           sideTitles: SideTitles(
                             showTitles: true,
@@ -364,7 +452,11 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                               if (idx >= 0 && idx < evolucaoMeses.length) {
                                 return Text(
                                   evolucaoMeses[idx]['sigla'].toString(),
-                                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.textPrimary,
+                                  ),
                                 );
                               }
                               return const Text('');
@@ -373,14 +465,19 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                         ),
                       ),
                       barGroups: List.generate(evolucaoMeses.length, (idx) {
-                        final double valor = evolucaoMeses[idx]['totalGasto'] as double;
+                        final double valor =
+                            evolucaoMeses[idx]['totalGasto'] as double;
                         final bool isAtual = idx == evolucaoMeses.length - 1;
                         return BarChartGroupData(
                           x: idx,
                           barRods: [
                             BarChartRodData(
                               toY: valor > 0 ? valor : 5,
-                              color: isAtual ? AppColors.primaryOrange : AppColors.primaryBlue.withValues(alpha: 0.4 + (idx * 0.15)),
+                              color: isAtual
+                                  ? AppColors.primaryOrange
+                                  : AppColors.primaryBlue.withValues(
+                                      alpha: 0.4 + (idx * 0.15),
+                                    ),
                               width: 18,
                               borderRadius: BorderRadius.circular(6),
                             ),
@@ -412,12 +509,19 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                   ),
                   child: const Row(
                     children: [
-                      Icon(Icons.trending_up, color: AppColors.primaryOrange, size: 20),
+                      Icon(
+                        Icons.trending_up,
+                        color: AppColors.primaryOrange,
+                        size: 20,
+                      ),
                       SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           'Sua evolução mensal é atualizada automaticamente a cada lançamento de transação no COGITO.',
-                          style: TextStyle(fontSize: 12, color: AppColors.textPrimary),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
                       ),
                     ],
@@ -432,20 +536,47 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
   }
 
   /// Item visual auxiliar para a lista de categorias no modal.
-  Widget _buildCategoriaDetailItem(String nome, String valor, String pct, Color cor) {
+  Widget _buildCategoriaDetailItem(
+    String nome,
+    String valor,
+    String pct,
+    Color cor,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
-          Container(width: 12, height: 12, decoration: BoxDecoration(color: cor, shape: BoxShape.circle)),
+          Container(
+            width: 12,
+            height: 12,
+            decoration: BoxDecoration(color: cor, shape: BoxShape.circle),
+          ),
           const SizedBox(width: 10),
-          Expanded(child: Text(nome, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13))),
-          Text(valor, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+          Expanded(
+            child: Text(
+              nome,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+            ),
+          ),
+          Text(
+            valor,
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+          ),
           const SizedBox(width: 10),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            decoration: BoxDecoration(color: cor.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(8)),
-            child: Text(pct, style: TextStyle(color: cor, fontWeight: FontWeight.bold, fontSize: 11)),
+            decoration: BoxDecoration(
+              color: cor.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              pct,
+              style: TextStyle(
+                color: cor,
+                fontWeight: FontWeight.bold,
+                fontSize: 11,
+              ),
+            ),
           ),
         ],
       ),
@@ -455,18 +586,36 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
   /// Item visual auxiliar para comparativo mensal no modal.
   Widget _buildEvolucaoMonthItem(String mes, String valor, String varPct) {
     final bool isPos = varPct.startsWith('+');
-    final Color corVar = varPct == 'Estável' || varPct == '0%' ? Colors.grey : (isPos ? Colors.red : Colors.green);
+    final Color corVar = varPct == 'Estável' || varPct == '0%'
+        ? Colors.grey
+        : (isPos ? Colors.red : Colors.green);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(mes, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+          Text(
+            mes,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+          ),
           Row(
             children: [
-              Text(valor, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+              Text(
+                valor,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13,
+                ),
+              ),
               const SizedBox(width: 10),
-              Text(varPct, style: TextStyle(color: corVar, fontWeight: FontWeight.bold, fontSize: 12)),
+              Text(
+                varPct,
+                style: TextStyle(
+                  color: corVar,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
             ],
           ),
         ],
@@ -493,17 +642,24 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
           ),
           title: const Text(
             'Análise de Gastos & Relatórios',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: Colors.white,
+            ),
           ),
         ),
         body: StreamBuilder<List<Map<String, dynamic>>>(
           stream: _firestoreService.buscarTransacoesStream(idCliente),
           builder: (context, snapshot) {
-            final List<Map<String, dynamic>> transacoesBrutas = snapshot.data ?? [];
+            final List<Map<String, dynamic>> transacoesBrutas =
+                snapshot.data ?? [];
 
             // Aplica a filtragem reativa pelo período selecionado no Combo Box
-            final List<Map<String, dynamic>> transacoes = _filtrarTransacoesPorPeriodo(transacoesBrutas);
-            final List<Map<String, dynamic>> evolucaoMeses = _calcularEvolucaoUltimos4Meses(transacoesBrutas);
+            final List<Map<String, dynamic>> transacoes =
+                _filtrarTransacoesPorPeriodo(transacoesBrutas);
+            final List<Map<String, dynamic>> evolucaoMeses =
+                _calcularEvolucaoUltimos4Meses(transacoesBrutas);
 
             double totalEntradas = 0.0;
             double totalSaidas = 0.0;
@@ -523,7 +679,9 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
             }
 
             final double balancoLiquido = totalEntradas - totalSaidas;
-            final double mediaDiaria = totalSaidas > 0 ? (totalSaidas / 30) : 0.0;
+            final double mediaDiaria = totalSaidas > 0
+                ? (totalSaidas / 30)
+                : 0.0;
 
             String maiorCategoriaNome = 'Nenhuma';
             double maiorCategoriaValor = 0.0;
@@ -546,14 +704,20 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
 
             int cIndex = 0;
             categoriasMap.forEach((cat, valor) {
-              final double pct = totalSaidas > 0 ? (valor / totalSaidas * 100) : 0;
+              final double pct = totalSaidas > 0
+                  ? (valor / totalSaidas * 100)
+                  : 0;
               secoesCategorias.add(
                 PieChartSectionData(
                   color: coresPie[cIndex % coresPie.length],
                   value: valor > 0 ? valor : 1,
                   title: '${pct.toStringAsFixed(0)}%',
                   radius: 25,
-                  titleStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10),
+                  titleStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 10,
+                  ),
                 ),
               );
               cIndex++;
@@ -561,7 +725,12 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
 
             if (secoesCategorias.isEmpty) {
               secoesCategorias.add(
-                PieChartSectionData(color: Colors.grey.shade300, value: 1, title: '0%', radius: 25),
+                PieChartSectionData(
+                  color: Colors.grey.shade300,
+                  value: 1,
+                  title: '0%',
+                  radius: 25,
+                ),
               );
             }
 
@@ -576,7 +745,11 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                     children: [
                       const Text(
                         'Período do Relatório:',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.primaryBlue),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: AppColors.primaryBlue,
+                        ),
                       ),
                       _buildFiltroComboBox(),
                     ],
@@ -601,18 +774,30 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                     ),
                     child: Column(
                       children: [
-                        const Icon(Icons.analytics_rounded, size: 40, color: AppColors.primaryYellow),
+                        const Icon(
+                          Icons.analytics_rounded,
+                          size: 40,
+                          color: AppColors.primaryYellow,
+                        ),
                         const SizedBox(height: 10),
                         const Text(
                           'Relatório Inteligente de Gastos',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           'Balanço do Período: R\$ ${balancoLiquido.toStringAsFixed(2).replaceAll('.', ',')}',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w600),
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ],
                     ),
@@ -636,15 +821,30 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                             children: [
                               const Row(
                                 children: [
-                                  Icon(Icons.arrow_upward_rounded, color: Colors.green, size: 18),
+                                  Icon(
+                                    Icons.arrow_upward_rounded,
+                                    color: Colors.green,
+                                    size: 18,
+                                  ),
                                   SizedBox(width: 6),
-                                  Text('Entradas', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 13)),
+                                  Text(
+                                    'Entradas',
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                    ),
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 6),
                               Text(
                                 'R\$ ${totalEntradas.toStringAsFixed(2).replaceAll('.', ',')}',
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.green),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                ),
                               ),
                             ],
                           ),
@@ -664,15 +864,30 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                             children: [
                               const Row(
                                 children: [
-                                  Icon(Icons.arrow_downward_rounded, color: Colors.red, size: 18),
+                                  Icon(
+                                    Icons.arrow_downward_rounded,
+                                    color: Colors.red,
+                                    size: 18,
+                                  ),
                                   SizedBox(width: 6),
-                                  Text('Saídas', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 13)),
+                                  Text(
+                                    'Saídas',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                    ),
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 6),
                               Text(
                                 'R\$ ${totalSaidas.toStringAsFixed(2).replaceAll('.', ',')}',
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
                               ),
                             ],
                           ),
@@ -685,7 +900,11 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
 
                   const Text(
                     'Gráficos & Distribuição (Tempo Real)',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryBlue,
+                    ),
                   ),
                   const SizedBox(height: 12),
 
@@ -695,7 +914,11 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                       // GRÁFICO 1: PIZZA (CATEGORIAS)
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => _exibirModalGraficoCategorias(context, categoriasMap, totalSaidas),
+                          onTap: () => _exibirModalGraficoCategorias(
+                            context,
+                            categoriasMap,
+                            totalSaidas,
+                          ),
                           child: Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
@@ -713,14 +936,22 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                               children: [
                                 const Row(
                                   children: [
-                                    Icon(Icons.pie_chart_outline, color: AppColors.primaryBlue, size: 18),
+                                    Icon(
+                                      Icons.pie_chart_outline,
+                                      color: AppColors.primaryBlue,
+                                      size: 18,
+                                    ),
                                     SizedBox(width: 6),
                                     Expanded(
                                       child: Text(
                                         'Categorias',
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppColors.primaryBlue),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                          color: AppColors.primaryBlue,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -738,7 +969,11 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                                 const SizedBox(height: 10),
                                 const Text(
                                   'Ver detalhes ➔',
-                                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.primaryBlue,
+                                  ),
                                 ),
                               ],
                             ),
@@ -751,7 +986,10 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                       // GRÁFICO 2: BARRAS (EVOLUÇÃO MENSAL)
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => _exibirModalGraficoEvolucao(context, evolucaoMeses),
+                          onTap: () => _exibirModalGraficoEvolucao(
+                            context,
+                            evolucaoMeses,
+                          ),
                           child: Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
@@ -769,14 +1007,22 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                               children: [
                                 const Row(
                                   children: [
-                                    Icon(Icons.bar_chart, color: AppColors.primaryOrange, size: 18),
+                                    Icon(
+                                      Icons.bar_chart,
+                                      color: AppColors.primaryOrange,
+                                      size: 18,
+                                    ),
                                     SizedBox(width: 6),
                                     Expanded(
                                       child: Text(
                                         'Evolução',
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppColors.primaryOrange),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                          color: AppColors.primaryOrange,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -788,29 +1034,54 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                                     BarChartData(
                                       borderData: FlBorderData(show: false),
                                       gridData: const FlGridData(show: false),
-                                      titlesData: const FlTitlesData(show: false),
-                                      barGroups: List.generate(evolucaoMeses.length, (idx) {
-                                        final double v = evolucaoMeses[idx]['totalGasto'] as double;
-                                        final bool isAtual = idx == evolucaoMeses.length - 1;
-                                        return BarChartGroupData(
-                                          x: idx,
-                                          barRods: [
-                                            BarChartRodData(
-                                              toY: v > 0 ? (v / 100).clamp(1.0, 100.0) : 2,
-                                              color: isAtual ? AppColors.primaryOrange : AppColors.primaryBlue.withValues(alpha: 0.4 + (idx * 0.15)),
-                                              width: 10,
-                                              borderRadius: BorderRadius.circular(4),
-                                            ),
-                                          ],
-                                        );
-                                      }),
+                                      titlesData: const FlTitlesData(
+                                        show: false,
+                                      ),
+                                      barGroups: List.generate(
+                                        evolucaoMeses.length,
+                                        (idx) {
+                                          final double v =
+                                              evolucaoMeses[idx]['totalGasto']
+                                                  as double;
+                                          final bool isAtual =
+                                              idx == evolucaoMeses.length - 1;
+                                          return BarChartGroupData(
+                                            x: idx,
+                                            barRods: [
+                                              BarChartRodData(
+                                                toY: v > 0
+                                                    ? (v / 100).clamp(
+                                                        1.0,
+                                                        100.0,
+                                                      )
+                                                    : 2,
+                                                color: isAtual
+                                                    ? AppColors.primaryOrange
+                                                    : AppColors.primaryBlue
+                                                          .withValues(
+                                                            alpha:
+                                                                0.4 +
+                                                                (idx * 0.15),
+                                                          ),
+                                                width: 10,
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
                                 const SizedBox(height: 10),
                                 const Text(
                                   'Ver histórico ➔',
-                                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.primaryOrange),
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.primaryOrange,
+                                  ),
                                 ),
                               ],
                             ),
@@ -825,7 +1096,11 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                   // SEÇÃO DE RELATÓRIOS EXECUTIVOS RECOMENDADOS & DIAGNÓSTICO CONRADO
                   const Text(
                     'Relatórios & Diagnóstico CONRADO',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryBlue,
+                    ),
                   ),
                   const SizedBox(height: 12),
 
@@ -844,11 +1119,26 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
                     ),
                     child: Column(
                       children: [
-                        _buildRelatorioRow('Média Diária de Gastos', 'R\$ ${mediaDiaria.toStringAsFixed(2).replaceAll('.', ',')} / dia', Icons.today, Colors.blue),
+                        _buildRelatorioRow(
+                          'Média Diária de Gastos',
+                          'R\$ ${mediaDiaria.toStringAsFixed(2).replaceAll('.', ',')} / dia',
+                          Icons.today,
+                          Colors.blue,
+                        ),
                         const Divider(height: 20),
-                        _buildRelatorioRow('Maior Categoria', '$maiorCategoriaNome (R\$ ${maiorCategoriaValor.toStringAsFixed(2).replaceAll('.', ',')})', Icons.restaurant, Colors.orange),
+                        _buildRelatorioRow(
+                          'Maior Categoria',
+                          '$maiorCategoriaNome (R\$ ${maiorCategoriaValor.toStringAsFixed(2).replaceAll('.', ',')})',
+                          Icons.restaurant,
+                          Colors.orange,
+                        ),
                         const Divider(height: 20),
-                        _buildRelatorioRow('Projeção de Economia Potencial', 'R\$ ${(totalEntradas * 0.15).toStringAsFixed(2).replaceAll('.', ',')} no mês', Icons.savings, Colors.green),
+                        _buildRelatorioRow(
+                          'Projeção de Economia Potencial',
+                          'R\$ ${(totalEntradas * 0.15).toStringAsFixed(2).replaceAll('.', ',')} no mês',
+                          Icons.savings,
+                          Colors.green,
+                        ),
                       ],
                     ),
                   ),
@@ -862,7 +1152,12 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
   }
 
   /// Constrói cada linha dos relatórios executivos recomendados.
-  Widget _buildRelatorioRow(String titulo, String valor, IconData icon, Color color) {
+  Widget _buildRelatorioRow(
+    String titulo,
+    String valor,
+    IconData icon,
+    Color color,
+  ) {
     return Row(
       children: [
         Container(
@@ -878,8 +1173,18 @@ class _AnaliseDetalhadaPageState extends State<AnaliseDetalhadaPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(titulo, style: const TextStyle(fontSize: 12, color: Colors.grey)),
-              Text(valor, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+              Text(
+                titulo,
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+              Text(
+                valor,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+              ),
             ],
           ),
         ),

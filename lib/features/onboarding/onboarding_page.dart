@@ -35,7 +35,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   /// Identifica se já existe uma conta autenticada no aparelho e redireciona direto para a HomePage.
   Future<void> _verificarContaLogada() async {
-    final bool temSessao = await FirebaseAuthService().verificarECarregarSessaoLogada();
+    final bool temSessao = await FirebaseAuthService()
+        .verificarECarregarSessaoLogada();
     if (temSessao || FirebaseFirestoreService.usuarioLogado != null) {
       if (mounted) {
         Navigator.pushReplacement(
@@ -78,7 +79,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
             // Slide 1: Boas-vindas e introdução ao COGITO
             Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 32.0,
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -88,10 +92,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(height: 32.0),
-                  const Text(
-                    'BEM-VINDO',
-                    style: TextStyles.welcomeTitle,
-                  ),
+                  const Text('BEM-VINDO', style: TextStyles.welcomeTitle),
                   const SizedBox(height: 12.0),
                   const Text(
                     'Conheça o COGITO, sistema de Controle de Orçamentos e Gestão Inteligente, Técnico e Objetivo.',
@@ -105,7 +106,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
             // Slide 2: O que é o COGITO
             Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 32.0,
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -132,7 +136,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
             // Slide 3: Apresentação do Conrado (assistente virtual)
             Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 32.0,
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -142,10 +149,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(height: 32.0),
-                  const Text(
-                    'CONRADO',
-                    style: TextStyles.welcomeTitle,
-                  ),
+                  const Text('CONRADO', style: TextStyles.welcomeTitle),
                   const SizedBox(height: 12.0),
                   const Text(
                     'O CONRADO é o assistente virtual do COGITO, responsável por fornecer dicas e sugestões para auxiliar o usuário no controle financeiro.',
@@ -159,7 +163,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
             // Slide 4: Conclusão do Onboarding
             Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 32.0,
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -169,10 +176,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(height: 32.0),
-                  const Text(
-                    'TUDO PRONTO!',
-                    style: TextStyles.welcomeTitle,
-                  ),
+                  const Text('TUDO PRONTO!', style: TextStyles.welcomeTitle),
                   const SizedBox(height: 12.0),
                   const Text(
                     'Agora que você já conhece o COGITO, crie sua conta ou faça login para começar a gerenciar seus gastos.',
@@ -220,7 +224,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         child: OutlinedButton(
                           onPressed: _finalizarOnboarding,
                           style: ButtonStyles.secondary,
-                          child: const Text('PULAR', style: TextStyles.buttonSecondary),
+                          child: const Text(
+                            'PULAR',
+                            style: TextStyles.buttonSecondary,
+                          ),
                         ),
                       ),
 

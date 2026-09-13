@@ -64,7 +64,9 @@ class FinancialUtils {
   }
 
   /// Calcula os totais de Receitas, Despesas e Saldo Líquido de uma lista de transações.
-  static Map<String, double> calcularTotaisFinanceiros(List<Map<String, dynamic>> transacoes) {
+  static Map<String, double> calcularTotaisFinanceiros(
+    List<Map<String, dynamic>> transacoes,
+  ) {
     double totalReceitas = 0.0;
     double totalDespesas = 0.0;
 
@@ -86,7 +88,9 @@ class FinancialUtils {
   }
 
   /// Calcula o valor total de despesas por categoria e o percentual de cada categoria sobre o total.
-  static Map<String, Map<String, double>> calcularDistribuicaoCategorias(List<Map<String, dynamic>> transacoes) {
+  static Map<String, Map<String, double>> calcularDistribuicaoCategorias(
+    List<Map<String, dynamic>> transacoes,
+  ) {
     final Map<String, double> totaisPorCategoria = {};
     double totalGeralDespesas = 0.0;
 
@@ -95,18 +99,18 @@ class FinancialUtils {
       if (tipo == 'Despesa') {
         final String categoria = (t['categoria'] as String?) ?? 'Outros';
         final double valor = (t['valor'] as num?)?.toDouble() ?? 0.0;
-        totaisPorCategoria[categoria] = (totaisPorCategoria[categoria] ?? 0.0) + valor;
+        totaisPorCategoria[categoria] =
+            (totaisPorCategoria[categoria] ?? 0.0) + valor;
         totalGeralDespesas += valor;
       }
     }
 
     final Map<String, Map<String, double>> resultado = {};
     totaisPorCategoria.forEach((categoria, valor) {
-      final double percentual = totalGeralDespesas > 0 ? (valor / totalGeralDespesas) * 100.0 : 0.0;
-      resultado[categoria] = {
-        'valor': valor,
-        'percentual': percentual,
-      };
+      final double percentual = totalGeralDespesas > 0
+          ? (valor / totalGeralDespesas) * 100.0
+          : 0.0;
+      resultado[categoria] = {'valor': valor, 'percentual': percentual};
     });
 
     return resultado;
@@ -118,7 +122,20 @@ class FinancialUtils {
     DateTime? dataReferencia,
   }) {
     final agora = dataReferencia ?? DateTime.now();
-    final List<String> nomesMeses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    final List<String> nomesMeses = [
+      'Jan',
+      'Fev',
+      'Mar',
+      'Abr',
+      'Mai',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Set',
+      'Out',
+      'Nov',
+      'Dez',
+    ];
     final List<Map<String, dynamic>> evolucao = [];
 
     for (int i = 3; i >= 0; i--) {
@@ -153,10 +170,14 @@ class FinancialUtils {
     buffer.writeln('Data,Categoria,Descricao,Tipo,Valor');
     for (final t in transacoes) {
       final dt = extrairDataTransacao(t);
-      final dataStr = '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}';
+      final dataStr =
+          '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}';
       final val = ((t['valor'] as num?)?.toDouble() ?? 0.0).toStringAsFixed(2);
       final titulo = (t['titulo'] ?? '').toString().replaceAll(',', ' ');
-      final categoria = (t['categoria'] ?? 'Outros').toString().replaceAll(',', ' ');
+      final categoria = (t['categoria'] ?? 'Outros').toString().replaceAll(
+        ',',
+        ' ',
+      );
       final tipo = t['tipo'] ?? 'Despesa';
       buffer.writeln('$dataStr,$categoria,$titulo,$tipo,$val');
     }
@@ -176,21 +197,34 @@ class FinancialUtils {
     buffer.writeln('====================================================');
     buffer.writeln('          COGITO - RELATÓRIO FINANCEIRO');
     buffer.writeln('====================================================');
-    buffer.writeln('Gerado em: ${agora.day.toString().padLeft(2, '0')}/${agora.month.toString().padLeft(2, '0')}/${agora.year} às ${agora.hour.toString().padLeft(2, '0')}:${agora.minute.toString().padLeft(2, '0')}');
-    buffer.writeln('Período: $periodo | Total de Lançamentos: ${transacoes.length}');
+    buffer.writeln(
+      'Gerado em: ${agora.day.toString().padLeft(2, '0')}/${agora.month.toString().padLeft(2, '0')}/${agora.year} às ${agora.hour.toString().padLeft(2, '0')}:${agora.minute.toString().padLeft(2, '0')}',
+    );
+    buffer.writeln(
+      'Período: $periodo | Total de Lançamentos: ${transacoes.length}',
+    );
     buffer.writeln('----------------------------------------------------');
     buffer.writeln('RESUMO GERAL:');
-    buffer.writeln('• Total de Receitas: R\$ ${totais['receitas']!.toStringAsFixed(2)}');
-    buffer.writeln('• Total de Despesas: R\$ ${totais['despesas']!.toStringAsFixed(2)}');
-    buffer.writeln('• Saldo Líquido:     R\$ ${totais['saldoLiquido']!.toStringAsFixed(2)}');
+    buffer.writeln(
+      '• Total de Receitas: R\$ ${totais['receitas']!.toStringAsFixed(2)}',
+    );
+    buffer.writeln(
+      '• Total de Despesas: R\$ ${totais['despesas']!.toStringAsFixed(2)}',
+    );
+    buffer.writeln(
+      '• Saldo Líquido:     R\$ ${totais['saldoLiquido']!.toStringAsFixed(2)}',
+    );
     buffer.writeln('----------------------------------------------------');
     buffer.writeln('DETALHAMENTO DAS TRANSAÇÕES:');
     for (final t in transacoes) {
       final dt = extrairDataTransacao(t);
-      final dataStr = '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}';
+      final dataStr =
+          '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}';
       final sinal = t['tipo'] == 'Receita' ? '(+)' : '(-)';
       final val = ((t['valor'] as num?)?.toDouble() ?? 0.0).toStringAsFixed(2);
-      buffer.writeln('[$dataStr] [${t['categoria'] ?? 'Outros'}] ${t['titulo']} : $sinal R\$ $val');
+      buffer.writeln(
+        '[$dataStr] [${t['categoria'] ?? 'Outros'}] ${t['titulo']} : $sinal R\$ $val',
+      );
     }
     buffer.writeln('====================================================');
     return buffer.toString();
@@ -214,7 +248,12 @@ class FinancialUtils {
       };
     }).toList();
 
-    final jsonItems = listClean.map((e) => '    {"titulo": "${e['titulo']}", "valor": ${e['valor']}, "categoria": "${e['categoria']}", "tipo": "${e['tipo']}", "data": "${e['data']}"}').join(',\n');
+    final jsonItems = listClean
+        .map(
+          (e) =>
+              '    {"titulo": "${e['titulo']}", "valor": ${e['valor']}, "categoria": "${e['categoria']}", "tipo": "${e['tipo']}", "data": "${e['data']}"}',
+        )
+        .join(',\n');
 
     return '''{
   "aplicativo": "COGITO",

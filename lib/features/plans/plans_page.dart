@@ -70,9 +70,14 @@ class _PlanosPageState extends State<PlanosPage> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryBlue,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
-            child: const Text('Confirmar', style: TextStyle(color: Colors.white)),
+            child: const Text(
+              'Confirmar',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
@@ -92,7 +97,9 @@ class _PlanosPageState extends State<PlanosPage> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
       builder: (sheetCtx) {
         return StatefulBuilder(
           builder: (ctx, setModalState) {
@@ -114,7 +121,10 @@ class _PlanosPageState extends State<PlanosPage> {
                         width: 40,
                         height: 4,
                         margin: const EdgeInsets.only(bottom: 16),
-                        decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(4)),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
                       ),
                     ),
 
@@ -126,15 +136,37 @@ class _PlanosPageState extends State<PlanosPage> {
                           children: [
                             Container(
                               padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(color: AppColors.primaryBlue.withValues(alpha: 0.1), shape: BoxShape.circle),
-                              child: const Icon(Icons.lock, color: AppColors.primaryBlue, size: 20),
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryBlue.withValues(
+                                  alpha: 0.1,
+                                ),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.lock,
+                                color: AppColors.primaryBlue,
+                                size: 20,
+                              ),
                             ),
                             const SizedBox(width: 10),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text('Checkout Seguro COGITO', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primaryBlue)),
-                                Text('Ambiente Criptografado SSL 256-bit', style: TextStyle(fontSize: 11, color: Colors.grey.shade600)),
+                                const Text(
+                                  'Checkout Seguro COGITO',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: AppColors.primaryBlue,
+                                  ),
+                                ),
+                                Text(
+                                  'Ambiente Criptografado SSL 256-bit',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.grey.shade600,
+                                  ),
+                                ),
                               ],
                             ),
                           ],
@@ -162,14 +194,31 @@ class _PlanosPageState extends State<PlanosPage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Assinatura Plano $novoPlano', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.primaryBlue)),
+                              Text(
+                                'Assinatura Plano $novoPlano',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  color: AppColors.primaryBlue,
+                                ),
+                              ),
                               const SizedBox(height: 2),
-                              const Text('Renovação Mensal Automática', style: TextStyle(fontSize: 11, color: Colors.grey)),
+                              const Text(
+                                'Renovação Mensal Automática',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.grey,
+                                ),
+                              ),
                             ],
                           ),
                           Text(
                             preco,
-                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryOrange),
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primaryOrange,
+                            ),
                           ),
                         ],
                       ),
@@ -177,7 +226,14 @@ class _PlanosPageState extends State<PlanosPage> {
 
                     const SizedBox(height: 16),
 
-                    const Text('Forma de Pagamento:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppColors.textPrimary)),
+                    const Text(
+                      'Forma de Pagamento:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
                     const SizedBox(height: 10),
 
                     // Seletor de Método de Pagamento (Pills)
@@ -188,7 +244,8 @@ class _PlanosPageState extends State<PlanosPage> {
                             label: 'PIX',
                             icon: Icons.pix,
                             isSelected: metodoPagamento == 'PIX',
-                            onTap: () => setModalState(() => metodoPagamento = 'PIX'),
+                            onTap: () =>
+                                setModalState(() => metodoPagamento = 'PIX'),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -197,7 +254,8 @@ class _PlanosPageState extends State<PlanosPage> {
                             label: 'Cartão',
                             icon: Icons.credit_card,
                             isSelected: metodoPagamento == 'Cartão',
-                            onTap: () => setModalState(() => metodoPagamento = 'Cartão'),
+                            onTap: () =>
+                                setModalState(() => metodoPagamento = 'Cartão'),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -206,7 +264,9 @@ class _PlanosPageState extends State<PlanosPage> {
                             label: 'Carteiras',
                             icon: Icons.account_balance_wallet,
                             isSelected: metodoPagamento == 'Carteiras',
-                            onTap: () => setModalState(() => metodoPagamento = 'Carteiras'),
+                            onTap: () => setModalState(
+                              () => metodoPagamento = 'Carteiras',
+                            ),
                           ),
                         ),
                       ],
@@ -228,24 +288,46 @@ class _PlanosPageState extends State<PlanosPage> {
                             const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.qr_code_scanner, color: Colors.teal, size: 28),
+                                Icon(
+                                  Icons.qr_code_scanner,
+                                  color: Colors.teal,
+                                  size: 28,
+                                ),
                                 SizedBox(width: 8),
-                                Text('PIX com Aprovação Instantânea', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal, fontSize: 13)),
+                                Text(
+                                  'PIX com Aprovação Instantânea',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.teal,
+                                    fontSize: 13,
+                                  ),
+                                ),
                               ],
                             ),
                             const SizedBox(height: 12),
                             Container(
                               padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                               child: const Column(
                                 children: [
-                                  Icon(Icons.qr_code_2, size: 100, color: AppColors.primaryBlue),
+                                  Icon(
+                                    Icons.qr_code_2,
+                                    size: 100,
+                                    color: AppColors.primaryBlue,
+                                  ),
                                   SizedBox(height: 6),
                                   Text(
                                     '00020126580014br.gov.bcb.pix0136cogito-pagamentos@financeiro.app520400005303986',
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(fontSize: 10, fontFamily: 'monospace', color: Colors.grey),
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontFamily: 'monospace',
+                                      color: Colors.grey,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -253,18 +335,38 @@ class _PlanosPageState extends State<PlanosPage> {
                             const SizedBox(height: 10),
                             OutlinedButton.icon(
                               onPressed: () {
-                                Clipboard.setData(const ClipboardData(text: '00020126580014br.gov.bcb.pix0136cogito-pagamentos@financeiro.app5204000053039865802BR5925COGITO INTELIGENCIA FINAN6009SAO PAULO62070503***6304E2CA'));
+                                Clipboard.setData(
+                                  const ClipboardData(
+                                    text:
+                                        '00020126580014br.gov.bcb.pix0136cogito-pagamentos@financeiro.app5204000053039865802BR5925COGITO INTELIGENCIA FINAN6009SAO PAULO62070503***6304E2CA',
+                                  ),
+                                );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Código PIX Copia e Cola copiado com sucesso!'),
+                                    content: Text(
+                                      'Código PIX Copia e Cola copiado com sucesso!',
+                                    ),
                                     backgroundColor: Colors.teal,
                                     behavior: SnackBarBehavior.floating,
                                   ),
                                 );
                               },
-                              icon: const Icon(Icons.copy, size: 16, color: Colors.teal),
-                              label: const Text('Copiar Código PIX', style: TextStyle(color: Colors.teal, fontSize: 12, fontWeight: FontWeight.bold)),
-                              style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.teal)),
+                              icon: const Icon(
+                                Icons.copy,
+                                size: 16,
+                                color: Colors.teal,
+                              ),
+                              label: const Text(
+                                'Copiar Código PIX',
+                                style: TextStyle(
+                                  color: Colors.teal,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                side: const BorderSide(color: Colors.teal),
+                              ),
                             ),
                           ],
                         ),
@@ -277,9 +379,17 @@ class _PlanosPageState extends State<PlanosPage> {
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               labelText: 'Número do Cartão',
-                              prefixIcon: const Icon(Icons.credit_card, color: AppColors.primaryBlue),
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                              prefixIcon: const Icon(
+                                Icons.credit_card,
+                                color: AppColors.primaryBlue,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 12,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
                           ),
                           const SizedBox(height: 10),
@@ -288,9 +398,17 @@ class _PlanosPageState extends State<PlanosPage> {
                             textCapitalization: TextCapitalization.characters,
                             decoration: InputDecoration(
                               labelText: 'Nome Impresso no Cartão',
-                              prefixIcon: const Icon(Icons.person_outline, color: AppColors.primaryBlue),
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                              prefixIcon: const Icon(
+                                Icons.person_outline,
+                                color: AppColors.primaryBlue,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 12,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
                           ),
                           const SizedBox(height: 10),
@@ -302,8 +420,13 @@ class _PlanosPageState extends State<PlanosPage> {
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
                                     labelText: 'Validade (MM/AA)',
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 14,
+                                      vertical: 12,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -315,8 +438,13 @@ class _PlanosPageState extends State<PlanosPage> {
                                   obscureText: true,
                                   decoration: InputDecoration(
                                     labelText: 'CVV',
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 14,
+                                      vertical: 12,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -337,13 +465,29 @@ class _PlanosPageState extends State<PlanosPage> {
                             const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.account_balance_wallet, color: AppColors.primaryBlue),
+                                Icon(
+                                  Icons.account_balance_wallet,
+                                  color: AppColors.primaryBlue,
+                                ),
                                 SizedBox(width: 8),
-                                Text('Google Pay & Apple Pay', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryBlue)),
+                                Text(
+                                  'Google Pay & Apple Pay',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.primaryBlue,
+                                  ),
+                                ),
                               ],
                             ),
                             const SizedBox(height: 8),
-                            Text('Pague de forma rápida e segura utilizando os cartões cadastrados em sua carteira digital.', textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.grey.shade700)),
+                            Text(
+                              'Pague de forma rápida e segura utilizando os cartões cadastrados em sua carteira digital.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -357,9 +501,13 @@ class _PlanosPageState extends State<PlanosPage> {
                           ? null
                           : () async {
                               final navigator = Navigator.of(sheetCtx);
-                              setModalState(() => isProcessandoPagamento = true);
+                              setModalState(
+                                () => isProcessandoPagamento = true,
+                              );
                               // Simula comunicação segura com o gateway de pagamento (1.5s)
-                              await Future.delayed(const Duration(milliseconds: 1400));
+                              await Future.delayed(
+                                const Duration(milliseconds: 1400),
+                              );
                               if (!mounted) return;
                               navigator.pop();
                               await _efetivarPlanoNoFirestore(novoPlano);
@@ -367,22 +515,37 @@ class _PlanosPageState extends State<PlanosPage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryOrange,
                         padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                       ),
                       child: isProcessandoPagamento
                           ? const SizedBox(
                               width: 22,
                               height: 22,
-                              child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
                             )
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(Icons.verified, color: Colors.white, size: 20),
+                                const Icon(
+                                  Icons.verified,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  metodoPagamento == 'PIX' ? 'Confirmar Pagamento PIX' : 'Concluir Pagamento ($preco)',
-                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                  metodoPagamento == 'PIX'
+                                      ? 'Confirmar Pagamento PIX'
+                                      : 'Concluir Pagamento ($preco)',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                  ),
                                 ),
                               ],
                             ),
@@ -412,12 +575,18 @@ class _PlanosPageState extends State<PlanosPage> {
         decoration: BoxDecoration(
           color: isSelected ? AppColors.primaryBlue : const Color(0xFFF2F4F7),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: isSelected ? AppColors.primaryBlue : Colors.grey.shade300),
+          border: Border.all(
+            color: isSelected ? AppColors.primaryBlue : Colors.grey.shade300,
+          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 16, color: isSelected ? Colors.white : AppColors.textPrimary),
+            Icon(
+              icon,
+              size: 16,
+              color: isSelected ? Colors.white : AppColors.textPrimary,
+            ),
             const SizedBox(width: 6),
             Text(
               label,
@@ -457,7 +626,11 @@ class _PlanosPageState extends State<PlanosPage> {
           children: [
             const Icon(Icons.check_circle, color: Colors.white),
             const SizedBox(width: 10),
-            Expanded(child: Text('Plano "$novoPlano" ativado com sucesso! Aproveite seus benefícios.')),
+            Expanded(
+              child: Text(
+                'Plano "$novoPlano" ativado com sucesso! Aproveite seus benefícios.',
+              ),
+            ),
           ],
         ),
         backgroundColor: Colors.green.shade600,
@@ -484,11 +657,17 @@ class _PlanosPageState extends State<PlanosPage> {
           ),
           title: const Text(
             'Planos COGITO',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: Colors.white,
+            ),
           ),
         ),
         body: _isLoading
-            ? const Center(child: CircularProgressIndicator(color: AppColors.primaryBlue))
+            ? const Center(
+                child: CircularProgressIndicator(color: AppColors.primaryBlue),
+              )
             : SingleChildScrollView(
                 padding: const EdgeInsets.all(20),
                 child: Column(
@@ -502,7 +681,11 @@ class _PlanosPageState extends State<PlanosPage> {
                       ),
                       child: const Column(
                         children: [
-                          Icon(Icons.workspace_premium, color: AppColors.primaryYellow, size: 44),
+                          Icon(
+                            Icons.workspace_premium,
+                            color: AppColors.primaryYellow,
+                            size: 44,
+                          ),
                           SizedBox(height: 10),
                           Text(
                             'Escolha o Plano Perfeito para Você',
@@ -517,7 +700,10 @@ class _PlanosPageState extends State<PlanosPage> {
                           Text(
                             'Desbloqueie todo o poder da inteligência financeira com o COGITO.',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white70, fontSize: 13),
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 13,
+                            ),
                           ),
                         ],
                       ),
@@ -530,7 +716,8 @@ class _PlanosPageState extends State<PlanosPage> {
                       nome: 'Grátis',
                       preco: 'R\$ 0,00',
                       periodo: '/mês',
-                      descricao: 'Ideal para quem está começando a organizar as finanças pessoais.',
+                      descricao:
+                          'Ideal para quem está começando a organizar as finanças pessoais.',
                       recursos: [
                         'Controle de receitas e despesas manuais',
                         'Relatórios visuais simplificados',
@@ -548,7 +735,8 @@ class _PlanosPageState extends State<PlanosPage> {
                       nome: 'Freelancer',
                       preco: 'R\$ 5,90',
                       periodo: '/mês',
-                      descricao: 'Perfeito para profissionais autônomos com receitas variáveis.',
+                      descricao:
+                          'Perfeito para profissionais autônomos com receitas variáveis.',
                       recursos: [
                         'Todos os recursos do plano Grátis',
                         'Modo Freelancer de gestão de fluxo de caixa',
@@ -568,7 +756,8 @@ class _PlanosPageState extends State<PlanosPage> {
                       nome: 'Premium',
                       preco: 'R\$ 15,90',
                       periodo: '/mês',
-                      descricao: 'Experiência completa com Inteligência Artificial e múltiplos chats.',
+                      descricao:
+                          'Experiência completa com Inteligência Artificial e múltiplos chats.',
                       recursos: [
                         'Todos os recursos do plano Freelancer',
                         'Assistente IA CONRADO ilimitado 24/7',
@@ -631,7 +820,9 @@ class _PlanosPageState extends State<PlanosPage> {
               padding: const EdgeInsets.symmetric(vertical: 6),
               decoration: BoxDecoration(
                 color: corHeader,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(19)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(19),
+                ),
               ),
               child: Text(
                 badge,
@@ -663,14 +854,21 @@ class _PlanosPageState extends State<PlanosPage> {
                     ),
                     if (isAtual)
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.green.shade100,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Row(
                           children: [
-                            Icon(Icons.check_circle, color: Colors.green, size: 14),
+                            Icon(
+                              Icons.check_circle,
+                              color: Colors.green,
+                              size: 14,
+                            ),
                             SizedBox(width: 4),
                             Text(
                               'PLANO ATUAL',
@@ -724,7 +922,10 @@ class _PlanosPageState extends State<PlanosPage> {
                         Expanded(
                           child: Text(
                             recurso,
-                            style: const TextStyle(fontSize: 13, color: Colors.black87),
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: Colors.black87,
+                            ),
                           ),
                         ),
                       ],
@@ -739,9 +940,13 @@ class _PlanosPageState extends State<PlanosPage> {
                   width: double.infinity,
                   height: 48,
                   child: ElevatedButton(
-                    onPressed: isAtual ? null : () => _iniciarTrocaPlano(nome, preco),
+                    onPressed: isAtual
+                        ? null
+                        : () => _iniciarTrocaPlano(nome, preco),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: isAtual ? Colors.grey.shade300 : corHeader,
+                      backgroundColor: isAtual
+                          ? Colors.grey.shade300
+                          : corHeader,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24),
                       ),

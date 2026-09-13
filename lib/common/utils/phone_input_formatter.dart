@@ -12,7 +12,9 @@ class TelefoneInputFormatter extends TextInputFormatter {
     final digitsOnly = newValue.text.replaceAll(RegExp(r'\D'), '');
 
     // Limita ao máximo de 11 dígitos (DDD + 9 dígitos)
-    final limitedDigits = digitsOnly.length > 11 ? digitsOnly.substring(0, 11) : digitsOnly;
+    final limitedDigits = digitsOnly.length > 11
+        ? digitsOnly.substring(0, 11)
+        : digitsOnly;
 
     final StringBuffer buffer = StringBuffer();
     final int length = limitedDigits.length;

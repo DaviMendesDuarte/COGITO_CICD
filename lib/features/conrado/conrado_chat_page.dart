@@ -12,25 +12,22 @@ class ChatMessage {
   final bool isUser;
   final DateTime timestamp;
 
-  ChatMessage({
-    required this.text,
-    required this.isUser,
-    DateTime? timestamp,
-  }) : timestamp = timestamp ?? DateTime.now();
+  ChatMessage({required this.text, required this.isUser, DateTime? timestamp})
+    : timestamp = timestamp ?? DateTime.now();
 
   Map<String, dynamic> toMap() => {
-        'text': text,
-        'isUser': isUser,
-        'timestamp': timestamp.toIso8601String(),
-      };
+    'text': text,
+    'isUser': isUser,
+    'timestamp': timestamp.toIso8601String(),
+  };
 
   factory ChatMessage.fromMap(Map<String, dynamic> map) => ChatMessage(
-        text: map['text'] ?? '',
-        isUser: map['isUser'] ?? false,
-        timestamp: map['timestamp'] != null
-            ? DateTime.tryParse(map['timestamp']) ?? DateTime.now()
-            : DateTime.now(),
-      );
+    text: map['text'] ?? '',
+    isUser: map['isUser'] ?? false,
+    timestamp: map['timestamp'] != null
+        ? DateTime.tryParse(map['timestamp']) ?? DateTime.now()
+        : DateTime.now(),
+  );
 }
 
 /// Modelo de dados que representa uma sessão individual de chat com o CONRADO.
@@ -53,11 +50,7 @@ class ConradoChatPage extends StatefulWidget {
   final String? chatId;
   final String? tituloChat;
 
-  const ConradoChatPage({
-    super.key,
-    this.chatId,
-    this.tituloChat,
-  });
+  const ConradoChatPage({super.key, this.chatId, this.tituloChat});
 
   @override
   ConradoChatPageState createState() => ConradoChatPageState();
@@ -107,7 +100,8 @@ class ConradoChatPageState extends State<ConradoChatPage> {
     if (_mensagens.isEmpty) {
       _mensagens.add(
         ChatMessage(
-          text: 'Olá! Sou o CONRADO, seu assistente de inteligência financeira do COGITO! 🧠💡\n\n'
+          text:
+              'Olá! Sou o CONRADO, seu assistente de inteligência financeira do COGITO! 🧠💡\n\n'
               '${_planoUsuario == 'Grátis' ? 'No seu Plano Grátis, selecione uma das perguntas prontas abaixo para conversarmos no dia a dia!' : 'Como posso ajudar você a organizar seu dinheiro e atingir suas metas hoje?'}',
           isUser: false,
         ),
@@ -181,9 +175,16 @@ class ConradoChatPageState extends State<ConradoChatPage> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Row(
           children: [
-            Icon(Icons.workspace_premium, color: AppColors.primaryYellow, size: 28),
+            Icon(
+              Icons.workspace_premium,
+              color: AppColors.primaryYellow,
+              size: 28,
+            ),
             SizedBox(width: 10),
-            Text('Recurso dos Planos Pago', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Text(
+              'Recurso dos Planos Pago',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
           ],
         ),
         content: const Text(
@@ -209,9 +210,17 @@ class ConradoChatPageState extends State<ConradoChatPage> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryOrange,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
             ),
-            child: const Text('VER PLANOS', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            child: const Text(
+              'VER PLANOS',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
@@ -245,7 +254,10 @@ class ConradoChatPageState extends State<ConradoChatPage> {
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
                 itemCount: _mensagens.length + (_isTyping ? 1 : 0),
                 itemBuilder: (context, index) {
                   if (index == _mensagens.length && _isTyping) {
@@ -282,19 +294,27 @@ class ConradoChatPageState extends State<ConradoChatPage> {
       child: Row(
         children: [
           IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.white,
+              size: 20,
+            ),
             onPressed: () => Navigator.pop(context),
           ),
           Container(
             padding: const EdgeInsets.all(2),
-            decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
             child: CircleAvatar(
               radius: 18,
               backgroundColor: AppColors.primaryOrange,
               child: Image.asset(
                 'assets/images/conrado/conrado_hi.png',
                 fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) => const Icon(Icons.psychology, color: Colors.white, size: 20),
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.psychology, color: Colors.white, size: 20),
               ),
             ),
           ),
@@ -320,14 +340,23 @@ class ConradoChatPageState extends State<ConradoChatPage> {
                     ),
                     const SizedBox(width: 6),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
-                        color: _planoUsuario == 'Grátis' ? Colors.orange.shade800 : Colors.green.shade700,
+                        color: _planoUsuario == 'Grátis'
+                            ? Colors.orange.shade800
+                            : Colors.green.shade700,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
                         _planoUsuario,
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10,
+                        ),
                       ),
                     ),
                   ],
@@ -347,19 +376,29 @@ class ConradoChatPageState extends State<ConradoChatPage> {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.file_download_outlined, color: Colors.white, size: 22),
+            icon: const Icon(
+              Icons.file_download_outlined,
+              color: Colors.white,
+              size: 22,
+            ),
             tooltip: 'Exportar Conversa',
             onPressed: _exibirModalExportarConversa,
           ),
           IconButton(
-            icon: const Icon(Icons.delete_outline, color: Colors.white, size: 22),
+            icon: const Icon(
+              Icons.delete_outline,
+              color: Colors.white,
+              size: 22,
+            ),
             tooltip: 'Apagar Conversa',
             onPressed: () async {
               final String titulo = widget.tituloChat ?? 'esta conversa';
               final bool? confirmar = await showDialog<bool>(
                 context: context,
                 builder: (context) => AlertDialog(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   title: const Row(
                     children: [
                       Icon(Icons.delete_outline, color: Colors.red),
@@ -375,8 +414,13 @@ class ConradoChatPageState extends State<ConradoChatPage> {
                     ),
                     ElevatedButton(
                       onPressed: () => Navigator.pop(context, true),
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                      child: const Text('Apagar', style: TextStyle(color: Colors.white)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                      ),
+                      child: const Text(
+                        'Apagar',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ],
                 ),
@@ -386,7 +430,10 @@ class ConradoChatPageState extends State<ConradoChatPage> {
                 final String uid = FirebaseFirestoreService.idClienteAtual;
                 final String cId = widget.chatId ?? 'chat_principal';
 
-                await _firestoreService.excluirSessaoChat(idCliente: uid, chatId: cId);
+                await _firestoreService.excluirSessaoChat(
+                  idCliente: uid,
+                  chatId: cId,
+                );
 
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -413,7 +460,9 @@ class ConradoChatPageState extends State<ConradoChatPage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
-        mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: isUser
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isUser) ...[
@@ -507,13 +556,19 @@ class ConradoChatPageState extends State<ConradoChatPage> {
                   height: 14,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryOrange),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      AppColors.primaryOrange,
+                    ),
                   ),
                 ),
                 SizedBox(width: 10),
                 Text(
                   'CONRADO está digitando...',
-                  style: TextStyle(color: Colors.grey, fontSize: 13, fontStyle: FontStyle.italic),
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 13,
+                    fontStyle: FontStyle.italic,
+                  ),
                 ),
               ],
             ),
@@ -536,7 +591,11 @@ class ConradoChatPageState extends State<ConradoChatPage> {
               padding: EdgeInsets.only(left: 16, bottom: 4),
               child: Text(
                 'Perguntas Prontas (Plano Grátis):',
-                style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.primaryOrange),
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryOrange,
+                ),
               ),
             ),
           SizedBox(
@@ -551,11 +610,20 @@ class ConradoChatPageState extends State<ConradoChatPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: ActionChip(
                     backgroundColor: Colors.white,
-                    side: const BorderSide(color: AppColors.primaryOrange, width: 1.5),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    side: const BorderSide(
+                      color: AppColors.primaryOrange,
+                      width: 1.5,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                     label: Text(
                       suggestion,
-                      style: const TextStyle(color: AppColors.primaryBlue, fontSize: 12, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        color: AppColors.primaryBlue,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     onPressed: () => _handleSendMessage(suggestion),
                   ),
@@ -607,11 +675,18 @@ class ConradoChatPageState extends State<ConradoChatPage> {
                       hintStyle: TextStyle(
                         color: isGratis ? AppColors.primaryOrange : Colors.grey,
                         fontSize: 13,
-                        fontWeight: isGratis ? FontWeight.bold : FontWeight.normal,
+                        fontWeight: isGratis
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                       ),
                       filled: true,
-                      fillColor: isGratis ? const Color(0xFFFFF3E0) : AppColors.backgroundColor,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                      fillColor: isGratis
+                          ? const Color(0xFFFFF3E0)
+                          : AppColors.backgroundColor,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 12,
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24),
                         borderSide: BorderSide.none,
@@ -638,7 +713,11 @@ class ConradoChatPageState extends State<ConradoChatPage> {
                 },
                 child: const Padding(
                   padding: EdgeInsets.all(12),
-                  child: Icon(Icons.send_rounded, color: Colors.white, size: 22),
+                  child: Icon(
+                    Icons.send_rounded,
+                    color: Colors.white,
+                    size: 22,
+                  ),
                 ),
               ),
             ),
@@ -664,7 +743,9 @@ class ConradoChatPageState extends State<ConradoChatPage> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
       builder: (ctx) {
         return Padding(
           padding: const EdgeInsets.all(24),
@@ -677,23 +758,49 @@ class ConradoChatPageState extends State<ConradoChatPage> {
                   width: 40,
                   height: 4,
                   margin: const EdgeInsets.only(bottom: 16),
-                  decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(4)),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
                 ),
               ),
               const Row(
                 children: [
-                  Icon(Icons.psychology, color: AppColors.primaryOrange, size: 24),
+                  Icon(
+                    Icons.psychology,
+                    color: AppColors.primaryOrange,
+                    size: 24,
+                  ),
                   SizedBox(width: 8),
-                  Text('Exportar Conversa CONRADO', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryBlue)),
+                  Text(
+                    'Exportar Conversa CONRADO',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryBlue,
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 6),
-              Text('Exportando ${_mensagens.length} mensagens trocadas nesta sessão:', style: const TextStyle(fontSize: 12, color: Colors.grey)),
+              Text(
+                'Exportando ${_mensagens.length} mensagens trocadas nesta sessão:',
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
+              ),
               const SizedBox(height: 18),
               ListTile(
-                leading: const Icon(Icons.description_outlined, color: Colors.blue, size: 28),
-                title: const Text('Transcrição Completa (.TXT)', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                subtitle: const Text('Histórico cronológico de perguntas e respostas em texto puro'),
+                leading: const Icon(
+                  Icons.description_outlined,
+                  color: Colors.blue,
+                  size: 28,
+                ),
+                title: const Text(
+                  'Transcrição Completa (.TXT)',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                ),
+                subtitle: const Text(
+                  'Histórico cronológico de perguntas e respostas em texto puro',
+                ),
                 onTap: () {
                   Navigator.pop(ctx);
                   _processarExportacaoConversa('TXT', _gerarTextoConversa());
@@ -701,19 +808,40 @@ class ConradoChatPageState extends State<ConradoChatPage> {
               ),
               const Divider(height: 1),
               ListTile(
-                leading: const Icon(Icons.picture_as_pdf_outlined, color: Colors.red, size: 28),
-                title: const Text('Relatório de Consultoria IA (.PDF / Texto)', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                subtitle: const Text('Relatório executivo estruturado com diagnósticos e insights'),
+                leading: const Icon(
+                  Icons.picture_as_pdf_outlined,
+                  color: Colors.red,
+                  size: 28,
+                ),
+                title: const Text(
+                  'Relatório de Consultoria IA (.PDF / Texto)',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                ),
+                subtitle: const Text(
+                  'Relatório executivo estruturado com diagnósticos e insights',
+                ),
                 onTap: () {
                   Navigator.pop(ctx);
-                  _processarExportacaoConversa('PDF / Relatório Formatado', _gerarRelatorioConversa());
+                  _processarExportacaoConversa(
+                    'PDF / Relatório Formatado',
+                    _gerarRelatorioConversa(),
+                  );
                 },
               ),
               const Divider(height: 1),
               ListTile(
-                leading: const Icon(Icons.code_outlined, color: Colors.purple, size: 28),
-                title: const Text('Dados Estruturados (.JSON)', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                subtitle: const Text('Formato técnico de dados com timestamps e autor de cada mensagem'),
+                leading: const Icon(
+                  Icons.code_outlined,
+                  color: Colors.purple,
+                  size: 28,
+                ),
+                title: const Text(
+                  'Dados Estruturados (.JSON)',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                ),
+                subtitle: const Text(
+                  'Formato técnico de dados com timestamps e autor de cada mensagem',
+                ),
                 onTap: () {
                   Navigator.pop(ctx);
                   _processarExportacaoConversa('JSON', _gerarJsonConversa());
@@ -736,13 +864,16 @@ class ConradoChatPageState extends State<ConradoChatPage> {
     buffer.writeln('          COGITO - TRANSCRIÇÃO DE CONSULTORIA IA');
     buffer.writeln('====================================================');
     buffer.writeln('Título da Sessão: $titulo');
-    buffer.writeln('Exportado em: ${agora.day.toString().padLeft(2, '0')}/${agora.month.toString().padLeft(2, '0')}/${agora.year} às ${agora.hour.toString().padLeft(2, '0')}:${agora.minute.toString().padLeft(2, '0')}');
+    buffer.writeln(
+      'Exportado em: ${agora.day.toString().padLeft(2, '0')}/${agora.month.toString().padLeft(2, '0')}/${agora.year} às ${agora.hour.toString().padLeft(2, '0')}:${agora.minute.toString().padLeft(2, '0')}',
+    );
     buffer.writeln('Total de Mensagens: ${_mensagens.length}');
     buffer.writeln('----------------------------------------------------\n');
 
     for (final m in _mensagens) {
       final String autor = m.isUser ? 'VOCÊ' : 'CONRADO IA';
-      final String dataHora = '${m.timestamp.day.toString().padLeft(2, '0')}/${m.timestamp.month.toString().padLeft(2, '0')} ${m.timestamp.hour.toString().padLeft(2, '0')}:${m.timestamp.minute.toString().padLeft(2, '0')}';
+      final String dataHora =
+          '${m.timestamp.day.toString().padLeft(2, '0')}/${m.timestamp.month.toString().padLeft(2, '0')} ${m.timestamp.hour.toString().padLeft(2, '0')}:${m.timestamp.minute.toString().padLeft(2, '0')}';
       buffer.writeln('[$dataHora] $autor:');
       buffer.writeln('${m.text}\n');
     }
@@ -754,14 +885,17 @@ class ConradoChatPageState extends State<ConradoChatPage> {
   /// Gera relatório executivo formatado com insights.
   String _gerarRelatorioConversa() {
     final buffer = StringBuffer();
-    final String titulo = widget.tituloChat ?? 'Consultoria Financeira com CONRADO IA';
+    final String titulo =
+        widget.tituloChat ?? 'Consultoria Financeira com CONRADO IA';
     final agora = DateTime.now();
 
     buffer.writeln('====================================================');
     buffer.writeln('      COGITO INTELIGÊNCIA FINANCEIRA - RELATÓRIO');
     buffer.writeln('====================================================');
     buffer.writeln('Tópico: $titulo');
-    buffer.writeln('Data da Análise: ${agora.day.toString().padLeft(2, '0')}/${agora.month.toString().padLeft(2, '0')}/${agora.year}');
+    buffer.writeln(
+      'Data da Análise: ${agora.day.toString().padLeft(2, '0')}/${agora.month.toString().padLeft(2, '0')}/${agora.year}',
+    );
     buffer.writeln('Plano Utilizado: $_planoUsuario');
     buffer.writeln('----------------------------------------------------');
     buffer.writeln('DIAGNÓSTICOS & RESPOSTAS DO CONRADO:\n');
@@ -786,7 +920,12 @@ class ConradoChatPageState extends State<ConradoChatPage> {
   String _gerarJsonConversa() {
     final list = _mensagens.map((m) => m.toMap()).toList();
     final String titulo = widget.tituloChat ?? 'Conversa CONRADO';
-    final jsonItems = list.map((m) => '    {"autor": "${(m['isUser'] as bool) ? 'Usuario' : 'Conrado'}", "texto": "${m['text'].toString().replaceAll('\n', '\\n').replaceAll('"', '\\"')}", "timestamp": "${m['timestamp']}"}').join(',\n');
+    final jsonItems = list
+        .map(
+          (m) =>
+              '    {"autor": "${(m['isUser'] as bool) ? 'Usuario' : 'Conrado'}", "texto": "${m['text'].toString().replaceAll('\n', '\\n').replaceAll('"', '\\"')}", "timestamp": "${m['timestamp']}"}',
+        )
+        .join(',\n');
 
     return '''{
   "aplicativo": "COGITO",
@@ -807,9 +946,16 @@ $jsonItems
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
       builder: (ctx) => Padding(
-        padding: EdgeInsets.only(top: 24, left: 24, right: 24, bottom: MediaQuery.of(ctx).viewInsets.bottom + 24),
+        padding: EdgeInsets.only(
+          top: 24,
+          left: 24,
+          right: 24,
+          bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -818,24 +964,47 @@ $jsonItems
               children: [
                 Container(
                   padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(color: Colors.green.shade100, shape: BoxShape.circle),
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade100,
+                    shape: BoxShape.circle,
+                  ),
                   child: const Icon(Icons.check, color: Colors.green, size: 22),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text('Conversa Exportada ($formato)', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primaryBlue)),
+                  child: Text(
+                    'Conversa Exportada ($formato)',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: AppColors.primaryBlue,
+                    ),
+                  ),
                 ),
               ],
             ),
             const SizedBox(height: 12),
-            const Text('A transcrição foi copiada para a Área de Transferência. Você pode colar onde desejar ou visualizar o conteúdo abaixo:', style: TextStyle(fontSize: 12, color: Colors.grey)),
+            const Text(
+              'A transcrição foi copiada para a Área de Transferência. Você pode colar onde desejar ou visualizar o conteúdo abaixo:',
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
             const SizedBox(height: 12),
             Container(
               constraints: const BoxConstraints(maxHeight: 220),
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(color: const Color(0xFFF2F4F7), borderRadius: BorderRadius.circular(12)),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF2F4F7),
+                borderRadius: BorderRadius.circular(12),
+              ),
               child: SingleChildScrollView(
-                child: Text(conteudo, style: const TextStyle(fontFamily: 'monospace', fontSize: 11, color: Colors.black87)),
+                child: Text(
+                  conteudo,
+                  style: const TextStyle(
+                    fontFamily: 'monospace',
+                    fontSize: 11,
+                    color: Colors.black87,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -852,8 +1021,16 @@ $jsonItems
                 );
               },
               icon: const Icon(Icons.copy, color: Colors.white, size: 18),
-              label: const Text('Copiar Novamente', style: TextStyle(color: Colors.white)),
-              style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryBlue, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+              label: const Text(
+                'Copiar Novamente',
+                style: TextStyle(color: Colors.white),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryBlue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
             ),
           ],
         ),

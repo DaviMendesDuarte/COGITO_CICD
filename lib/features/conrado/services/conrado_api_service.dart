@@ -28,7 +28,9 @@ class ConradoApiService {
   Future<String> sendMessage(String userMessage) async {
     // Se não houver chave de API definida, utiliza o fallback contextual instantâneo.
     if (apiKey == null || apiKey!.isEmpty) {
-      await Future.delayed(const Duration(milliseconds: 1000)); // Simula tempo de resposta de rede
+      await Future.delayed(
+        const Duration(milliseconds: 1000),
+      ); // Simula tempo de resposta de rede
       return _getFallbackResponse(userMessage);
     }
 
@@ -40,16 +42,16 @@ class ConradoApiService {
         body: jsonEncode({
           'systemInstruction': {
             'parts': [
-              {'text': _systemInstruction}
-            ]
+              {'text': _systemInstruction},
+            ],
           },
           'contents': [
             {
               'parts': [
-                {'text': userMessage}
-              ]
-            }
-          ]
+                {'text': userMessage},
+              ],
+            },
+          ],
         }),
       );
 
@@ -79,9 +81,25 @@ class ConradoApiService {
 
     // 1. Verificação de desrespeito / grosseria / palavrões -> Reação estressada do CONRADO 😤
     final List<String> termosOfensivos = [
-      'burro', 'idiota', 'lixo', 'inútil', 'chato', 'otário', 'palhaço',
-      'cale a boca', 'cala a boca', 'cala boca', 'merda', 'caralho', 'porra',
-      'fdp', 'imbecil', 'babaca', 'vai te cata', 'vai se foder', 'lixo de app'
+      'burro',
+      'idiota',
+      'lixo',
+      'inútil',
+      'chato',
+      'otário',
+      'palhaço',
+      'cale a boca',
+      'cala a boca',
+      'cala boca',
+      'merda',
+      'caralho',
+      'porra',
+      'fdp',
+      'imbecil',
+      'babaca',
+      'vai te cata',
+      'vai se foder',
+      'lixo de app',
     ];
 
     for (final termo in termosOfensivos) {
@@ -93,7 +111,10 @@ class ConradoApiService {
     }
 
     // 2. Auxílio Financeiro Especializado - FGTS & Saque Aniversário
-    if (query.contains('fgts') || query.contains('aniversário') || query.contains('aniversario') || query.contains('saque')) {
+    if (query.contains('fgts') ||
+        query.contains('aniversário') ||
+        query.contains('aniversario') ||
+        query.contains('saque')) {
       return '📊 **Auxílio de Status do FGTS & Saque Aniversário**\n\n'
           '• **O que é o FGTS?** O empregador deposita mensalmente 8% do seu salário bruto em uma conta vinculada na Caixa Econômica.\n'
           '• **Saque-Aniversário:** Permite retirar anualmente uma porcentagem do saldo no mês do seu aniversário (ex: de 5% a 50% + parcela adicional de R\$ 50 a R\$ 2.900).\n'
@@ -102,7 +123,10 @@ class ConradoApiService {
     }
 
     // 3. Auxílio Financeiro Especializado - Décimo Terceiro Salário (13º)
-    if (query.contains('décimo') || query.contains('decimo') || query.contains('13') || query.contains('décimo terceiro')) {
+    if (query.contains('décimo') ||
+        query.contains('decimo') ||
+        query.contains('13') ||
+        query.contains('décimo terceiro')) {
       return '💰 **Auxílio e Cálculo do 13º Salário**\n\n'
           'O Décimo Terceiro é dividido em duas parcelas para trabalhadores regidos pela CLT:\n'
           '• **1ª Parcela (Paga até 30 de Novembro):** Corresponde a exatos 50% do seu salário bruto mensal, sem qualquer desconto de INSS ou Imposto de Renda.\n'
@@ -111,7 +135,10 @@ class ConradoApiService {
     }
 
     // 4. Auxílio Financeiro Especializado - Planejamento Financeiro de Férias
-    if (query.contains('férias') || query.contains('ferias') || query.contains('viagem') || query.contains('viajar')) {
+    if (query.contains('férias') ||
+        query.contains('ferias') ||
+        query.contains('viagem') ||
+        query.contains('viajar')) {
       return '🏖️ **Planejamento Financeiro para Férias**\n\n'
           'Ao tirar férias, você recebe seu salário adiantado + o **1/3 Constitucional de Férias** (com descontos de INSS e IRRF).\n\n'
           '⚠️ **Alerta Importante:** Lembre-se de que no mês seguinte ao retorno das férias você NÃO receberá salário integral (pois já foi adiantado)!\n\n'
@@ -125,32 +152,85 @@ class ConradoApiService {
     if (query.contains('reserva') || query.contains('emergência')) {
       return 'Uma reserva de emergência ideal deve cobrir de 3 a 6 meses do seu custo de vida mensal! '
           'Recomendo guardá-la em aplicações de liquidez diária, como Tesouro Selic ou CDBs de 100% do CDI no COGITO.';
-    } else if (query.contains('economizar') || query.contains('guardar') || query.contains('poupar')) {
+    } else if (query.contains('economizar') ||
+        query.contains('guardar') ||
+        query.contains('poupar')) {
       return 'Para economizar de forma eficiente com o COGITO, tente a regra 50-30-20:\n'
           '• 50% para necessidades básicas (aluguel, contas);\n'
           '• 30% para desejos pessoais (lazer, compras);\n'
           '• 20% para prioridades financeiras (investimentos e reserva).';
-    } else if (query.contains('dívida') || query.contains('divida') || query.contains('cartão') || query.contains('cartao')) {
+    } else if (query.contains('dívida') ||
+        query.contains('divida') ||
+        query.contains('cartão') ||
+        query.contains('cartao')) {
       return 'Para quitar dívidas mais rápido:\n'
           '1. Mapeie todas as dívidas e juros cobrados;\n'
           '2. Priorize pagar as dívidas com juros mais altos (ex: cartão de crédito);\n'
           '3. Tente renegociar descontos para pagamento à vista.';
-    } else if (query.contains('orçamento') || query.contains('orcamento') || query.contains('meta')) {
+    } else if (query.contains('orçamento') ||
+        query.contains('orcamento') ||
+        query.contains('meta')) {
       return 'No COGITO, registrar cada pequena despesa diariamente é a chave para o controle! '
           'Analise seus gastos por categoria no final de cada semana para identificar onde cortar excessos.';
-    } else if (query.contains('olá') || query.contains('ola') || query.contains('oi') || query.contains('bom dia') || query.contains('boa tarde') || query.contains('boa noite')) {
+    } else if (query.contains('olá') ||
+        query.contains('ola') ||
+        query.contains('oi') ||
+        query.contains('bom dia') ||
+        query.contains('boa tarde') ||
+        query.contains('boa noite')) {
       return 'Olá! Sou o CONRADO, seu especialista exclusivo em gestão financeira no COGITO. '
           'Como posso te ajudar a organizar seu dinheiro, FGTS, 13º Salário ou planejamento de férias hoje?';
     }
 
     // 6. Recusa direta para qualquer pergunta fora do âmbito financeiro
     final List<String> termosFinanceiros = [
-      'dinheiro', 'saldo', 'finança', 'financa', 'conta', 'banco', 'cartão', 'cartao',
-      'fgts', '13', 'décimo', 'decimo', 'férias', 'ferias', 'orçamento', 'orcamento',
-      'investimento', 'reserva', 'economizar', 'poupar', 'guardar', 'dívida', 'divida',
-      'gasto', 'despesa', 'receita', 'salário', 'salario', 'renda', 'pix', 'boleto',
-      'lucro', 'juros', 'imposto', 'irrf', 'inss', 'clt', 'freelance', 'autônomo', 'autonomo',
-      'meta', 'caixinha', 'cogito', 'olá', 'ola', 'oi', 'ajuda'
+      'dinheiro',
+      'saldo',
+      'finança',
+      'financa',
+      'conta',
+      'banco',
+      'cartão',
+      'cartao',
+      'fgts',
+      '13',
+      'décimo',
+      'decimo',
+      'férias',
+      'ferias',
+      'orçamento',
+      'orcamento',
+      'investimento',
+      'reserva',
+      'economizar',
+      'poupar',
+      'guardar',
+      'dívida',
+      'divida',
+      'gasto',
+      'despesa',
+      'receita',
+      'salário',
+      'salario',
+      'renda',
+      'pix',
+      'boleto',
+      'lucro',
+      'juros',
+      'imposto',
+      'irrf',
+      'inss',
+      'clt',
+      'freelance',
+      'autônomo',
+      'autonomo',
+      'meta',
+      'caixinha',
+      'cogito',
+      'olá',
+      'ola',
+      'oi',
+      'ajuda',
     ];
 
     bool eFinanceiro = false;
